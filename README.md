@@ -56,18 +56,25 @@ Will have to see the structure of db
 
 Restaurant Login:
 Login: login functionality 
-********************************************************************************************************
-Git commands to keep in mind-----
-Git commands for pushing changes to your branch
-1. git add app.js app1.js (only add files which have changed)
-2. git status (to check what all have been changed)
-3. git commit -m "Made changes in app structure"
-Add a good comment
-4. git remote -v
-check if remote is connected (else add)
-5. git checkout amrit
-6. git push -u origin amrit
 
-To update your local git repository with the master (if required)
-1. git pull --no-commit https://github.com/anikashc/Sero.git
-2. git push -u origin amrit
+********************************************************************************************************
+**Git commands to keep in mind-----**
+Git commands for pushing changes to your branch
+
+So next time when you start working just do this everytime before you start to work.
+
+- git checkout -b dev             (Remove -b after the first time)
+- git pull origin dev
+
+And then after you commit to your local branch dev do this
+
+***Pulling from remote won't affect your local committed or uncommitted changes.***
+
+- git push -u origin dev
+
+*****************************************************************************************
+
+For any freak ups
+1. [For your Help with pull push](https://happygitwithr.com/pull-tricky.html#git-pull-with-local-commits)
+2. [Serious freak ups](ohshitgit.com/)
+

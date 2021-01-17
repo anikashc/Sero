@@ -1,10 +1,12 @@
 import express from 'express';
+import dotenv from 'dotenv'
+import menus from './data/products.js'
 // import bodyParser from 'body-parser';
 // import mongoose from 'mongoose';
 // import cors from 'cors';
 
 //import postRoutes from './routes/posts.js';
-
+dotenv.config()
 const app = express();
 
 // app.use(bodyParser.json({ limit: '30mb', extended: true }))
@@ -26,4 +28,11 @@ const PORT = process.env.PORT|| 5000;
 app.get('/', function(req, res) {
     res.send("Hello");
 });
-app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT}`))
+app.get('/api/menu', function(req, res) {
+  res.json(menus);
+});
+app.get('/api/menu/:id', function(req, res) {
+  const menu = menus.find((p) => p._id===req.params.id)
+  res.json(menu);
+});
+app.listen(PORT, () => console.log(`Server Running in ${process.env.NODE_ENV} on Port: http://localhost:${PORT}`))

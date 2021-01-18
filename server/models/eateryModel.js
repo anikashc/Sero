@@ -15,6 +15,19 @@ const reviewSchema = mongoose.Schema(
     timestamps: true,
   }
 )
+const menuSchema = mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    cost: { type: Number, required: true },
+    category: { type: String, required: true },
+    image: { type: String, required: true },
+    description: { type: String, required: true },
+    isAvailable: { type: Boolean, required: true, default: false }
+  },
+  {
+    timestamps: true,
+  }
+)
 
 const eaterySchema = mongoose.Schema(
   {
@@ -36,11 +49,6 @@ const eaterySchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    
-    brand: {
-      type: String,
-      required: true,
-    },
     category: {
       type: String,
       required: true,
@@ -50,10 +58,21 @@ const eaterySchema = mongoose.Schema(
       required: true,
     },
     reviews: [reviewSchema],
+    menu: [menuSchema],
     rating: {
       type: Number,
       required: true,
       default: 0,
+    },
+    payNowEnable: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+    payLaterEnable: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
     numReviews: {
       type: Number,

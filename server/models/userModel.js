@@ -16,16 +16,18 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    isAdmin: {
-      type: Boolean,
+    phoneNumber: {
+      type: String,
       required: true,
-      default: false,
+      unique: true,
     },
-    isEatery: {
-        type: Boolean,
-        requires: true,
-        default: false,
-    }
+    userType: {
+      type: Number,
+      required: true,
+      //1-admin, 2-user, 3-eatery
+      default: 2, 
+    },
+     
   },
   {
     timestamps: true,

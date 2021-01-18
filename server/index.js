@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv'
 import colors from 'colors'
-import menus from './data/products.js'
+import menus from './data/eatery.js'
 // import bodyParser from 'body-parser';
 import connectDB from './config/db.js';
 // import cors from 'cors';

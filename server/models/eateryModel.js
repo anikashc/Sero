@@ -79,6 +79,11 @@ const eaterySchema = mongoose.Schema(
       required: true,
       default: 0,
     },
+    isOpen: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
     
    
   },

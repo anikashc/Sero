@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv'
 import colors from 'colors' 
 // import bodyParser from 'body-parser';
+import { notFound,errorHandler } from './middleware/errorMiddleware.js'
 import connectDB from './config/db.js';
 import eateryRoutes from './routes/eateryRoutes.js'
 // import cors from 'cors';
@@ -18,11 +19,15 @@ const app = express();
 //app.use('/posts', postRoutes); 
 
 
-const PORT = process.env.PORT|| 5000;
+
 
 
 app.get('/', function(req, res) {
     res.send("Hello");
 });
 app.use('/api/eateries', eateryRoutes);
+app.use(notFound)
+app.use(errorHandler)
+const PORT = process.env.PORT|| 5000;
+
 app.listen(PORT, () => console.log(`Server Running in ${process.env.NODE_ENV} on Port: http://localhost:${PORT}`.yellow.bold))

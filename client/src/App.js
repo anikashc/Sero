@@ -5,6 +5,7 @@ import './index.css';
 import { Container } from 'react-bootstrap';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
+import Home from './Screens/Home';
 
 function App() {
 
@@ -17,6 +18,8 @@ function App() {
           <center>
               <h1>Welcome to Sero</h1>
           </center>
+
+            <Home />
         </Container>
       </main>
       

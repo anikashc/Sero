@@ -1,21 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Header from './Components/Header'
-import Footer from './Components/Footer'
-import  {Container} from 'react-bootstrap'
+import './bootstrap.min.css';
+import './index.css';
+import { Container } from 'react-bootstrap';
+import Header from './Components/Header';
+import Footer from './Components/Footer';
+
 function App() {
-  return (
-    <div>
-      <Header />
+
+    return (
+      <>
+      <Header/>
       
       <main>
         <Container>
-        <h1>Welcome to Sero</h1>
+          <center>
+              <h1>Welcome to Sero</h1>
+          </center>
         </Container>
       </main>
-      <Footer />
-    </div>
-  );
+      
+      <Footer/>
+      </>
+    );
 }
 
 export default App;

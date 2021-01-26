@@ -1,16 +1,15 @@
 import express from 'express'
-import asyncHandler from 'express-async-handler'
 const router = express.Router()
-import Eatery from '../models/eateryModel.js'
-// import {
-//   getProducts,
-//   getProductById,
+
+import {
+  getEateries,
+  getEateryById
 //   deleteProduct,
 //   createProduct,
 //   updateProduct,
 //   createProductReview,
 //   getTopProducts,
-// } from '../controllers/productController.js'
+} from '../controllers/eateryController.js'
 // import { protect, admin } from '../middleware/authMiddleware.js'
 
 // router.route('/').get(getProducts).post(protect, admin, createProduct)
@@ -22,18 +21,7 @@ import Eatery from '../models/eateryModel.js'
 //   .delete(protect, admin, deleteProduct)
 //   .put(protect, admin, updateProduct)
 
-router.get('/',asyncHandler(async(req,res)=>{
-    const eateries = await Eatery.find({})
-    res.json(eateries)
-}))
-router.get('/:id',asyncHandler(async(req,res)=>{
-    const eatery = await Eatery.findById(req.params.id)
-    if(eatery){
-        res.json(eatery)
-    }
-    else {
-        res.status(404)
-        throw new Error('Product not found')
-    }
-}))
+
+router.route('/').get(getEateries);
+router.route('/:id').get(getEateryById);
 export default router

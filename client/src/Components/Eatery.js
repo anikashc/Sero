@@ -1,25 +1,22 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import { Card } from 'react-bootstrap'
 
 const Eatery = ({eatery}) => {
     return (
         <Card className='my-3 p-3 rounded'>
-            <a href={`/menu/${eatery._id}`}>
-                <Card.Img src={eatery.image} />
-            </a>
+            <Link to={`/menu/${eatery._id}`}>
+                <Card.Img src={eatery.image} variant='top'/>
+            </Link>
 
             <Card.Body>
-                <a href={`/menu/${eatery._id}`}>
+                <Link to={`/menu/${eatery._id}`}>
                     <Card.Title as='div'>
-                        <strong cl>{eatery.name}</strong>
+                        <strong>{eatery.name}</strong>
                     </Card.Title>
-                </a> 
+                </Link> 
                 <Card.Text as='div'>
-                    {eatery.rating}
-                </Card.Text>
-
-                <Card.Text as='h4'>
-                    {eatery.price} Rs
+                    {eatery.rating} from {eatery.numReviews} reviews
                 </Card.Text>
             </Card.Body>
         </Card>

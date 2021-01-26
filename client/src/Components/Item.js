@@ -1,29 +1,29 @@
 import React from 'react'
 import { Card } from 'react-bootstrap'
 
-const Eatery = ({eatery}) => {
+const Item = ({ item }) => {
     return (
         <Card className='my-3 p-3 rounded'>
-            <a href={`/menu/${eatery._id}`}>
-                <Card.Img src={eatery.image} />
+            <a href={`/eatery/${item._id}`}>
+                <Card.Img src={item.image} />
             </a>
 
             <Card.Body>
-                <a href={`/menu/${eatery._id}`}>
+                <a href={`/eatery/${item._id}`}>
                     <Card.Title as='div'>
-                        <strong cl>{eatery.name}</strong>
+                        <strong cl>{item.name}</strong>
                     </Card.Title>
-                </a> 
+                </a>
                 <Card.Text as='div'>
-                    {eatery.rating}
+                    {item.description}
                 </Card.Text>
 
                 <Card.Text as='h4'>
-                    {eatery.price} Rs
+                    {item.price} Rs
                 </Card.Text>
             </Card.Body>
         </Card>
     );
 }
 
-export default Eatery;
+export default Item;

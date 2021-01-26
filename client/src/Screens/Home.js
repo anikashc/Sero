@@ -10,9 +10,9 @@ function Home() {
                 <h2>Trending Eateries</h2>    
             </center>
             <Row>
-                {eateries.map(eateries => (
-                    <Col sm={12} md={6} lg={4} xl={3}>
-                        <Eatery eatery={eateries}/>
+                {eateries.map(eatery => (
+                    <Col key={eatery._id} sm={12} md={6} lg={4} xl={3}>
+                        <Eatery eatery={eatery}/>
                     </Col>
                 ))}
             </Row>

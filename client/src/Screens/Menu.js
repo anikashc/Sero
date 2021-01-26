@@ -9,7 +9,7 @@ const Menu = ({match}) => {
     // match.params.id or match.params. anything that is in the url
     const eatery = eateries.find(p=>p._id===match.params.id)
     return (
-        <>
+        <div>
             <Link className="btn btn-dark my-3" to="/">Go Back</Link>
             <Row>
                 <Col md={6}>
@@ -26,13 +26,15 @@ const Menu = ({match}) => {
                     </ListGroup>
                 </Col>
             </Row>
-            <h2>Menu</h2>
+            <Row>
+                <h2 className='menu-title py-3'>Menu</h2>
+            </Row>
             {item.map(item => (
                 <Row key={item._id}>
                     <Item item={item} />
                 </Row>
             ))}
-        </>
+        </div>
     );
 }
 

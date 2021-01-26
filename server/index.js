@@ -5,6 +5,8 @@ import colors from 'colors'
 import { notFound,errorHandler } from './middleware/errorMiddleware.js'
 import connectDB from './config/db.js';
 import eateryRoutes from './routes/eateryRoutes.js'
+import userRoutes from './routes/userRoutes.js'
+
 // import cors from 'cors';
 
 dotenv.config()
@@ -12,6 +14,7 @@ dotenv.config()
 connectDB()
 const app = express();
 
+app.use(express.json())
 // app.use(bodyParser.json({ limit: '30mb', extended: true }))
 // app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 // app.use(cors());
@@ -26,6 +29,7 @@ app.get('/', function(req, res) {
     res.send("Hello");
 });
 app.use('/api/eateries', eateryRoutes);
+app.use('/api/users', userRoutes);
 app.use(notFound)
 app.use(errorHandler)
 const PORT = process.env.PORT|| 5000;

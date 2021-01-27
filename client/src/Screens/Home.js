@@ -1,9 +1,21 @@
-import React from 'react';
+import axios from 'axios';
+import React, {useState, useEffect} from 'react';
 import { Row, Col } from 'react-bootstrap';
-import eateries from '../eateries';
-import Eatery from '../Components/Eatery';
 
+
+import Eatery from '../Components/Eatery';
+//import eateries from '../eateries';
 function Home() {
+    const [eateries,setEateries] = useState([])
+
+    useEffect(()=>{
+        const fetchEateries = async () =>{
+            const {data}= await axios.get('/api/eateries')
+            setEateries(data) 
+        }
+        fetchEateries()
+    },[])
+
     return (
         <>
             <center>

@@ -9,6 +9,8 @@ node_modules/
 # testing
 /coverage
 
+.eslintcache
+
 # production
 /build
 

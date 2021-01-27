@@ -1,0 +1,12 @@
+1. first create constants in the constants folder
+
+2. Go to the reducers folder and replicate a reducer
+
+3. Whenever adding a reducer, add it to the store
+
+4. next create an action
+
+5. fire off in the screen.
+   5.1. import useDispatch and useSelector
+   5.2. dispatch in useEffect and bring in the action, make sure the names match as in action
+   5.3. bring in useSelector to get the details and destructure

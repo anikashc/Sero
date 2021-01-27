@@ -1,0 +1,14 @@
+main {
+    min-height: 80vh;
+}
+.itemImg {
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 70%
+}
+.menu-title {
+    justify-content: center;
+    margin: 0% auto;
+    
+}

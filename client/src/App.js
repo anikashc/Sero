@@ -8,6 +8,7 @@ import Header from './Components/Header';
 import Footer from './Components/Footer';
 import Home from './Screens/Home';
 import Menu from './Screens/Menu';
+import Cart from './Screens/Cart';
 
 function App() {
 
@@ -17,12 +18,11 @@ function App() {
         <Header />
         <main className='py-3'>
           <Container>
-            <center>
-                <h1>Welcome to Sero</h1>
-            </center>
+            
 
             <Route path='/' component={Home} exact />
             <Route path='/menu/:id' component={Menu} exact />
+            <Route path = '/cart' component={Cart} />
 
           </Container>
         </main>

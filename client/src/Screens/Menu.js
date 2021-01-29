@@ -3,12 +3,12 @@ import {Link} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import Item from '../Components/Item';
-import item from '../item';
+//import item from '../item';
 import { listEateryDetails} from '../actions/eateryActions'
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
 //import axios from 'axios'
-//import eateries from '../eateries';
+
 
 const Menu = ({match}) => {
     // match.params.id or match.params. anything that is in the url
@@ -44,15 +44,18 @@ const Menu = ({match}) => {
                                 <ListGroup.Item>
                                 Description: {eatery.description}
                                 </ListGroup.Item>
+                                <ListGroup.Item>
+                                {eatery.isOpen? null : (<Message variant='danger'>Restaurant is closed, try after sometime</Message>)}
+                                </ListGroup.Item>
                             </ListGroup>
                         </Col>
                     </Row>
                     <Row>
                     <h2 className='menu-title py-3'>Menu</h2>
                     </Row>
-                    {item.map(item => (
+                    {eatery.menu.map(item => (
                         <Row key={item._id}>
-                            <Item item={item} />
+                            <Item item={item} isOpen={eatery.isOpen} eateryId={eatery._id}/>
                         </Row>
                     ))}
 

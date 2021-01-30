@@ -1,30 +1,41 @@
 import React from 'react'
-import { Container, Row, Col, Navbar, Nav } from 'react-bootstrap'
+import { Container, Row, Col, Navbar, Nav, Button } from 'react-bootstrap'
+import { makeStyles } from '@material-ui/core/styles'
 import {useSelector} from 'react-redux' 
-import { Link } from 'react-router-dom'
 import { LinkContainer} from 'react-router-bootstrap'
+import Fab from '@material-ui/core/Fab'
 
+const useStyles = makeStyles(theme => ({
+    fab: {
+        position: 'fixed',
+        bottom: theme.spacing(2),
+        right: theme.spacing(2),
+    },
+}));
 
 const Footer = () => {
     const cart = useSelector(state=>state.cart)
     const {cartItems}=cart
+    const classes = useStyles();
     return (
         <footer>
             <Container>
+                
                 <Row>
+                    
                     {cartItems.length?
                         (
-                        <Navbar bg="light" fixed="bottom">
-                            <Container>
-                                
-                                <Nav className="ml-auto">
-                                    <LinkContainer to='/cart'>
-                                        <Nav.Link>Cart</Nav.Link>
-                                    </LinkContainer>
-                                </Nav>
-                                
-                            </Container>
-                        </Navbar> 
+                            <Navbar className='navbarFixedBottom'  fixed="bottom" variant='light'>
+                                <LinkContainer to='/cart'>
+                                    <Fab variant='extended' size='large' color='default' className={classes.fab}>
+                                        <h6 className="linkText">Cart ({cartItems.reduce((acc, item) => acc + item.qty, 0)})</h6>  
+                                    </Fab>
+                                </LinkContainer>
+                            </Navbar>
+                            
+                            
+                        
+                         
                         )
                     :
                         null

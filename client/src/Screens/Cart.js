@@ -25,7 +25,7 @@ const Cart = ({history}) => {
                     <h1>Cart</h1>
                     {cartItems.length === 0 ? (
                     <Message>
-                        Your cart is empty  <Button></Button><Link to='/'>Order!</Link>
+                        Your cart is empty  <Button><Link to='/'>Order!</Link></Button>
                     </Message>
                     ) : (
                     <ListGroup variant='flush'>

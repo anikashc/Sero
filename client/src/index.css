@@ -13,4 +13,11 @@ main {
     
 }
 
+.linkText {
+    font-family: 'Roboto', sans-serif;
+    color:black
+}
 
+.navbarFixedBottom{
+    height: 20px;
+}

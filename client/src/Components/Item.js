@@ -5,18 +5,28 @@ import {useDispatch, useSelector} from 'react-redux'
 import { Card, Col, Row, ListGroup, Button} from 'react-bootstrap'
 import {addToCart} from '../actions/cartActions'
 
-const Item = ({item, isOpen, eateryId}) => {
-    const [qty,setQty]=useState(0)
-
+const Item = ({item, isOpen, eid}) => {
+    
+    const cart = useSelector(state=>state.cart)
+    const {cartItems,eateryId}=cart
     const dispatch = useDispatch()
     
     const handleClick = (quantity) =>{
         
-        dispatch(addToCart(item._id,eateryId,quantity))
+        dispatch(addToCart(item._id,eid,quantity))
     }
+    var existingQty=0
+    if(eateryId==eid){
+        const existItem  = cartItems.find(x=>x.product === item._id)
+        if(existItem){
+            existingQty=existItem.qty
+        }
+        console.log(existItem)
+
+    }
+    const [qty,setQty]=useState(existingQty)
     return (
         <Card className='my-1 p-1 rounded'>
-            
             <Row>
                 
                 <Col md={7}>
@@ -41,7 +51,7 @@ const Item = ({item, isOpen, eateryId}) => {
                         <ListGroup.Item>
                                 <Row className='quantity'>
 
-                                <Button className='mx-3' onClick={()=> {
+                                <Button className='mx-3' size='sm' onClick={()=> {
                                     setQty(qty-1)
                                     handleClick(qty-1)
                                     }} disabled={!isOpen || qty<=0 || !item.isAvailable }>
@@ -50,7 +60,7 @@ const Item = ({item, isOpen, eateryId}) => {
                                 
                                 <h5>{qty}</h5>
                             
-                                <Button className='mx-3' onClick={()=> {
+                                <Button className='mx-3' size='sm' onClick={()=> {
                                     setQty(qty+1)
                                     handleClick(qty+1)
                                     }} disabled={!isOpen || !item.isAvailable}>
@@ -61,7 +71,7 @@ const Item = ({item, isOpen, eateryId}) => {
                            
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            <Card.Text as='h4'>
+                            <Card.Text as='h5'>
                                 ₹{item.cost} {item.isAvailable? null: 'Unavailable'}
                             </Card.Text>
                         </ListGroup.Item>

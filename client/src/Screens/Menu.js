@@ -55,7 +55,7 @@ const Menu = ({match}) => {
                     </Row>
                     {eatery.menu.map(item => (
                         <Row key={item._id}>
-                            <Item item={item} isOpen={eatery.isOpen} eateryId={eatery._id}/>
+                            <Item item={item} isOpen={eatery.isOpen} eid={eatery._id}/>
                         </Row>
                     ))}
 

@@ -5,7 +5,7 @@ import { Row, Col, ListGroup, Button, Card, Container} from 'react-bootstrap'
 import Message from '../Components/Message'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 
-const Cart = ({history}) => {
+const Cart = () => {
     const cart = useSelector(state=>state.cart)
     const dispatch = useDispatch()
     const {cartItems,eateryId}=cart
@@ -13,57 +13,69 @@ const Cart = ({history}) => {
     const removeFromCartHandler = (id) =>{
         dispatch(removeFromCart(id,eateryId))
     }
+    const addToCartHandler = (id,qty) =>{
+        dispatch(addToCart(id,eateryId,qty))
+    }
     const checkoutHandler =() =>{
         console.log('checkout')
     }
     return (
-        <Container fluid>
-            <Row><Button onClick={()=>browserHistory.goBack()}>Go Back</Button></Row>
-            <Row>
-                
-                <Col md={8}>
-                    <h1>Cart</h1>
-                    {cartItems.length === 0 ? (
-                    <Message>
-                        Your cart is empty  <Button><Link to='/'>Order!</Link></Button>
-                    </Message>
-                    ) : (
-                    <ListGroup variant='flush'>
-                        <ListGroup.Item>
-                            <Row>
-                                <Col md={5}>Items</Col>
-                                <Col md={1}>Price</Col>
-                                <Col md={2}>Quantity</Col>
-                                <Col md={1}></Col>
-                                <Col md={1}>Total</Col>
-                            </Row>
-                        </ListGroup.Item>
-                        {cartItems.map((item) => (
-                        <ListGroup.Item key={item.product}>
-                            <Row>
+        <React.Fragment>
+            <Container className='container'>
+                <Row><Button onClick={()=>browserHistory.goBack()}>Go Back</Button></Row>
+                <Row><h1>Cart</h1></Row>
+                <Row>   
+                        
+                        {(cartItems.length === 0 || !eateryId) ? (
+                        <Message>
+                            Your cart is empty  <Button><Link to='/'>Order!</Link></Button>
+                        </Message>
+                        ) : (
+                        <ListGroup>
                             
-                            <Col md={5}>
-                                {item.name}
-                            </Col>
-                            <Col md={1}>₹{item.cost}</Col>
-                            <Col md={2}>{item.qty}</Col>
-                            <Col md={1}>
-                                <Button
-                                size='sm'
-                                onClick={() => removeFromCartHandler(item.product)}
-                                >
-                                    <i className='fas fa-trash'></i>
-                                </Button>
-                            </Col>
-                            <Col md={1}>₹{item.cost*item.qty}</Col>
-                            
-                            </Row>
-                        </ListGroup.Item>
-                        ))}
-                    </ListGroup>
-                    )}
-                </Col>
-                <Col md={3}>
+                            {cartItems.map((item) => (
+                            <ListGroup.Item key={item.product}>
+                                <Row>
+                                
+                                <Col>
+                                    {item.name}
+                                </Col>
+                                <Col>₹{item.cost}</Col>
+                                <Col md='auto'>
+                                <Button size='sm' className='mx-3' onClick={()=> {
+                                        addToCartHandler(item.product,item.qty-1)
+                                        }}>
+                                            <i class="fas fa-chevron-left"></i>
+                                    </Button>
+                                    
+                                    {item.qty}
+                                
+                                    <Button size='sm'className='mx-3' onClick={()=> {
+                                        addToCartHandler(item.product,item.qty+1)
+                                        }}>
+                                            <i class="fas fa-chevron-right"></i>
+                                    </Button>
+                                </Col>
+                                <Col>{item.qty}</Col>
+                                <Col>
+                                    <Button
+                                    size='sm'
+                                    onClick={() => removeFromCartHandler(item.product)}
+                                    >
+                                        <i className='fas fa-trash'></i>
+                                    </Button>
+                                </Col>
+                                <Col>₹{item.cost*item.qty}</Col>
+                                
+                                </Row>
+                            </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                        )
+                        }
+                </Row>
+                <Row className='my-4'>
+
                     <Card>
                     <ListGroup variant='flush'>
                         <ListGroup.Item>
@@ -80,7 +92,7 @@ const Cart = ({history}) => {
                             <Button
                                 type='button'
                                 className='btn-block'
-                                disabled={cartItems.length === 0}
+                                disabled={cartItems.length === 0 || !eateryId}
                                 onClick={checkoutHandler}
                             >
                                 Proceed To Checkout
@@ -88,9 +100,11 @@ const Cart = ({history}) => {
                         </ListGroup.Item>
                     </ListGroup>
                     </Card>
-                </Col>
-            </Row>
-        </Container>
+                    
+                </Row>
+            </Container>
+        </React.Fragment>
+        
         
     )
 }

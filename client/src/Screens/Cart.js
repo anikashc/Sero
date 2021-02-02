@@ -21,10 +21,10 @@ const Cart = () => {
     }
     return (
         <React.Fragment>
-            <Container className='container'>
+            <Container fluid>
                 <Row><Button onClick={()=>browserHistory.goBack()}>Go Back</Button></Row>
                 <Row><h1>Cart</h1></Row>
-                <Row>   
+                <Row md={1} lg={1} xl={1} noGutters={true}>   
                         
                         {(cartItems.length === 0 || !eateryId) ? (
                         <Message>
@@ -37,12 +37,12 @@ const Cart = () => {
                             <ListGroup.Item key={item.product}>
                                 <Row>
                                 
-                                <Col>
+                                <Col md={4} xs={3} mx-auto align='center'>
                                     {item.name}
                                 </Col>
-                                <Col>₹{item.cost}</Col>
-                                <Col md='auto'>
-                                <Button size='sm' className='mx-3' onClick={()=> {
+                                
+                                <Col md={4} xs={5} mx-auto align='center'>
+                                <Button size='sm' className='mx-2' onClick={()=> {
                                         addToCartHandler(item.product,item.qty-1)
                                         }}>
                                             <i class="fas fa-chevron-left"></i>
@@ -50,22 +50,22 @@ const Cart = () => {
                                     
                                     {item.qty}
                                 
-                                    <Button size='sm'className='mx-3' onClick={()=> {
+                                    <Button size='sm' className='mx-2' onClick={()=> {
                                         addToCartHandler(item.product,item.qty+1)
                                         }}>
                                             <i class="fas fa-chevron-right"></i>
                                     </Button>
-                                </Col>
-                                <Col>{item.qty}</Col>
-                                <Col>
+                                </Col >
+                                <Col xs={2} md={1}  align='center'>₹{item.cost*item.qty}</Col>
+                                <Col md={2} xs={1} align='center'>
                                     <Button
-                                    size='sm'
+                                    size='sm' mx-0
                                     onClick={() => removeFromCartHandler(item.product)}
                                     >
                                         <i className='fas fa-trash'></i>
                                     </Button>
                                 </Col>
-                                <Col>₹{item.cost*item.qty}</Col>
+                                
                                 
                                 </Row>
                             </ListGroup.Item>

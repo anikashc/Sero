@@ -16,11 +16,12 @@ function App() {
       <Router>
 
         <Header />
-        <main className='py-3'>
+        <main>
+          <Route path='/' component={Home} exact />
           <Container>
             
 
-            <Route path='/' component={Home} exact />
+            
             <Route path='/menu/:id' component={Menu} exact />
             <Route path = '/cart' component={Cart} />
 

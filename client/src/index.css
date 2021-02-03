@@ -142,3 +142,36 @@ footer.footer {
   padding-bottom: 4rem;
 }
 
+.text-block {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  
+  font-size: 220%;
+  color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.image-container {
+  position: relative;
+  opacity: 0.4;
+}
+.box{
+  position: relative;
+  display: inline-block; /* Make the width of box same as image */
+}
+.box .text{
+  position: absolute;
+  z-index: 999;
+  margin: 0 auto;
+  left: 0;
+  right: 0;        
+  text-align: center;
+  top: 75%; /* Adjust this value to move the positioned div up and down */
+  background: rgba(27, 27, 27, 0.507);
+  font-family: Roboto;
+  font-size: 25px;
+  color: #fff;
+  
+}

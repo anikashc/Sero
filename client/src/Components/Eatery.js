@@ -4,17 +4,23 @@ import { Card } from 'react-bootstrap'
 
 const Eatery = ({eatery}) => {
     return (
-        <Card className='my-3 p-3 rounded'>
+        <Card className='my-3 p-3 rounded bg-light'>
+            
             <Link to={`/menu/${eatery._id}`}>
-                <Card.Img src={eatery.image} variant='top'/>
+                    <div class="box">
+                        <Card.Img src={eatery.image} variant='top' style={{opacity: 0.6}}/>
+                        <div class="text">
+                            <strong>{eatery.name}</strong>
+                        </div>
+                    </div>
+                    
+                    
+                
+                
             </Link>
 
-            <Card.Body>
-                <Link to={`/menu/${eatery._id}`}>
-                    <Card.Title as='div'>
-                        <strong>{eatery.name}</strong>
-                    </Card.Title>
-                </Link> 
+            <Card.Body className='card-body' style={{color: 'white'}}>
+                
                 <Card.Text as='div'>
                     {eatery.rating} from {eatery.numReviews} reviews
                 </Card.Text>

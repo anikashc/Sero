@@ -22,7 +22,7 @@ const Cart = () => {
     return (
         <React.Fragment>
             <Container fluid>
-                <Row><Button onClick={()=>browserHistory.goBack()}>Go Back</Button></Row>
+                <Row><Button className='mt-3' onClick={()=>browserHistory.goBack()}>Go Back</Button></Row>
                 <Row><h1>Cart</h1></Row>
                 <Row md={1} lg={1} xl={1} noGutters={true}>   
                         

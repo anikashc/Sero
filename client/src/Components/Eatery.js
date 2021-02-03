@@ -25,6 +25,7 @@ const Eatery = ({eatery}) => {
                 <StarRatings
                     rating={eatery.rating}
                     starRatedColor="#FFDF00"
+                    starEmptyColor="#585858"
                     starDimension="1.5rem"
                     starSpacing="5px"
                 />

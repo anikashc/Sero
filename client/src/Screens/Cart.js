@@ -5,7 +5,7 @@ import { Row, Col, ListGroup, Button, Card, Container} from 'react-bootstrap'
 import Message from '../Components/Message'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 
-const Cart = () => {
+const Cart = ({history}) => {
     const cart = useSelector(state=>state.cart)
     const dispatch = useDispatch()
     const {cartItems,eateryId}=cart
@@ -17,7 +17,7 @@ const Cart = () => {
         dispatch(addToCart(id,eateryId,qty))
     }
     const checkoutHandler =() =>{
-        console.log('checkout')
+        history.push('/checkout')
     }
     return (
         <React.Fragment>

@@ -160,6 +160,7 @@ footer.footer {
 .box{
   position: relative;
   display: inline-block; /* Make the width of box same as image */
+  transition: .5s ease;
 }
 .box .text{
   position: absolute;
@@ -173,5 +174,11 @@ footer.footer {
   font-family: Roboto;
   font-size: 25px;
   color: #fff;
+  transition: .5s ease;
   
+  
+}
+
+.box:hover .card-image {
+  opacity: 0.3;
 }

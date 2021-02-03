@@ -8,7 +8,7 @@ const Eatery = ({eatery}) => {
             
             <Link to={`/menu/${eatery._id}`}>
                     <div class="box">
-                        <Card.Img src={eatery.image} variant='top' style={{opacity: 0.6}}/>
+                        <Card.Img src={eatery.image} variant='top' className='card-image'/>
                         <div class="text">
                             <strong>{eatery.name}</strong>
                         </div>

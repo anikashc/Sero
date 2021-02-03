@@ -1,9 +1,10 @@
 import {
     CART_ADD_ITEM,
-    CART_REMOVE_ITEM
+    CART_REMOVE_ITEM,
+    CART_SAVE_CUSTOMER_META
 } from '../constants/cartConstants'
 
-export const cartReducer = (state ={cartItems:[], eateryId:null},action)=>{
+export const cartReducer = (state ={cartItems:[], eateryId:null, customerMeta:{}},action)=>{
     switch(action.type) {
         case CART_ADD_ITEM:
             const item  = action.payload
@@ -48,6 +49,14 @@ export const cartReducer = (state ={cartItems:[], eateryId:null},action)=>{
                 ...state,
                 cartItems: state.cartItems.filter((x)=>x.product!==item1.product),
                 eateryId: state.cartItems.length===1? null : item1.id
+
+            }
+
+        case CART_SAVE_CUSTOMER_META:
+            
+            return{
+                ...state,
+                customerMeta: action.payload,
 
             }
             

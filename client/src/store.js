@@ -9,12 +9,14 @@ const reducer = combineReducers({
     cart: cartReducer
 })
 const cartItemsFromStorage= localStorage.getItem('cartItems')?JSON.parse(localStorage.getItem('cartItems')) : []
-const eateryIdFromStorage= localStorage.getItem('cartItems')?Number(JSON.parse(localStorage.getItem('cartItems'))) : null
+const eateryIdFromStorage= localStorage.getItem('eateryId')?JSON.parse(localStorage.getItem('eateryId')) : null
+const customerMetaFromStorage= localStorage.getItem('customerMeta')?JSON.parse(localStorage.getItem('customerMeta')) : {}
 
 const initialState ={
     cart: {
         cartItems: cartItemsFromStorage,
-        eateryId: eateryIdFromStorage
+        eateryId: eateryIdFromStorage,
+        customerMeta: customerMetaFromStorage
     } 
 }
 const middleware = [thunk]

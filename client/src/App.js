@@ -9,6 +9,7 @@ import Footer from './Components/Footer';
 import Home from './Screens/Home';
 import Menu from './Screens/Menu';
 import Cart from './Screens/Cart';
+import Checkout from './Screens/Checkout';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
             
             <Route path='/menu/:id' component={Menu} exact />
             <Route path = '/cart' component={Cart} />
+            <Route path = '/checkout' component={Checkout} />
 
           </Container>
         </main>

@@ -50,6 +50,7 @@ const Menu = ({match}) => {
                                 <StarRatings
                                     rating={eatery.rating}
                                     starRatedColor="#FFDF00"
+                                    starEmptyColor="#585858"
                                     starDimension="2rem"
                                     starSpacing="5px"
                                 />

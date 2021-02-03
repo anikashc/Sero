@@ -9,13 +9,13 @@ const reducer = combineReducers({
     cart: cartReducer
 })
 const cartItemsFromStorage= localStorage.getItem('cartItems')?JSON.parse(localStorage.getItem('cartItems')) : []
-const eateryIdFromStorage= localStorage.getItem('eateryId')?JSON.parse(localStorage.getItem('eateryId')) : null
+const eateryDetailsFromStorage= localStorage.getItem('eateryDetails')?JSON.parse(localStorage.getItem('eateryDetails')) : {}
 const customerMetaFromStorage= localStorage.getItem('customerMeta')?JSON.parse(localStorage.getItem('customerMeta')) : {}
 
 const initialState ={
     cart: {
         cartItems: cartItemsFromStorage,
-        eateryId: eateryIdFromStorage,
+        eateryDetails: eateryDetailsFromStorage,
         customerMeta: customerMetaFromStorage
     } 
 }

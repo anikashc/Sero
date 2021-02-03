@@ -1,9 +1,8 @@
 import axios from 'axios'
 import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_CUSTOMER_META} from '../constants/cartConstants'
 
-export const addToCart = (productId,id,qty) => async (dispatch, getState)=>{
-    const {data} = await axios.get(`/api/eateries/${id}`)
-    const item = data.menu.find(obj => obj._id === productId);
+export const addToCart = (product,eateryDetails,qty) => async (dispatch, getState)=>{
+    const item= product
 
 
     dispatch({
@@ -16,24 +15,24 @@ export const addToCart = (productId,id,qty) => async (dispatch, getState)=>{
             image: item.image,
             isAvailable: item.isAvailable,
             qty,
-            id
+            eateryDetails
         }
     })
     localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
-    localStorage.setItem('eateryId', JSON.stringify(getState().cart.eateryId))
+    localStorage.setItem('eateryDetails', JSON.stringify(getState().cart.eateryDetails))
 }
 
-export const removeFromCart = (productId,id) => (dispatch, getState)=>{
+export const removeFromCart = (productId,eateryDetails) => (dispatch, getState)=>{
 
     dispatch({
         type: CART_REMOVE_ITEM,
         payload:{
             product: productId,
-            id
+            eateryDetails
         }
     })
     localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
-    localStorage.setItem('eateryId', JSON.stringify(getState().cart.eateryId))
+    localStorage.setItem('eateryDetails', JSON.stringify(getState().cart.eateryDetails))
 }
 
 export const saveCustomerMeta = (data) => (dispatch)=>{

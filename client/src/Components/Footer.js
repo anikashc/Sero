@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 
 const Footer = () => {
     const cart = useSelector(state=>state.cart)
-    const {cartItems, eateryId}=cart
+    const {cartItems, eateryDetails}=cart
     const classes = useStyles();
     return (
         <footer>
@@ -24,7 +24,7 @@ const Footer = () => {
                 
                 <Row>
                     
-                    {(cartItems.length && eateryId)?
+                    {(cartItems.length && eateryDetails)?
                         (
                             <Navbar className='navbarFixedBottom'  fixed="bottom" variant='light'>
                                 <LinkContainer to='/cart'>

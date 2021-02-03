@@ -5,18 +5,18 @@ import {useDispatch, useSelector} from 'react-redux'
 import { Card, Col, Row, ListGroup, Button} from 'react-bootstrap'
 import {addToCart} from '../actions/cartActions'
 
-const Item = ({item, isOpen, eid}) => {
+const Item = ({item,eateryDetailProp}) => {
     
     const cart = useSelector(state=>state.cart)
-    const {cartItems,eateryId}=cart
+    const {cartItems,eateryDetails}=cart
     const dispatch = useDispatch()
     
     const handleClick = (quantity) =>{
         
-        dispatch(addToCart(item._id,eid,quantity))
+        dispatch(addToCart(item,eateryDetailProp,quantity))
     }
     var existingQty=0
-    if(eateryId==eid){
+    if(eateryDetails._id==eateryDetailProp._id){
         const existItem  = cartItems.find(x=>x.product === item._id)
         if(existItem){
             existingQty=existItem.qty
@@ -54,7 +54,7 @@ const Item = ({item, isOpen, eid}) => {
                                 <Button className='mx-3' size='sm' onClick={()=> {
                                     setQty(qty-1)
                                     handleClick(qty-1)
-                                    }} disabled={!isOpen || qty<=0 || !item.isAvailable }>
+                                    }} disabled={!eateryDetailProp.isOpen || qty<=0 || !item.isAvailable }>
                                         <i class="fas fa-chevron-left"></i>
                                 </Button>
                                 
@@ -63,7 +63,7 @@ const Item = ({item, isOpen, eid}) => {
                                 <Button className='mx-3' size='sm' onClick={()=> {
                                     setQty(qty+1)
                                     handleClick(qty+1)
-                                    }} disabled={!isOpen || !item.isAvailable}>
+                                    }} disabled={!eateryDetailProp.isOpen || !item.isAvailable}>
                                         <i class="fas fa-chevron-right"></i>
                                 </Button>
                                 </Row>

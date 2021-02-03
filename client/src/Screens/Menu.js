@@ -23,7 +23,7 @@ const Menu = ({match}) => {
     
     return (
         <div>
-            <Link className="btn btn-dark my-3" to="/">Go Back</Link>
+            <Link className="btn btn-secondary my-3" to="/">Go Back</Link>
             {loading? (
                 <Loader /> 
                 )
@@ -55,7 +55,7 @@ const Menu = ({match}) => {
                     </Row>
                     {eatery.menu.map(item => (
                         <Row key={item._id}>
-                            <Item item={item} isOpen={eatery.isOpen} eid={eatery._id}/>
+                            <Item item={item} eateryDetailProp={eatery}/>
                         </Row>
                     ))}
 

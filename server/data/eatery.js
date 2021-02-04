@@ -34,7 +34,7 @@ const eateries = [
       {name: "Malai Chaap", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
 
     ],
-    rating: 4.5,
+    rating: 4.9,
     numReviews: 12,
   },
   {
@@ -53,7 +53,7 @@ const eateries = [
       {name: "Malai Chaap", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
 
     ],
-    rating: 4.5,
+    rating: 2.1,
     numReviews: 12,
   },
   {
@@ -72,7 +72,7 @@ const eateries = [
       {name: "Malai Chaap", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
 
     ],
-    rating: 4.5,
+    rating: 4.2,
     numReviews: 12,
   },
   {
@@ -91,7 +91,7 @@ const eateries = [
       {name: "Malai Chaap", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
 
     ],
-    rating: 4.5,
+    rating: 3.9,
     numReviews: 12,
     isOpen: false
   },

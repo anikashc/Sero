@@ -6,6 +6,7 @@ import Eatery from '../models/eateryModel.js'
 // @access ... Public
 const getEateries= asyncHandler(async(req,res)=>{
     const eateries = await Eatery.find({})
+    
     res.json(eateries)
 }) 
 
@@ -15,6 +16,7 @@ const getEateries= asyncHandler(async(req,res)=>{
 const getEateryById= asyncHandler(async(req,res)=>{
     const eatery = await Eatery.findById(req.params.id)
     if(eatery){
+        
         res.json(eatery)
     }
     else {

@@ -7,6 +7,8 @@ import Item from '../Components/Item';
 import { listEateryDetails} from '../actions/eateryActions'
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
+import StarRatings from 'react-star-ratings';
+
 //import axios from 'axios'
 
 
@@ -43,6 +45,15 @@ const Menu = ({match}) => {
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                 Description: {eatery.description}
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                <StarRatings
+                                    rating={eatery.rating}
+                                    starRatedColor="#FFDF00"
+                                    starEmptyColor="#585858"
+                                    starDimension="2rem"
+                                    starSpacing="5px"
+                                />
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                 {eatery.isOpen? null : (<Message variant='danger'>Restaurant is closed, try after sometime</Message>)}

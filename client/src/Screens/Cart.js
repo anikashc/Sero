@@ -14,7 +14,7 @@ const Cart = ({history}) => {
         dispatch(removeFromCart(id,eateryDetails))
     }
     const addToCartHandler = (item,qty) =>{
-        console.log(item)
+        
         const item1={
             _id: item.product,
             name: item.name,

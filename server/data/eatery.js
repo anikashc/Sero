@@ -8,6 +8,13 @@ const eateries = [
     payNowEnable: true,
     payLaterEnable: true,
     price: 89.99,
+    menu: [
+      {name: "Chicken Tikka", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+      {name: "Honey chilli potato", cost: 23, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+      {name: "Spring roll", cost: 73, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: false },
+      {name: "Malai Chaap", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+
+    ],
     rating: 4.5,
     numReviews: 12,
   },
@@ -20,6 +27,13 @@ const eateries = [
     payNowEnable: true,
     payLaterEnable: true,
     price: 89.99,
+    menu: [
+      {name: "Chicken Tikka", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+      {name: "Honey chilli potato", cost: 23, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+      {name: "Spring roll", cost: 73, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: false },
+      {name: "Malai Chaap", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+
+    ],
     rating: 4.5,
     numReviews: 12,
   },
@@ -32,6 +46,13 @@ const eateries = [
     payNowEnable: true,
     payLaterEnable: true,
     price: 89.99,
+    menu: [
+      {name: "Chicken Tikka", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+      {name: "Honey chilli potato", cost: 23, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+      {name: "Spring roll", cost: 73, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: false },
+      {name: "Malai Chaap", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+
+    ],
     rating: 4.5,
     numReviews: 12,
   },
@@ -44,6 +65,13 @@ const eateries = [
     payNowEnable: true,
     payLaterEnable: true,
     price: 89.99,
+    menu: [
+      {name: "Chicken Tikka", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+      {name: "Honey chilli potato", cost: 23, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+      {name: "Spring roll", cost: 73, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: false },
+      {name: "Malai Chaap", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+
+    ],
     rating: 4.5,
     numReviews: 12,
   },
@@ -56,8 +84,16 @@ const eateries = [
     payNowEnable: true,
     payLaterEnable: true,
     price: 89.99,
+    menu: [
+      {name: "Chicken Tikka", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+      {name: "Honey chilli potato", cost: 23, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+      {name: "Spring roll", cost: 73, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: false },
+      {name: "Malai Chaap", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
+
+    ],
     rating: 4.5,
     numReviews: 12,
+    isOpen: false
   },
 ]
 

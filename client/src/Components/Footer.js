@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import {useSelector} from 'react-redux' 
 import { LinkContainer} from 'react-router-bootstrap'
 import Fab from '@material-ui/core/Fab'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+// import ShoppingCartIcon from '@material-ui/icons/ShoppingCartIcon'
 
 const useStyles = makeStyles(theme => ({
     fab: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 
 const Footer = () => {
     const cart = useSelector(state=>state.cart)
-    const {cartItems, eateryId}=cart
+    const {cartItems, eateryDetails}=cart
     const classes = useStyles();
     return (
         <footer>
@@ -24,18 +24,15 @@ const Footer = () => {
                 
                 <Row>
                     
-                    {(cartItems.length && eateryId)?
+                    {(cartItems.length && eateryDetails)?
                         (
                             <Navbar className='navbarFixedBottom'  fixed="bottom" variant='light'>
-                                <LinkContainer to='/cart'>
-                                    <Fab variant='extended' size='large' color='default' className={classes.fab}>
-                                        <h6 className="linkText"> <ShoppingCartIcon fontSize='large' /> ({cartItems.reduce((acc, item) => acc + item.qty, 0)})</h6>  
-                                    </Fab>
-                                </LinkContainer>
+                            <LinkContainer to='/cart'>
+                            <Fab variant='extended' size='large' color='default' className={classes.fab}>
+                            {/* {<h6 className="linkText"> <ShoppingCartIcon fontSize='large' /> ({cartItems.reduce((acc, item) => acc + item.qty, 0)})</h6>} */}
+                            </Fab>
+                            </LinkContainer>
                             </Navbar>
-                            
-                            
-                        
                          
                         )
                     :

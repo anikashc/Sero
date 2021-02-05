@@ -5,7 +5,7 @@ const eateries = [
     image: '/images/airpods.jpg',
     category: 'cafe',
     description: 'Have coffee Enjoyyyyyyyyyyyy',
-    payNowEnable: true,
+    payNowEnable: false,
     payLaterEnable: true,
     price: 89.99,
     menu: [
@@ -25,7 +25,7 @@ const eateries = [
     category: 'cafe',
     description: 'Have coffee Enjoyyyyyyyyyyyy',
     payNowEnable: true,
-    payLaterEnable: true,
+    payLaterEnable: false,
     price: 89.99,
     menu: [
       {name: "Chicken Tikka", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },

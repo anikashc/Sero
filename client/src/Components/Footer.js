@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import {useSelector} from 'react-redux' 
 import { LinkContainer} from 'react-router-bootstrap'
 import Fab from '@material-ui/core/Fab'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 const useStyles = makeStyles(theme => ({
     fab: {
@@ -29,7 +28,7 @@ const Footer = () => {
                             <Navbar className='navbarFixedBottom'  fixed="bottom" variant='light'>
                                 <LinkContainer to='/cart'>
                                     <Fab variant='extended' size='large' color='default' className={classes.fab}>
-                                        <h6 className="linkText"> <ShoppingCartIcon fontSize='large' /> ({cartItems.reduce((acc, item) => acc + item.qty, 0)})</h6>  
+                                        <h6 className="linkText"> <i class="fas fa-shopping-cart fa-2x"></i> ({cartItems.reduce((acc, item) => acc + item.qty, 0)})</h6>  
                                     </Fab>
                                 </LinkContainer>
                             </Navbar>

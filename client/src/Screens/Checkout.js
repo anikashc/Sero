@@ -82,6 +82,7 @@ const Checkout = ({history}) => {
                             name='paymentType'
                             value='payNow'
                             disabled={!eateryDetails.payNowEnable}
+                            required
                             onChange={(e)=>setPaymentType(e.target.value)}
                         >
                         </Form.Check>

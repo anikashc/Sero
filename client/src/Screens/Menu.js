@@ -7,6 +7,8 @@ import Item from '../Components/Item';
 import { listEateryDetails} from '../actions/eateryActions'
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
+import StarRatings from 'react-star-ratings';
+
 //import axios from 'axios'
 
 
@@ -23,7 +25,7 @@ const Menu = ({match}) => {
     
     return (
         <div>
-            <Link className="btn btn-dark my-3" to="/">Go Back</Link>
+            <Link className="btn btn-secondary my-3" to="/">Go Back</Link>
             {loading? (
                 <Loader /> 
                 )
@@ -45,6 +47,15 @@ const Menu = ({match}) => {
                                 Description: {eatery.description}
                                 </ListGroup.Item>
                                 <ListGroup.Item>
+                                <StarRatings
+                                    rating={eatery.rating}
+                                    starRatedColor="#FFDF00"
+                                    starEmptyColor="#585858"
+                                    starDimension="2rem"
+                                    starSpacing="5px"
+                                />
+                                </ListGroup.Item>
+                                <ListGroup.Item>
                                 {eatery.isOpen? null : (<Message variant='danger'>Restaurant is closed, try after sometime</Message>)}
                                 </ListGroup.Item>
                             </ListGroup>
@@ -55,7 +66,7 @@ const Menu = ({match}) => {
                     </Row>
                     {eatery.menu.map(item => (
                         <Row key={item._id}>
-                            <Item item={item} isOpen={eatery.isOpen} eid={eatery._id}/>
+                            <Item item={item} eateryDetailProp={eatery}/>
                         </Row>
                     ))}
 

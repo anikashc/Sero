@@ -16,47 +16,6 @@ Restaurant Panel
 The restaurant manager allows the restaurant to manage all their bookings, coupons, status tracking etc. 
 
 
-Screens.
-User:
-Use React Router Dom for all this.
-Home Screen : %/ 
-Will include a search field in the middle
-Scroll to see restaurants and their menus. (Here we can add pagination from the video)
-
-Restaurant Search: %/menu?search=SmokeDeli
-
-Clicking on the item will take to: %/menu?placeId=2143243
-
-After QR scan page %/qr?search=SmokeDeli
-
-After entering table number: %/menu?placeId=2143243&tableNumber=14
-
-After clicking on Cart: %/cart?tableNumber=14
-    
-As soon as you click on Pay Now and Place Order it places order first and then payment is to be done or we’ll see.
-
-Needs to be checked from the database whether this is set to true or not
-
-After clicking “Pay Now and Place Order”: %/payment?orderId=3234234 (Payments can be the same as the video etc)
-    
-After Clicking “Pay Later and Place Order” : %/temporarySuccess?orderId=3234235&tableNumber=14
-
-Make a URL shortner (one more functionality yay!)
-
-This URL will be sent to the users phone/mail whatever we can get our hands on.
-
-It will redirect to the payments page and the user will complete the payment. (From the video again)
-
-Enough for users.
-Will add login functionality later for users. Login for restaurants is important first.
-
-
-
-Will have to see the structure of db
-
-Restaurant Login:
-Login: login functionality 
-
 ********************************************************************************************************
 **Git commands to keep in mind-----**
 Git commands for pushing changes to your branch

@@ -25,6 +25,11 @@ body {
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.img {
+    max-height: 10%;
+    max-width: 10%;
+}
+
 h1,
 h2,
 h3,

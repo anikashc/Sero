@@ -8,9 +8,26 @@ import { listEateryDetails} from '../actions/eateryActions'
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
 import StarRatings from 'react-star-ratings';
+import Collapse from '@material-ui/core/Collapse';
+import { makeStyles } from '@material-ui/core/styles';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 
 //import axios from 'axios'
-
+const useStyles = makeStyles((theme) => ({
+    root: {
+      width: '100%',
+      maxWidth: 1080,
+      backgroundColor: 'black',
+     
+    },
+    nested: {
+      paddingLeft: theme.spacing(4),
+    },
+  }));
 
 const Menu = ({match}) => {
     // match.params.id or match.params. anything that is in the url
@@ -22,7 +39,18 @@ const Menu = ({match}) => {
     useEffect(()=>{
           dispatch(listEateryDetails(match.params.id))
     },[dispatch, match])
+
+    const classes = useStyles();
+    const [openStarters, setOpenStarters] = React.useState(true);
+    const [openChinese, setOpenChinese] = React.useState(true);
+
+    const handleClickStarters = () => {
+        setOpenStarters(!openStarters);
+    };
     
+    const handleClickChinese = () => {
+        setOpenChinese(!openChinese);
+    };
     return (
         <div>
             <Link className="btn btn-secondary my-3" to="/">Go Back</Link>
@@ -64,11 +92,48 @@ const Menu = ({match}) => {
                     <Row>
                     <h2 className='menu-title py-3'>Menu</h2>
                     </Row>
-                    {eatery.menu.map(item => (
-                        <Row key={item._id}>
-                            <Item item={item} eateryDetailProp={eatery}/>
-                        </Row>
-                    ))}
+                    
+                    <List
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                    subheader={
+                        <ListSubheader component="div" id="nested-list-subheader" style={{color: 'white'}}>
+                        Category
+                        </ListSubheader>
+                    }
+                    className={classes.root}
+                    >
+                        
+                        
+                        <ListItem button onClick={handleClickStarters}>
+                            
+                            <ListItemText primary="Starters" />
+                            {openStarters ? <i class="fas fa-chevron-up"></i> : <i class="fas fa-chevron-down"></i>}
+                        </ListItem>
+                        <Collapse in={openStarters} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+                                {eatery.menu.map(item => (
+                                    <Row key={item._id}>
+                                        <Item item={item} eateryDetailProp={eatery}/>
+                                    </Row>
+                                ))}
+                                
+                            </List>
+                        </Collapse>
+                        <ListItem button onClick={handleClickChinese}>
+                            
+                            <ListItemText primary="Chinese" />
+                            {openChinese ? <i class="fas fa-chevron-up"></i> : <i class="fas fa-chevron-down"></i>}
+                        </ListItem>
+                        <Collapse in={openChinese} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+                            <ListItem button className={classes.nested}>
+                                
+                                <ListItemText primary="Starred" />
+                            </ListItem>
+                            </List>
+                        </Collapse>
+                    </List>
 
                 </>
 

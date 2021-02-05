@@ -10,7 +10,7 @@ import Home from './Screens/Home';
 import Menu from './Screens/Menu';
 import Cart from './Screens/Cart';
 import Checkout from './Screens/Checkout';
-
+import Payment from './Screens/Payment';
 function App() {
 
     return (
@@ -26,6 +26,7 @@ function App() {
             <Route path='/menu/:id' component={Menu} exact />
             <Route path = '/cart' component={Cart} />
             <Route path = '/checkout' component={Checkout} />
+            <Route path = '/payment' component={Payment} />
 
           </Container>
         </main>

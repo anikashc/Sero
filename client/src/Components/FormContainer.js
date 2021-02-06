@@ -10,7 +10,7 @@ const FormContainer = ({ children }) => {
         </Col>
       </Row>
     </Container>
-  )
+  );
 }
 
 export default FormContainer

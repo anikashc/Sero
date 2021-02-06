@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Row, Col, Form, Button} from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../Components/Loader';
@@ -7,26 +7,39 @@ import Message from '../Components/Message';
 import FormContainer from '../Components/FormContainer';
 import { login } from '../actions/userActions';
 
-function Login ({location}) {
+function Login ({location, history}) {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const dispatch = useDispatch()
+
+    const userLogin = useSelector(state => state.userLogin)
+    const { loading, error, userInfo } = userLogin
+
     const redirect = location.search ? location.search.split('=')[1] : '/'
+
+    useEffect(() =>{
+        if(userInfo) {
+            history.push(redirect)
+        }
+    }, [history, userInfo, redirect])
 
     const submitHandler = (e) => {
 
         e.preventDefault()
 
-        console.log("Submitted");
+        dispatch(login(email, password))
     }
 
     return (
         <FormContainer>
         <h1>Log In</h1>
-        <Form onsubmit={submitHandler}>
+        {error && <Message variant='danger'>{error}</Message>}
+        {loading && <Loader />}
+        <Form onSubmit={submitHandler}>
             <Form.Group controlId='email'>
-                <Form.label>Email Address</Form.label>
+                <Form.Label>Email Address</Form.Label>
                 <Form.Control
                     type='email'
                     placeholder='Enter email'
@@ -34,11 +47,9 @@ function Login ({location}) {
                     onChange={(e) => setEmail(e.target.value)}
                 ></Form.Control>
             </Form.Group>
-        </Form>
 
-        <Form onsubmit={submitHandler}>
             <Form.Group controlId='password'>
-                <Form.label>Email Password</Form.label>
+                <Form.Label>Password</Form.Label>
                 <Form.Control
                     type='password'
                     placeholder='Enter password'
@@ -47,9 +58,7 @@ function Login ({location}) {
                 ></Form.Control>
             </Form.Group>
 
-            <Button type='submit' variants='primary'>
-                Log In
-            </Button>
+            <Button type='submit' variants='primary'>Log In</Button>
         </Form>
 
         <Row className='py-3'>
@@ -59,7 +68,7 @@ function Login ({location}) {
                     Register
                 </Link>
             </Col>
-        </Row> 
+        </Row>
     </FormContainer>
     );
 }

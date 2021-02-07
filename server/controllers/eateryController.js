@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler'
-
 import Eatery from '../models/eateryModel.js'
+
 // @desc ... Fetch all eateries
 // @route... GET /api/eateries
 // @access ... Public

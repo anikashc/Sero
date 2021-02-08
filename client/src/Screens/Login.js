@@ -50,7 +50,7 @@ function Login ({location, history}) {
                 ></Form.Control>
             </Form.Group>
 
-            <Button type='submit' variants='primary'>Log In</Button>
+            <Button type='submit' variant='primary'>Log In</Button>
         </Form>
 
         <Row className='py-3'>

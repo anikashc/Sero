@@ -104,7 +104,7 @@ function Register({ location, history }) {
                     ></Form.Control>
                 </Form.Group>
 
-                <Button type='submit' variants='primary'>Register</Button>
+                <Button type='submit' variant='primary'>Register</Button>
             </Form>
 
             <Row className='py-3'>

@@ -48,7 +48,7 @@ const Checkout = ({history}) => {
                 <Form.Group controlId='Email'>
                     <Form.Label>Email</Form.Label>
                     <Form.Control
-                        type='text'
+                        type='email'
                         placeholder='Enter Email (optional)'
                         value={email}
                         

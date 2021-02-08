@@ -65,7 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
     } else {
 
         res.status(400)
-        throw new Error('Invaid details')
+        throw new Error('Invalid user details')
     }
 })
 
@@ -73,6 +73,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route... GET /api/users/profile
 // @access ... Private
 const getUserProfile = asyncHandler(async (req, res) => {
+    //res.send("Success")
 
     const user = await User.findById(req.user._id)
 

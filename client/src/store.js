@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import {eateryListReducer, eateryDetailsReducer} from './reducers/eateryReducers'
 import { cartReducer } from './reducers/cartReducers'
 import { userLoginReducer, userRegisterReducer } from './reducers/userReducers'
-import { useReducer } from 'react'
+
 
 const reducer = combineReducers({
     eateryList: eateryListReducer,

@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema(
       type: Number,
       required: true,
       //1-admin, 2-user, 3-eatery
-      default: 2, 
+      default: 3, 
     },
      
   },

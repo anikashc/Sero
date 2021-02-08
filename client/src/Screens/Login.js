@@ -11,12 +11,17 @@ function Login ({location, history}) {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
+    const redirect = location.search?location.search.split("=")[1]:'/'
     const dispatch = useDispatch()
 
     const userLogin = useSelector(state => state.userLogin)
     const { loading, error, userInfo } = userLogin
 
+    useEffect(()=>{
+        if(userInfo){
+            history.push(redirect)
+        }
+    },[history,userInfo, redirect])
     const submitHandler = (e) => {
 
         e.preventDefault()
@@ -26,7 +31,7 @@ function Login ({location, history}) {
 
     return (
         <FormContainer>
-        <h1>Log In</h1>
+        <h2>Login</h2>
         {error && <Message variant='danger'>{error}</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
@@ -50,13 +55,13 @@ function Login ({location, history}) {
                 ></Form.Control>
             </Form.Group>
 
-            <Button type='submit' variants='primary'>Log In</Button>
+            <Button type='submit' variants='primary'>Login</Button>
         </Form>
 
         <Row className='py-3'>
             <Col>
-                New Customer?{' '}
-                <Link to='/register'>
+                New Customer? 
+                <Link to={redirect ? `/register?redirect=${redirect}`:'/register'}>
                     Register
                 </Link>
             </Col>

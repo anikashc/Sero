@@ -46,7 +46,7 @@ function Register({ location, history }) {
 
     return (
         <FormContainer>
-            <h1>Register</h1>
+            <h2>Register</h2>
 
             { message && <Message variant='danger'>{ message }</Message>}
             { error && <Message variant='danger'>{ error }</Message>}

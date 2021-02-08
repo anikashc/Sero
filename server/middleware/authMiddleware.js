@@ -5,22 +5,24 @@ import asyncHandler from 'express-async-handler'
 const protect = asyncHandler(async (req, res, next) => {
 
     let token 
-
+    //console.log(req.headers.authorization)
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
 
+        //console.log('token found')
         try {
 
             token = req.headers.authorization.split(' ')[1]
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
+            //console.log(decoded)
             req.user = await User.findById(decoded.id).select('-password')
 
-            next()
+             next()
 
         } catch (error) {
 
-            console.lod(error)
+            console.error(error)
             res.status(401)
 
             throw new Error('Not authorized, token failed')
@@ -30,10 +32,10 @@ const protect = asyncHandler(async (req, res, next) => {
     if(!token) {
 
         res.status(401)
-        throw new Error('Not authorized, no toekn')
+        throw new Error('Not authorized, no token')
     }
 
-    next()
+    // next()
 })
 
 export { protect }

@@ -15,6 +15,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Category from '../Components/Category';
 
 //import axios from 'axios'
 const useStyles = makeStyles((theme) => ({
@@ -29,6 +30,18 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+function groupBy(objectArray, property) {
+    return objectArray.reduce((acc, obj) => {
+       const key = obj[property];
+       if (!acc[key]) {
+          acc[key] = [];
+       }
+       // Add object to list for given key's value
+       acc[key].push(obj);
+       return acc;
+    }, {});
+ }
+
 const Menu = ({match}) => {
     // match.params.id or match.params. anything that is in the url
     //const eatery = eateries.find(p=>p._id===match.params.id)
@@ -41,16 +54,6 @@ const Menu = ({match}) => {
     },[dispatch, match])
 
     const classes = useStyles();
-    const [openStarters, setOpenStarters] = React.useState(true);
-    const [openChinese, setOpenChinese] = React.useState(true);
-
-    const handleClickStarters = () => {
-        setOpenStarters(!openStarters);
-    };
-    
-    const handleClickChinese = () => {
-        setOpenChinese(!openChinese);
-    };
     return (
         <div>
             <Link className="btn btn-secondary my-3" to="/">Go Back</Link>
@@ -104,22 +107,14 @@ const Menu = ({match}) => {
                     className={classes.root}
                     >
                         
-                        
-                        <ListItem button onClick={handleClickStarters}>
-                            
-                            <ListItemText primary="Starters" />
-                            {openStarters ? <i class="fas fa-chevron-up"></i> : <i class="fas fa-chevron-down"></i>}
-                        </ListItem>
-                        <Collapse in={openStarters} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-                                {eatery.menu.map(item => (
-                                    <Row key={item._id}>
-                                        <Item item={item} eateryDetailProp={eatery}/>
-                                    </Row>
-                                ))}
-                                
-                            </List>
-                        </Collapse>
+                        {   
+                            Object.entries(groupBy(eatery.menu, "category")).map(([key, value]) => {
+                                return(
+                                    <Category name={key} menu={value} />
+                                )
+                            })
+                        }
+                        {/* <Categroy category="Starter"/>
                         <ListItem button onClick={handleClickChinese}>
                             
                             <ListItemText primary="Chinese" />
@@ -132,7 +127,7 @@ const Menu = ({match}) => {
                                 <ListItemText primary="Starred" />
                             </ListItem>
                             </List>
-                        </Collapse>
+                        </Collapse> */}
                     </List>
 
                 </>

@@ -16,6 +16,7 @@ import Payment from './Screens/Payment';
 import Profile from './Screens/Profile';
 import AddItem from './Screens/AddItem';
 import UpdateDetails from './Screens/UpdateDetails';
+import Feedback from './Screens/Feedback';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
             <Route path = '/cart' component={Cart} />
             <Route path = '/checkout' component={Checkout} />
             <Route path = '/payment' component={Payment} />
+            <Route path = '/feedback' component={Feedback} />
 
           </Container>
         </main>

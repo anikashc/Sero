@@ -36,7 +36,7 @@ function Login ({location, history}) {
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
             <Form.Group controlId='email'>
-                <Form.Label>Email Address</Form.Label>
+                <Form.Label>Email</Form.Label>
                 <Form.Control
                     type='email'
                     placeholder='Enter email'
@@ -60,9 +60,9 @@ function Login ({location, history}) {
 
         <Row className='py-3'>
             <Col>
-                New Customer? 
+                Want to join us? 
                 <Link to={redirect ? `/register?redirect=${redirect}`:'/register'}>
-                    Register
+                <i class="fas fa-user-plus pl-3 pr-1"></i>Register
                 </Link>
             </Col>
         </Row>

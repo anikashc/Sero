@@ -1,7 +1,6 @@
 import React from 'react';
-import { Row, Col, Container,Card } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap'
-import DashboardItem from '../Components/DashboardItem';
+import { Row, Col, Container, Card } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 function Profile() {
 

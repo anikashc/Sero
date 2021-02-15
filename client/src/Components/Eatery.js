@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Card } from 'react-bootstrap'
 import StarRatings from 'react-star-ratings'
 
@@ -8,16 +8,12 @@ const Eatery = ({eatery}) => {
         <Card className='my-3 p-3 rounded bg-light'>
             
             <Link to={`/menu/${eatery._id}`}>
-                    <div class="box">
-                        <Card.Img src={eatery.image} variant='top' className='card-image'/>
-                        <div class="text">
-                            <strong>{eatery.name}</strong>
-                        </div>
+                <div class="box">
+                    <Card.Img src={eatery.image} variant='top' className='card-image'/>
+                    <div class="text">
+                        <strong>{eatery.name}</strong>
                     </div>
-                    
-                    
-                
-                
+                </div>  
             </Link>
 
             <Card.Body className='card-body' style={{color: 'white'}}>

@@ -33,7 +33,7 @@ function Home() {
                 ) 
             : (
             <React.Fragment>
-                <header className="masthead text-white text-center">
+                    <header className="masthead text-white text-center">
                     <div className="overlay"></div>
                         <div className="container">
                             <div className="row">

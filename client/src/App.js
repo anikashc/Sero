@@ -13,6 +13,11 @@ import Login from './Screens/Login';
 import Register from './Screens/Register'
 import Checkout from './Screens/Checkout';
 import Payment from './Screens/Payment';
+import Profile from './Screens/Profile';
+import AddItem from './Screens/AddItem';
+import UpdateDetails from './Screens/UpdateDetails';
+import Feedback from './Screens/Feedback';
+
 function App() {
 
     return (
@@ -25,10 +30,14 @@ function App() {
             
             <Route path = '/login' component={Login} />
             <Route path = '/register' component={Register} />
+            <Route path = '/profile' component={Profile} />
+            <Route path = '/addItem' component={AddItem} />
+            <Route path = '/updateDetails' component={UpdateDetails} />
             <Route path = '/menu/:id' component={Menu} exact />
             <Route path = '/cart' component={Cart} />
             <Route path = '/checkout' component={Checkout} />
             <Route path = '/payment' component={Payment} />
+            <Route path = '/feedback' component={Feedback} />
 
           </Container>
         </main>

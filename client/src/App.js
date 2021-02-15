@@ -17,6 +17,7 @@ import Profile from './Screens/Profile';
 import AddItem from './Screens/AddItem';
 import UpdateDetails from './Screens/UpdateDetails';
 import Feedback from './Screens/Feedback';
+import DashboardMenu from './Screens/DashboardMenu';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
             <Route path = '/login' component={Login} />
             <Route path = '/register' component={Register} />
             <Route path = '/profile' component={Profile} />
+            <Route path = '/dashboardMenu' component={DashboardMenu} />
             <Route path = '/addItem' component={AddItem} />
             <Route path = '/updateDetails' component={UpdateDetails} />
             <Route path = '/menu/:id' component={Menu} exact />

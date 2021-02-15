@@ -1,5 +1,5 @@
-import asyncHandler from 'express-async-handler'
-import User from '../models/userModel.js'
+import asyncHandler from 'express-async-handler';
+import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 
 
@@ -8,7 +8,7 @@ import generateToken from '../utils/generateToken.js';
 
 // @desc ... Auth user & get token
 // @route... GET /api/users/login
-// @access ... Public
+// @access... Public
 const authUser = asyncHandler(async (req, res) => {
 
     const { email, password } = req.body
@@ -33,9 +33,9 @@ const authUser = asyncHandler(async (req, res) => {
     }
 })
 
-// @desc ... Register a user
+// @desc... Register a user
 // @route... POST /api/users
-// @access ... Public
+// @access... Public
 const registerUser = asyncHandler(async (req, res) => {
 
     const { name, email, password, phoneNumber } = req.body
@@ -106,7 +106,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @route... GET /api/users/profile
 // @access ... Private
 const getUserProfile = asyncHandler(async (req, res) => {
-    //res.send("Success")
 
     const user = await User.findById(req.user._id)
 

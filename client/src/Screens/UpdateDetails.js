@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Form, Button,Container } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
@@ -45,68 +45,75 @@ function UpdateDetails({ location, history }) {
     }
 
     return (
-        <FormContainer>
-            <h2>Update Details</h2>
-
-            { message && <Message variant='danger'>{ message }</Message>}
-            { error && <Message variant='danger'>{ error }</Message>}
-            { loading && <Loader />}
+        <Container className='py-3'>
             
-            <Form onSubmit={submitHandler}>
+            <LinkContainer to='/profile'>
+                <Button variant='secondary'>Back</Button>
+            </LinkContainer>
 
-                <Form.Group controlId='name'>
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control
-                        type='text'
-                        placeholder='Enter name'
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    ></Form.Control>
-                </Form.Group>
+            <FormContainer>
+                <h2>Update Details</h2>
 
-                <Form.Group controlId='email'>
-                    <Form.Label>Email Address</Form.Label>
-                    <Form.Control
-                        type='email'
-                        placeholder='Enter email'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    ></Form.Control>
-                </Form.Group>
+                { message && <Message variant='danger'>{ message }</Message>}
+                { error && <Message variant='danger'>{ error }</Message>}
+                { loading && <Loader />}
+                
+                <Form onSubmit={submitHandler}>
 
-                <Form.Group controlId='phoneNumber'>
-                    <Form.Label>Phone Number</Form.Label>
-                    <Form.Control
-                        type='text'
-                        placeholder='Enter phone number'
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                    ></Form.Control>
-                </Form.Group>
+                    <Form.Group controlId='name'>
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control
+                            type='text'
+                            placeholder='Enter name'
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        ></Form.Control>
+                    </Form.Group>
 
-                <Form.Group controlId='password'>
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type='password'
-                        placeholder='Enter password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    ></Form.Control>
-                </Form.Group>
+                    <Form.Group controlId='email'>
+                        <Form.Label>Email Address</Form.Label>
+                        <Form.Control
+                            type='email'
+                            placeholder='Enter email'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        ></Form.Control>
+                    </Form.Group>
 
-                <Form.Group controlId='confirmPassword'>
-                    <Form.Label>Confirm password</Form.Label>
-                    <Form.Control
-                        type='password'
-                        placeholder='Enter confirm password'
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                    ></Form.Control>
-                </Form.Group>
+                    <Form.Group controlId='phoneNumber'>
+                        <Form.Label>Phone Number</Form.Label>
+                        <Form.Control
+                            type='text'
+                            placeholder='Enter phone number'
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                        ></Form.Control>
+                    </Form.Group>
 
-                <Button type='submit' variant='primary'>Update</Button>
-            </Form>
-        </FormContainer>
+                    <Form.Group controlId='password'>
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                            type='password'
+                            placeholder='Enter password'
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        ></Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId='confirmPassword'>
+                        <Form.Label>Confirm password</Form.Label>
+                        <Form.Control
+                            type='password'
+                            placeholder='Enter confirm password'
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                        ></Form.Control>
+                    </Form.Group>
+
+                    <Button type='submit' variant='primary'>Update</Button>
+                </Form>
+            </FormContainer>
+        </Container>
     );
 }
 

@@ -46,12 +46,12 @@ const admin = (req, res, next) => {
         throw new Error('Not authorized as an admin')
     }
 }
-const eatery = (req, res, next) => {
-    if (req.user && req.user.userType===3) {
+const common = (req, res, next) => {
+    if (req.user && (req.user.userType===3 || req.user.userType===1 )) {
         next()
     } else {
         res.status(401)
-        throw new Error('Not authorized as an eatery')
+        throw new Error('Not authorized')
     }
 }
-export { protect, admin, eatery }
+export { protect, admin, common }

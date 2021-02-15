@@ -1,47 +1,49 @@
 import React from 'react';
-import { Button, Row, Col, Container } from 'react-bootstrap';
+import { Row, Col, Container,Card } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap'
-import Eatery from '../Components/Eatery';
+import DashboardItem from '../Components/DashboardItem';
 
 function Profile() {
 
-    const eatery = {
-        name: 'Barista',
-        address: 'M block, middle circle, CP',
-        image: '/images/airpods.jpg',
-        category: 'cafe',
-        description: 'Have coffee Enjoyyyyyyyyyyyy',
-        payNowEnable: false,
-        payLaterEnable: true,
-        price: 89.99,
-        menu: [
-            { name: "Chicken Tikka", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
-            { name: "Honey chilli potato", cost: 23, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
-            { name: "Spring roll", cost: 73, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: false },
-            { name: "Malai Chaap", cost: 78, category: "starters", image: "/images/camera.jpg", description: "Real malai with chicken", isAvailable: true },
-
-        ],
-        rating: 4.5,
-        numReviews: 12,
-    }
-
     return (
         <>
-            <Eatery eatery={eatery} />
-            <Container>
+            <Container className='py-3'>
                 <Row>
                     <Col>
+                        <LinkContainer to='/dashboardMenu'>
+                            <Card style={{ height: '8rem', width: '8rem' }}>
+                                <Card.Body>
+                                    <Card.Title> Menu </Card.Title>
+                                </Card.Body>
+                            </Card>
+                        </LinkContainer>
+                    </Col>
+                    <Col>
                         <LinkContainer to='/updateDetails'>
-                            <Button className='primary'>Update Details</Button>
+                            <Card style={{ height: '8rem', width: '8rem' }}>
+                                <Card.Body>
+                                    <Card.Title> Update Details </Card.Title>
+                                </Card.Body>
+                            </Card>
                         </LinkContainer>
                     </Col>
                     <Col>
-                        <LinkContainer to='/addItem'>
-                            <Button className='primary'>Add item</Button>
+                        <LinkContainer to='/feedback'>
+                            <Card style={{ height: '8rem', width: '8rem' }}>
+                                <Card.Body>
+                                    <Card.Title> Feedback </Card.Title>
+                                </Card.Body>
+                            </Card>
                         </LinkContainer>
                     </Col>
                     <Col>
-                        <Button className='primary'>Previous Orders</Button>
+                        <LinkContainer to='/feedback'>
+                            <Card style={{ height: '8rem', width: '8rem' }}>
+                                <Card.Body>
+                                    <Card.Title> Feedback </Card.Title>
+                                </Card.Body>
+                            </Card>
+                        </LinkContainer>
                     </Col>
                 </Row>
             </Container>

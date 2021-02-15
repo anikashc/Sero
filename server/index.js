@@ -1,25 +1,25 @@
 import express from 'express';
-import dotenv from 'dotenv'
-import colors from 'colors' 
+import dotenv from 'dotenv';
+import colors from 'colors' ;
 // import bodyParser from 'body-parser';
-import { notFound,errorHandler } from './middleware/errorMiddleware.js'
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
-import eateryRoutes from './routes/eateryRoutes.js'
-import userRoutes from './routes/userRoutes.js'
+import eateryRoutes from './routes/eateryRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 // import cors from 'cors';
 
-dotenv.config()
+dotenv.config();
 
-connectDB()
+connectDB();
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
-// app.use(bodyParser.json({ limit: '30mb', extended: true }))
-// app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
+// app.use(bodyParser.json({ limit: '30mb', extended: true }));
+// app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 // app.use(cors());
-//app.use('/posts', postRoutes); 
+// app.use('/posts', postRoutes);
 
 app.get('/', function(req, res) {
 
@@ -30,10 +30,10 @@ app.use('/api/eateries', eateryRoutes);
 
 app.use('/api/users', userRoutes);
 
-app.use(notFound)
+app.use(notFound);
 
-app.use(errorHandler)
+app.use(errorHandler);
 
 const PORT = process.env.PORT|| 5000;
 
-app.listen(PORT, () => console.log(`Server Running in ${process.env.NODE_ENV} on Port: http://localhost:${PORT}`.yellow.bold))
+app.listen(PORT, () => console.log(`Server Running in ${process.env.NODE_ENV} on Port: http://localhost:${PORT}`.yellow.bold));

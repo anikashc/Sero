@@ -27,6 +27,11 @@ const userSchema = mongoose.Schema(
       //1-admin, 2-user, 3-eatery
       default: 3, 
     },
+    eatery: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Eatery',
+    }
      
   },
   {

@@ -1,7 +1,5 @@
 import React from 'react';
-import { Button, Row, Col, Container } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap'
-import Eatery from '../Components/Eatery';
+
 import Review from '../Components/Review';
 import randomColor from 'randomcolor';
 

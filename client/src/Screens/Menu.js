@@ -1,20 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
-import Item from '../Components/Item';
-//import item from '../item';
+import { Row, Col, Image, ListGroup} from 'react-bootstrap'
+
 import { listEateryDetails} from '../actions/eateryActions'
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
 import StarRatings from 'react-star-ratings';
-import Collapse from '@material-ui/core/Collapse';
+
 import { makeStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+
 import Category from '../Components/Category';
 
 //import axios from 'axios'

@@ -40,15 +40,33 @@ const Header = () => {
                                     </LinkContainer>
 
                                 </NavDropdown>
-                            ) : <>
-                                <Nav.Item className='active'>
-                                    <LinkContainer to='/login'>
-                                        <Nav.Link><i className='fas fa-user px-2'></i>Login</Nav.Link>
-                                    </LinkContainer>
-                                </Nav.Item>
+                            ) : (
+                                <>
+                                    <Nav.Item className='active'>
+                                        <LinkContainer to='/login'>
+                                            <Nav.Link><i className='fas fa-user px-2'></i>Login</Nav.Link>
+                                        </LinkContainer>
+                                    </Nav.Item>
+                                </>
+                            )}
+                            {userInfo && userInfo.userType===1 && (
+                                <NavDropdown title='Admin' id='adminmenu' className='active'>
 
-                                
-                            </> }
+                                    <LinkContainer to='/admin/userlist'>
+                                        <NavDropdown.Item>Users</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <LinkContainer to='/admin/eaterylist'>
+                                        <NavDropdown.Item>Eateries</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <LinkContainer to='/admin/orderlist'>
+                                        <NavDropdown.Item>Orders</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <LinkContainer to='/login'>
+                                        <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                                    </LinkContainer>
+
+                                </NavDropdown>
+                            )}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

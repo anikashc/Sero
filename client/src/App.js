@@ -18,7 +18,8 @@ import AddItem from './Screens/AddItem';
 import UpdateDetails from './Screens/UpdateDetails';
 import Feedback from './Screens/Feedback';
 import DashboardMenu from './Screens/DashboardMenu';
-
+import UserList from './Screens/UserList';
+import UserEdit from './Screens/UserEdit';
 function App() {
 
     return (
@@ -40,7 +41,9 @@ function App() {
             <Route path = '/checkout' component={Checkout} />
             <Route path = '/payment' component={Payment} />
             <Route path = '/feedback' component={Feedback} />
-
+            <Route path = '/admin/userlist' component={UserList} />
+            <Route path = '/admin/user/:id/edit' component={UserEdit} />
+            {/* <Route path = '/feedback' component={Feedback} /> */}
           </Container>
         </main>
 

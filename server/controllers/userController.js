@@ -176,6 +176,7 @@ const updateUser = asyncHandler(async (req, res) => {
         user.name = req.body.name || user.name
         user.email = req.body.email || user.email
         user.userType = req.body.userType || user.userType
+        user.eatery = req.body.eatery || user.eatery
 
         const updatedUser = await user.save()
 
@@ -185,6 +186,7 @@ const updateUser = asyncHandler(async (req, res) => {
         email: updatedUser.email,
         phoneNumber: updatedUser.phoneNumber,
         userType: updatedUser.userType,
+        eatery: updatedUser.eatery
         })
     } else {
         res.status(404)

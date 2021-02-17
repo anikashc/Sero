@@ -29,6 +29,10 @@ function UpdateDetails({ location, history }) {
 
             history.push(redirect)
         }
+
+        else{
+            history.push('/login')
+        }
     }, [history, userInfo, redirect])
 
     const submitHandler = (e) => {

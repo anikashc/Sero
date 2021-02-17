@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Container, Card } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Link } from 'react-router-dom'
 
 function Profile() {
 
@@ -9,40 +9,40 @@ function Profile() {
             <Container className='py-3'>
                 <Row>
                     <Col>
-                        <LinkContainer to='/dashboardMenu'>
-                            <Card style={{ height: '8rem', width: '8rem' }}>
+                        <Link to='/dashboardMenu'>
+                            <Card style={{ height: '8rem', width: '10rem' }}>
                                 <Card.Body>
                                     <Card.Title> Menu </Card.Title>
                                 </Card.Body>
                             </Card>
-                        </LinkContainer>
+                        </Link>
                     </Col>
                     <Col>
-                        <LinkContainer to='/updateDetails'>
-                            <Card style={{ height: '8rem', width: '8rem' }}>
+                        <Link to='/updateDetails'>
+                            <Card style={{ height: '8rem', width: '10rem' }}>
                                 <Card.Body>
                                     <Card.Title> Update Details </Card.Title>
                                 </Card.Body>
                             </Card>
-                        </LinkContainer>
+                        </Link>
                     </Col>
                     <Col>
-                        <LinkContainer to='/feedback'>
-                            <Card style={{ height: '8rem', width: '8rem' }}>
+                        <Link to='/feedback'>
+                            <Card style={{ height: '8rem', width: '10rem' }}>
                                 <Card.Body>
                                     <Card.Title> Feedback </Card.Title>
                                 </Card.Body>
                             </Card>
-                        </LinkContainer>
+                        </Link>
                     </Col>
                     <Col>
-                        <LinkContainer to='/feedback'>
-                            <Card style={{ height: '8rem', width: '8rem' }}>
+                        <Link to='/feedback'>
+                            <Card style={{ height: '8rem', width: '10rem' }}>
                                 <Card.Body>
-                                    <Card.Title> Feedback </Card.Title>
+                                    <Card.Title> Past Orders </Card.Title>
                                 </Card.Body>
                             </Card>
-                        </LinkContainer>
+                        </Link>
                     </Col>
                 </Row>
             </Container>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, ListGroup, Button, Card, Container, Form} from 'react-bootstrap'
+import { Col,Button, Form} from 'react-bootstrap'
 import {saveCustomerMeta} from '../actions/cartActions'
 import FormContainer from '../Components/FormContainer'
 import CheckoutSteps from '../Components/CheckoutSteps'

@@ -7,13 +7,14 @@ import {
   deleteEatery,
   createEatery,
   updateEatery,
+  eateryReviews
 //   createProductReview,
 //   getTopProducts,
 } from '../controllers/eateryController.js'
 import { protect, admin , common} from '../middleware/authMiddleware.js'
 
 // router.route('/').get(getProducts).post(protect, admin, createProduct)
-// router.route('/:id/reviews').post(protect, createProductReview)
+router.route('/:id/reviews').get(protect, common, eateryReviews)
 // router.get('/top', getTopProducts)
 
 

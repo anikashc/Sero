@@ -7,7 +7,7 @@ import Message from '../Components/Message';
 import FormContainer from '../Components/FormContainer';
 import { register } from '../actions/userActions';
 
-function UpdateDetails({ location, history }) {
+function UpdateDetails({ history }) {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -17,23 +17,12 @@ function UpdateDetails({ location, history }) {
     const [message, setMessage] = useState(null)
 
     const dispatch = useDispatch()
-
-    const userRegister = useSelector((state) => state.userRegister)
-    const { loading, error, userInfo } = userRegister
-
-    const redirect = location.search ? location.search.split('=')[1] : '/'
+    const userDetails = useSelector((state) => state.userDetails)
+    const { loading, error, user } = userDetails
 
     useEffect(() => {
 
-        if(userInfo) {
-
-            history.push(redirect)
-        }
-
-        else{
-            history.push('/login')
-        }
-    }, [history, userInfo, redirect])
+    }, [history, user])
 
     const submitHandler = (e) => {
 

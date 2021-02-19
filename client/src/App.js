@@ -13,13 +13,14 @@ import Login from './Screens/Login';
 import Register from './Screens/Register'
 import Checkout from './Screens/Checkout';
 import Payment from './Screens/Payment';
-import Profile from './Screens/Profile';
+import Dashboard from './Screens/Dashboard';
 import AddItem from './Screens/AddItem';
 import UpdateDetails from './Screens/UpdateDetails';
 import Feedback from './Screens/Feedback';
 import DashboardMenu from './Screens/DashboardMenu';
 import UserList from './Screens/UserList';
 import UserEdit from './Screens/UserEdit';
+import EateryList from './Screens/EateryList';
 function App() {
 
     return (
@@ -32,7 +33,7 @@ function App() {
             
             <Route path = '/login' component={Login} />
             <Route path = '/register' component={Register} />
-            <Route path = '/profile' component={Profile} />
+            <Route path = '/dashboard' component={Dashboard} />
             <Route path = '/dashboardMenu' component={DashboardMenu} />
             <Route path = '/addItem' component={AddItem} />
             <Route path = '/updateDetails' component={UpdateDetails} />
@@ -43,6 +44,7 @@ function App() {
             <Route path = '/feedback' component={Feedback} />
             <Route path = '/admin/userlist' component={UserList} />
             <Route path = '/admin/user/:id/edit' component={UserEdit} />
+            <Route path = '/admin/eaterylist' component={EateryList} />
             {/* <Route path = '/feedback' component={Feedback} /> */}
           </Container>
         </main>

@@ -4,12 +4,13 @@ import { LinkContainer } from 'react-router-bootstrap';
 import DashboardItem from '../Components/DashboardItem';
 import items from '../item';
 
-function DashboardMenu({eatery}) {
-
+function DashboardMenu(props) {
+    const {eateryMenu} = props.location.state
+    console.log(eateryMenu)
     return (
         <>
             <Container className='py-3'>
-                <LinkContainer to='/profile'>
+                <LinkContainer to='/dashboard'>
                     <Button variant='secondary'>Back</Button>
                 </LinkContainer>
                 <h1>Menu</h1>

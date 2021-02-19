@@ -40,7 +40,7 @@ function UpdateDetails({ history }) {
     return (
         <Container className='py-3'>
             
-            <LinkContainer to='/profile'>
+            <LinkContainer to='/dashboard'>
                 <Button variant='secondary'>Back</Button>
             </LinkContainer>
 

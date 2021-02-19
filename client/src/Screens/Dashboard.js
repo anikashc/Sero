@@ -1,15 +1,23 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Container, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 
-function Profile() {
-
+const Dashboard = () => {
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
+    console.log(userInfo)
     return (
         <>
             <Container className='py-3'>
                 <Row>
                     <Col>
-                        <Link to='/dashboardMenu'>
+                        <Link to={{
+                            pathname: '/dashboardMenu',
+                            state: {
+                                eateryMenu: userInfo.eatery
+                            }
+                        }}>
                             <Card style={{ height: '8rem', width: '10rem' }}>
                                 <Card.Body>
                                     <Card.Title> Menu </Card.Title>
@@ -50,4 +58,4 @@ function Profile() {
     );
 }
 
-export default Profile;
+export default Dashboard;

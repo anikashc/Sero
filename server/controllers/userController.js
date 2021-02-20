@@ -24,6 +24,7 @@ const authUser = asyncHandler(async (req, res) => {
             phoneNumber: user.phoneNumber,
             userType: user.userType,
             token: generateToken(user._id),
+            eatery: user.eatery
         })
     }
     else {

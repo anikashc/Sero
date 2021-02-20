@@ -2,11 +2,11 @@ import React from 'react';
 import { Row, Col, Container, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import DashboardItem from '../Components/DashboardItem';
-import items from '../item';
+
 
 function DashboardMenu(props) {
     const {eateryMenu} = props.location.state
-    console.log(eateryMenu)
+
     return (
         <>
             <Container className='py-3'>
@@ -20,7 +20,7 @@ function DashboardMenu(props) {
             <Container className='py-3'>
                 <Row>
 
-                    {items.map((item => 
+                    {eateryMenu.map((item => 
                         <Col className='py-3'> <DashboardItem item={item}/> </Col>
                     ))}
                 </Row>

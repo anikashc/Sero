@@ -7,7 +7,7 @@ import Message from '../Components/Message';
 import FormContainer from '../Components/FormContainer';
 import { login } from '../actions/userActions';
 
-function Login ({location, history}) {
+const Login= ({location, history})=>{
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')

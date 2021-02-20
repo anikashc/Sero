@@ -20,7 +20,9 @@ const Feedback = ({history}) =>{
             history.push('/login')
         }
         else{
-            dispatch(getEateryReviews(userInfo.eatery));
+            if(userInfo.eatery){
+                dispatch(getEateryReviews(userInfo.eatery));
+            }
         }
     }, [dispatch, history, userInfo]);
     

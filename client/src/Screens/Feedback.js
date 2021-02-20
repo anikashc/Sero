@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect} from 'react';
 import randomColor from 'randomcolor';
 // import { Row, Col, Container, InputGroup, FormControl } from 'react-bootstrap';
 import Review from '../Components/Review';
@@ -8,23 +8,22 @@ import Message from '../Components/Message';
 import { getEateryReviews } from '../actions/eateryActions'
 
 
-const Feedback = () =>{
+const Feedback = ({history}) =>{
     const dispatch = useDispatch();
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
-
-
-
     const reviewList = useSelector(state => state.eateryReviews);
- 
     const {error, loading, reviews} = reviewList;
     
     useEffect(() => {
-        dispatch(getEateryReviews(userInfo.eatery));
-    }, [dispatch]);
-
+        if (!userInfo) {
+            history.push('/login')
+        }
+        else{
+            dispatch(getEateryReviews(userInfo.eatery));
+        }
+    }, [dispatch, history, userInfo]);
     
-
     return(
         <div>
             <h2>Feedback And Complaints</h2>

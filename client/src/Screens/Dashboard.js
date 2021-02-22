@@ -4,7 +4,8 @@ import { Row, Col, Container, Card, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
-import {getUserDetails} from '../actions/userActions'
+import CurrentOrders from '../Components/CurrentOrders';
+import {getUserDetails, updateUserProfile} from '../actions/userActions'
 import {listEateryDetails} from '../actions/eateryActions'
 
 
@@ -29,12 +30,15 @@ const Dashboard = ({history}) => {
 
     const  eateryDetails = useSelector(state => state.eateryDetails) 
     const {loading:loadingEatery, error: errorEatery, eatery} = eateryDetails
+
+    const  userUpdateProfile = useSelector(state => state.userUpdateProfile) 
+    const {success, loading:updateLoading} = userUpdateProfile
     useEffect(() => {
         if (!userInfo) {
             history.push('/login')
         }
         else{
-            if(!user.name){
+            if(!user.name || user.name!==userInfo.name){
                 dispatch(getUserDetails('profile'))
             }
             else{
@@ -44,7 +48,7 @@ const Dashboard = ({history}) => {
                 dispatch(listEateryDetails(user.eatery))  
             }
         }
-    }, [dispatch, history, userInfo, user])
+    }, [dispatch, history, userInfo, user,success])
 
     const submitHandler = (e) => {
 
@@ -55,8 +59,11 @@ const Dashboard = ({history}) => {
             setMessage('Passwords do not match')
         } else {
             // update profile
-            //dispatch(register(name, email, phoneNumber, password))
+            dispatch(updateUserProfile({id:user._id, name, email, phoneNumber, password}))
+            
+           
         }
+
     }
     return (
         <>
@@ -66,7 +73,9 @@ const Dashboard = ({history}) => {
                 <Col md={3}>
                     { message && <Message variant='danger'>{ message }</Message>}
                     { error && <Message variant='danger'>{ error }</Message>}
+                    { success && <Message variant='success'>Successfully Updated</Message>}
                     { loading && <Loader />}
+                    { updateLoading && <Loader />}
                     <Form onSubmit={submitHandler}>
 
                         <Form.Group controlId='name'>
@@ -135,7 +144,7 @@ const Dashboard = ({history}) => {
                                             eateryMenu: eatery.menu
                                         }
                                     }}>
-                                        <Card style={{ height: '8rem', width: '10rem' }}>
+                                        <Card style={{ height: '6rem', width: '10rem' }}>
                                             <Card.Body>
                                                 <Card.Title> Menu </Card.Title>
                                             </Card.Body>
@@ -149,7 +158,7 @@ const Dashboard = ({history}) => {
                         
                             <Col>
                                 <Link to='/feedback'>
-                                    <Card style={{ height: '8rem', width: '10rem' }}>
+                                    <Card style={{ height: '6rem', width: '10rem' }}>
                                         <Card.Body>
                                             <Card.Title> Feedback </Card.Title>
                                         </Card.Body>
@@ -157,8 +166,8 @@ const Dashboard = ({history}) => {
                                 </Link>
                             </Col>
                             <Col>
-                                <Link to='/feedback'>
-                                    <Card style={{ height: '8rem', width: '10rem' }}>
+                                <Link to='/orders'>
+                                    <Card style={{ height: '6rem', width: '10rem' }}>
                                         <Card.Body>
                                             <Card.Title> Past Orders </Card.Title>
                                         </Card.Body>
@@ -166,6 +175,9 @@ const Dashboard = ({history}) => {
                                 </Link>
                             </Col>
                         </Row>
+                        <Container>
+                            <CurrentOrders className='py-3'/>
+                        </Container>
                     </Container>
                 </Col>
                 

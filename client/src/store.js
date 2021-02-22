@@ -4,7 +4,10 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { 
     eateryListReducer,
     eateryDetailsReducer,
-    eateryReviewsReducer
+    eateryReviewsReducer,
+    eateryCreateReducer,
+    eateryDeleteReducer,
+    eateryUpdateReducer
 } from './reducers/eateryReducers';
 import { cartReducer } from './reducers/cartReducers';
 import { 
@@ -21,7 +24,10 @@ const reducer = combineReducers({
 
     eateryList: eateryListReducer,
     eateryDetails: eateryDetailsReducer,
-    eateryReviews: eateryReviewsReducer,    
+    eateryReviews: eateryReviewsReducer,
+    eateryDelete: eateryDeleteReducer,
+    eateryUpdate: eateryUpdateReducer,
+    eateryCreate: eateryCreateReducer,    
     cart: cartReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,

@@ -109,10 +109,6 @@ const createEatery = asyncHandler(async (req, res) => {
         user: req.user._id,
         image: '/images/sample.jpg',
         category: 'Sample category',
-        numReviews: 0,
-        payNowEnable: false,
-        payLaterEnable: false,
-        isOpen: false,
         description: 'Sample description',
     })
 
@@ -133,7 +129,8 @@ const updateEatery = asyncHandler(async (req, res) => {
         payNowEnable,
         payLaterEnable,
         isOpen,
-        menu
+        menu,
+        active
 
     } = req.body
     const eatery = await Eatery.findById(req.params.id)
@@ -147,6 +144,7 @@ const updateEatery = asyncHandler(async (req, res) => {
         eatery.payNowEnable=payNowEnable
         eatery.payLaterEnable=payLaterEnable
         eatery.isOpen=isOpen
+        eatery.active=active
         eatery.menu=menu || eatery.menu
 
         const updatedEatery = await eatery.save()

@@ -174,6 +174,15 @@ const Dashboard = ({history}) => {
                                     </Card>
                                 </Link>
                             </Col>
+                            <Col>
+                                <Link to={{ pathname: `/admin/eatery/${user.eatery}/edit`}}>
+                                    <Card style={{ height: '6rem', width: '10rem' }}>
+                                        <Card.Body>
+                                            <Card.Title> Edit Eatery </Card.Title>
+                                        </Card.Body>
+                                    </Card>
+                                </Link>
+                            </Col>
                         </Row>
                         <Container>
                             <CurrentOrders className='py-3'/>

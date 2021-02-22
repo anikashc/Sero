@@ -46,29 +46,33 @@ const eaterySchema = mongoose.Schema(
     menu: [menuSchema],
     rating: {
       type: Number,
-      required: true,
+   
       default: 0,
     },
     payNowEnable: {
       type: Boolean,
-      required: true,
+
       default: true,
     },
     payLaterEnable: {
       type: Boolean,
-      required: true,
+     
       default: false,
     },
     numReviews: {
       type: Number,
-      required: true,
+     
       default: 0,
     },
     isOpen: {
       type: Boolean,
-      required: true,
+     
       default: true,
     },
+    active: {
+      type: Boolean,
+      default: false,
+    }
     
    
   },

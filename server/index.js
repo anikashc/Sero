@@ -1,11 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import path from 'path'
 import colors from 'colors' ;
 // import bodyParser from 'body-parser';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 import eateryRoutes from './routes/eateryRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 // import cors from 'cors';
 
 dotenv.config();
@@ -29,6 +31,10 @@ app.get('/', function(req, res) {
 app.use('/api/eateries', eateryRoutes);
 
 app.use('/api/users', userRoutes);
+app.use('/api/upload', uploadRoutes);
+
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 app.use(notFound);
 

@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
 import { getEateryReviews } from '../actions/eateryActions'
+import { LinkContainer } from 'react-router-bootstrap';
+import {Button, Container} from 'react-bootstrap'
 
 
 const Feedback = ({history}) =>{
@@ -28,7 +30,10 @@ const Feedback = ({history}) =>{
     
     return(
         <div>
-            <h2>Feedback And Complaints</h2>
+                <LinkContainer to='/dashboard' className='my-3'>
+                    <Button variant='secondary'>Back</Button>
+                </LinkContainer>
+                <h2>Feedback and Complaints</h2>
             { loading? ( <Loader /> ) : error?  (<Message variant='danger'>{ error }</Message>) :
             (
                 reviews.map((review) => {
@@ -36,7 +41,7 @@ const Feedback = ({history}) =>{
                         <Review 
                             name={review.name}
                             email={review.email}
-                            comment={review.feedback}
+                            comment={review.comment}
                             rating={review.rating}
                             color={randomColor()}
                         />

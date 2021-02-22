@@ -5,7 +5,8 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
-import {listEateries} from '../actions/eateryActions'
+import {listEateries, deleteEatery, createEatery} from '../actions/eateryActions'
+import {EATERY_CREATE_RESET} from '../constants/eateryConstants'
 
 const EateryList = ({ history, match }) => {
     const dispatch = useDispatch()
@@ -16,23 +17,32 @@ const EateryList = ({ history, match }) => {
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
 
+    const eateryDelete = useSelector((state) => state.eateryDelete)
+    const { loading: loadingDelete, error: errorDelete, success: successDelete } = eateryDelete
 
+    const eateryCreate = useSelector((state) => state.eateryCreate)
+    const { loading: loadingCreate, error: errorCreate, success: successCreate, eatery: createdEatery } = eateryCreate
+    
 
     useEffect(() => {
-        if (userInfo && userInfo.userType===1) {
-            dispatch(listEateries())
-        } else {
+        dispatch({type: EATERY_CREATE_RESET})
+        if (userInfo.userType!==1) {
             history.push('/login')
         }
-    }, [dispatch, history, userInfo])
+        if(successCreate){
+            history.push(`/admin/eatery/${createdEatery._id}/edit`)
+        } else{
+            dispatch(listEateries())
+        }
+    }, [dispatch, history, userInfo, successCreate, successDelete, createdEatery])
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure')) {
-            //delete products
+            dispatch(deleteEatery(id))
         }
     }
-    const createEateryHandler = (eatery) => {
-        //
+    const createEateryHandler = () => {
+        dispatch(createEatery())
     }
     return (
         <>
@@ -46,6 +56,10 @@ const EateryList = ({ history, match }) => {
                     </Button>
                 </Col>
             </Row>
+            {loadingDelete && <Loader />}
+            {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
+            {loadingCreate && <Loader />}
+            {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
             {loading ? (
                 <Loader /> )
             : error ? (

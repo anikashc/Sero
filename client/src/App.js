@@ -21,6 +21,7 @@ import DashboardMenu from './Screens/DashboardMenu';
 import UserList from './Screens/UserList';
 import UserEdit from './Screens/UserEdit';
 import EateryList from './Screens/EateryList';
+import EateryEdit from './Screens/EateryEdit';
 function App() {
 
     return (
@@ -44,8 +45,8 @@ function App() {
             <Route path = '/feedback' component={Feedback} />
             <Route path = '/admin/userlist' component={UserList} />
             <Route path = '/admin/user/:id/edit' component={UserEdit} />
+            <Route path = '/admin/eatery/:id/edit' component={EateryEdit} />
             <Route path = '/admin/eaterylist' component={EateryList} />
-            {/* <Route path = '/feedback' component={Feedback} /> */}
           </Container>
         </main>
 

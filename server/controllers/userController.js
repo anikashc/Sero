@@ -24,6 +24,7 @@ const authUser = asyncHandler(async (req, res) => {
             phoneNumber: user.phoneNumber,
             userType: user.userType,
             token: generateToken(user._id),
+            eatery: user.eatery
         })
     }
     else {
@@ -82,6 +83,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     if (user) {
       user.name = req.body.name || user.name
       user.email = req.body.email || user.email
+      user.phoneNumber = req.body.phoneNumber || user.phoneNumber
       if (req.body.password) {
         user.password = req.body.password
       }
@@ -94,6 +96,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         email: updatedUser.email,
         phoneNumber: updatedUser.phoneNumber,
         userType: updatedUser.userType,
+        eatery: updatedUser.eatery,
         token: generateToken(updatedUser._id),
       })
     } else {
@@ -117,6 +120,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
             email: user.email,
             phoneNumber: user.phoneNumber,
             userType: user.userType,
+            eatery: user.eatery
         })
     } else {
 
@@ -176,6 +180,7 @@ const updateUser = asyncHandler(async (req, res) => {
         user.name = req.body.name || user.name
         user.email = req.body.email || user.email
         user.userType = req.body.userType || user.userType
+        user.eatery = req.body.eatery || user.eatery
 
         const updatedUser = await user.save()
 
@@ -185,6 +190,7 @@ const updateUser = asyncHandler(async (req, res) => {
         email: updatedUser.email,
         phoneNumber: updatedUser.phoneNumber,
         userType: updatedUser.userType,
+        eatery: updatedUser.eatery
         })
     } else {
         res.status(404)

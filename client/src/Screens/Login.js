@@ -7,11 +7,13 @@ import Message from '../Components/Message';
 import FormContainer from '../Components/FormContainer';
 import { login } from '../actions/userActions';
 
-function Login ({location, history}) {
+const Login= ({location, history})=>{
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
     const redirect = location.search?location.search.split("=")[1]:'/'
+
     const dispatch = useDispatch()
 
     const userLogin = useSelector(state => state.userLogin)
@@ -22,6 +24,7 @@ function Login ({location, history}) {
             history.push(redirect)
         }
     },[history,userInfo, redirect])
+    
     const submitHandler = (e) => {
 
         e.preventDefault()

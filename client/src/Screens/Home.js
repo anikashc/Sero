@@ -81,7 +81,8 @@ const Home = () => {
                         <Row className='px-10'>
                             {eateries.map(eatery => (
                                 <Col key={eatery._id} sm={12} md={6} lg={4} xl={3}>
-                                    <Eatery eatery={eatery}/>
+                                    {eatery.active?<Eatery eatery={eatery}/>:null}
+                                 
                                 </Col>
                             ))}
                         </Row>

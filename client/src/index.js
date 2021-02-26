@@ -5,7 +5,6 @@ import store from './store'
 import App from './App';
 import './bootstrap.min.css'
 import './index.css'
-
  
 ReactDOM.render(
   
@@ -14,4 +13,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
-

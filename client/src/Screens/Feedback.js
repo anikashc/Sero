@@ -1,50 +1,55 @@
-import React from 'react';
-import { Button, Row, Col, Container } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap'
-import Eatery from '../Components/Eatery';
-import Review from '../Components/Review';
+import React, { useEffect} from 'react';
 import randomColor from 'randomcolor';
+// import { Row, Col, Container, InputGroup, FormControl } from 'react-bootstrap';
+import Review from '../Components/Review';
+import { useDispatch, useSelector } from 'react-redux';
+import Loader from '../Components/Loader';
+import Message from '../Components/Message';
+import { getEateryReviews } from '../actions/eateryActions'
+import { LinkContainer } from 'react-router-bootstrap';
+import {Button, Container} from 'react-bootstrap'
 
-const reviews =[
-    {
-        name: 'David Beckham',
-        email: 'david@gmail.com',
-        phoneNumber: '1000020000',
-        rating: 4,
-        feedback: "Food was really excellent and service was fast"
-    },
-    {
-        name: 'Virat Kohli',
-        email: 'virat@gmail.com',
-        phoneNumber: '1000020000',
-        rating: 3,
-        feedback: "The food was normal but service was quite good"
-    },
-    {
-        name: 'PK Singh',
-        email: 'singh@gmail.com',
-        phoneNumber: '1000020000',
-        rating: 1,
-        feedback: "Food was undercooked"
-    }
-]
 
-function Feedback(){
+const Feedback = ({history}) =>{
+    const dispatch = useDispatch();
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
+    const reviewList = useSelector(state => state.eateryReviews);
+    const {error, loading, reviews} = reviewList;
+    
+    useEffect(() => {
+        if (!userInfo) {
+            history.push('/login')
+        }
+        else{
+            if(userInfo.eatery){
+                dispatch(getEateryReviews(userInfo.eatery));
+            }
+        }
+    }, [dispatch, history, userInfo]);
     
     return(
         <div>
-            <h2>Feedback And Complaints</h2>
-            {reviews.map((review) => {
-                return(
-                    <Review 
-                        name={review.name}
-                        email={review.email}
-                        feedback={review.feedback}
-                        rating={review.rating}
-                        color={randomColor()}
-                    />
-                )
-            })}
+                <LinkContainer to='/dashboard' className='my-3'>
+                    <Button variant='secondary'>Back</Button>
+                </LinkContainer>
+                <h2>Feedback and Complaints</h2>
+            { loading? ( <Loader /> ) : error?  (<Message variant='danger'>{ error }</Message>) :
+            (
+                reviews.map((review) => {
+                    return(
+                        <Review 
+                            name={review.name}
+                            email={review.email}
+                            comment={review.comment}
+                            rating={review.rating}
+                            color={randomColor()}
+                        />
+                    )
+                })
+            )
+            }
+            
         </div>
     )
 }

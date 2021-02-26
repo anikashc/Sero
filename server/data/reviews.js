@@ -4,20 +4,24 @@ const reviews =[
         email: 'david@gmail.com',
         phoneNumber: '1000020000',
         rating: 4,
-        feedback: "Food was really excellent and service was fast"
+        comment: "Food was really excellent and service was fast",
+        eatery: "602e17d99af41a39b89f0127"
     },
     {
         name: 'Virat Kohli',
         email: 'virat@gmail.com',
         phoneNumber: '1000020000',
         rating: 3,
-        feedback: "The food was normal but service was quite good"
+        comment: "The food was normal but service was quite good",
+        eatery: "602e17d99af41a39b89f0127"
     },
     {
         name: 'PK Singh',
         email: 'singh@gmail.com',
         phoneNumber: '1000020000',
         rating: 1,
-        feedback: "Food was undercooked"
+        comment: "Food was undercooked",
+        eatery: "602e17d99af41a39b89f0127"
     }
 ]
+export default reviews

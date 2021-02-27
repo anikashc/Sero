@@ -178,7 +178,7 @@ const Dashboard = ({history}) => {
                                 <Link to={{ pathname: `/admin/eatery/${user.eatery}/edit`}}>
                                     <Card style={{ height: '6rem', width: '10rem' }}>
                                         <Card.Body>
-                                            <Card.Title> Edit Eatery </Card.Title>
+                                            <Card.Title> Manage Eatery </Card.Title>
                                         </Card.Body>
                                     </Card>
                                 </Link>

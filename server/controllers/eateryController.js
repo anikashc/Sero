@@ -130,7 +130,9 @@ const updateEatery = asyncHandler(async (req, res) => {
         payLaterEnable,
         isOpen,
         menu,
-        active
+        active,
+        paytm,
+        upi
 
     } = req.body
     const eatery = await Eatery.findById(req.params.id)
@@ -145,7 +147,10 @@ const updateEatery = asyncHandler(async (req, res) => {
         eatery.payLaterEnable=payLaterEnable
         eatery.isOpen=isOpen
         eatery.active=active
+        eatery.paytm=paytm || eatery.paytm
+        eatery.upi=upi || eatery.upi
         eatery.menu=menu || eatery.menu
+        
 
         const updatedEatery = await eatery.save()
         res.json(updatedEatery)

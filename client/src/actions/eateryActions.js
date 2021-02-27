@@ -16,7 +16,10 @@ import  {
     EATERY_UPDATE_FAIL,
     EATERY_REVIEWS_FAIL,
     EATERY_REVIEWS_REQUEST,
-    EATERY_REVIEWS_SUCCESS
+    EATERY_REVIEWS_SUCCESS,
+    EATERY_CREATE_REVIEW_FAIL,
+    EATERY_CREATE_REVIEW_REQUEST,
+    EATERY_CREATE_REVIEW_SUCCESS
 } from '../constants/eateryConstants'
 import axios from 'axios'
 import { logout } from './userActions'
@@ -59,6 +62,40 @@ export const listEateryDetails = (id) => async(dispatch) => {
             payload: error.response && error.response.data.message ? error.response.data.message : error.message
         })
     }
+}
+
+export const createEateryReview = (id, review) => async (dispatch, getState) => {
+  try {
+      dispatch({
+          type: EATERY_CREATE_REVIEW_REQUEST,
+      })
+
+      const {
+          userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+          headers: {
+              //Authorization: `Bearer ${userInfo.token}`,
+          },
+      }
+
+      await axios.post(`/api/eateries/${id}/reviews`, review, config)
+      
+      dispatch({
+          type: EATERY_CREATE_REVIEW_SUCCESS,
+      })
+  } catch (error) {
+      const message =
+      error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      
+      dispatch({
+          type: EATERY_CREATE_REVIEW_FAIL,
+          payload: message,
+      })
+  }
 }
 
 export const getEateryReviews = (id) => async (dispatch, getState) => {

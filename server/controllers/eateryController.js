@@ -37,6 +37,40 @@ const getEateryById = asyncHandler(async(req, res) => {
     }
 })
 
+// @desc... Create Eatery Review
+// @route... POST /api/eateries/:id/reviews
+// @access... Private/Common(Admin and Eatery)
+const createEateryReview = asyncHandler(async(req, res) => {
+
+    const {rating, comment, name, email} = req.body
+    const eatery = await Eatery.findById(req.params.id)
+
+    if(eatery){
+
+        const review = new Review({
+            name: name,
+            rating: Number(rating),
+            comment: comment,
+            email: email,
+            eatery: eatery._id
+        })
+
+        const createdReview = await review.save()
+
+        eatery.rating = Number((Number(eatery.rating) * Number(eatery.numReviews) + Number(rating)) / (eatery.numReviews + 1))
+        eatery.rating = Number((Math.round(eatery.rating * 10)/10).toFixed(1))
+        eatery.numReviews = eatery.numReviews + 1
+
+        await eatery.save()
+        res.status(201).json(createdReview)
+         
+    }else{
+        res.status(404)
+        throw new Error('Eatery not found')
+    }
+    
+})
+
 // @desc... Fetch eatery reviews
 // @route... GET /api/eateries/:id/reviews
 // @access... Private/Common(Admin and Eatery)
@@ -166,5 +200,6 @@ export {
     deleteEatery,
     updateEatery,
     createEatery,
-    eateryReviews
+    eateryReviews,
+    createEateryReview
 };

@@ -7,7 +7,8 @@ import {
     eateryReviewsReducer,
     eateryCreateReducer,
     eateryDeleteReducer,
-    eateryUpdateReducer
+    eateryUpdateReducer,
+    eateryCreateReviewReducer
 } from './reducers/eateryReducers';
 import { cartReducer } from './reducers/cartReducers';
 import { 
@@ -24,6 +25,7 @@ const reducer = combineReducers({
 
     eateryList: eateryListReducer,
     eateryDetails: eateryDetailsReducer,
+    eateryCreateReview: eateryCreateReviewReducer,
     eateryReviews: eateryReviewsReducer,
     eateryDelete: eateryDeleteReducer,
     eateryUpdate: eateryUpdateReducer,

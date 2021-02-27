@@ -22,6 +22,7 @@ import UserList from './Screens/UserList';
 import UserEdit from './Screens/UserEdit';
 import EateryList from './Screens/EateryList';
 import EateryEdit from './Screens/EateryEdit';
+import OrderSummary from './Screens/OrderSummary';
 function App() {
 
     return (
@@ -42,6 +43,7 @@ function App() {
             <Route path = '/cart' component={Cart} />
             <Route path = '/checkout' component={Checkout} />
             <Route path = '/payment' component={Payment} />
+            <Route path = '/orderSummary' component={OrderSummary} />
             <Route path = '/feedback' component={Feedback} />
             <Route path = '/admin/userlist' component={UserList} />
             <Route path = '/admin/user/:id/edit' component={UserEdit} />

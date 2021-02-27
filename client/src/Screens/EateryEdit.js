@@ -23,6 +23,8 @@ function EateryEdit({ match, history }) {
     const [numReviews, setNumReviews] = useState(0)
     const [active, setActive] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
+    const [paytm, setPaytm] = useState(false)
+    const [upi, setUpi] = useState(false)
     const [uploading, setUploading] = useState(false)
 
     const dispatch = useDispatch()
@@ -64,6 +66,8 @@ function EateryEdit({ match, history }) {
                     setIsOpen(eatery.isOpen)
                     setActive(eatery.active)
                     setNumReviews(eatery.numReviews)
+                    setPaytm(eatery.paytm)
+                    setUpi(eatery.upi)
                 }
             }
         }
@@ -91,7 +95,9 @@ function EateryEdit({ match, history }) {
             payLaterEnable, 
             numReviews,
             active,
-            isOpen
+            isOpen,
+            paytm,
+            upi
         }))
 
     }
@@ -292,7 +298,25 @@ function EateryEdit({ match, history }) {
                         </Form.Control>
                     </Form.Group>
 
-                    
+                    <Form.Group controlId='paytm'>
+                        <Form.Label>Paytm Number</Form.Label>
+                        <Form.Control
+                            type='number'
+                            placeholder='Paytm'
+                            value={paytm}
+                            onChange={(e) => setPaytm(e.target.value)}
+                        ></Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId='upi'>
+                        <Form.Label>UPI</Form.Label>
+                        <Form.Control
+                            type='text'
+                            placeholder='UPI'
+                            value={upi}
+                            onChange={(e) => setUpi(e.target.value)}
+                        ></Form.Control>
+                    </Form.Group>
 
 
                     

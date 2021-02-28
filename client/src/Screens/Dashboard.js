@@ -5,8 +5,9 @@ import { Link } from 'react-router-dom'
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
 import CurrentOrders from '../Components/CurrentOrders';
-import {getUserDetails, updateUserProfile} from '../actions/userActions'
-import {listEateryDetails} from '../actions/eateryActions'
+import { getUserDetails, updateUserProfile } from '../actions/userActions'
+import { listEateryDetails} from '../actions/eateryActions'
+import { listMyOrders} from '../actions/orderActions'
 
 
 const Dashboard = ({history}) => {
@@ -24,31 +25,39 @@ const Dashboard = ({history}) => {
     const userDetails = useSelector((state) => state.userDetails)
     const { loading, error, user } = userDetails 
     
-    const userLogin = useSelector((state) => state.userLogin)
-    const { userInfo } = userLogin 
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
+
     const dispatch = useDispatch()
 
-    const  eateryDetails = useSelector(state => state.eateryDetails) 
-    const {loading:loadingEatery, error: errorEatery, eatery} = eateryDetails
+    const eateryDetails = useSelector(state => state.eateryDetails) 
+    const {loading:loadingEatery, error: errorEatery} = eateryDetails
+
 
     const  userUpdateProfile = useSelector(state => state.userUpdateProfile) 
-    const {success, loading:updateLoading} = userUpdateProfile
+    const { success, loading: updateLoading } = userUpdateProfile
+
+    const  orderListMy = useSelector(state => state.orderListMy) 
+    const { loading: loadingOrders, error: errorOrders, orders  } = orderListMy
+
     useEffect(() => {
+
         if (!userInfo) {
             history.push('/login')
         }
         else{
             if(!user.name || user.name!==userInfo.name){
                 dispatch(getUserDetails('profile'))
+                dispatch(listMyOrders())
             }
             else{
                 setName(user.name)
                 setEmail(user.email)
                 setPhoneNumber(user.phoneNumber)
-                dispatch(listEateryDetails(user.eatery))  
+                dispatch(listEateryDetails(user.eatery)) 
             }
         }
-    }, [dispatch, history, userInfo, user,success])
+    }, [dispatch, history, userInfo, user, success])
 
     const submitHandler = (e) => {
 
@@ -60,16 +69,14 @@ const Dashboard = ({history}) => {
         } else {
             // update profile
             dispatch(updateUserProfile({id:user._id, name, email, phoneNumber, password}))
-            
-           
         }
 
     }
+
     return (
         <>
             <Row><h1>Dashboard</h1></Row>
             <Row>
-            
                 <Col md={3}>
                     { message && <Message variant='danger'>{ message }</Message>}
                     { error && <Message variant='danger'>{ error }</Message>}
@@ -137,23 +144,15 @@ const Dashboard = ({history}) => {
                         { loadingEatery && <Loader />}
                         <Row>
                             <Col>
-                                {userInfo?(
-                                    <Link to={{
-                                        pathname: '/dashboardMenu',
-                                        state: {
-                                            eateryMenu: eatery.menu
-                                        }
-                                    }}>
+                                {userInfo && (
+                                    <Link to='/dashboardMenu'>
                                         <Card style={{ height: '6rem', width: '10rem' }}>
                                             <Card.Body>
                                                 <Card.Title> Menu </Card.Title>
                                             </Card.Body>
                                         </Card>
                                     </Link>
-                                ):(
-                                    null
                                 )}  
-                                
                             </Col>
                         
                             <Col>
@@ -165,6 +164,7 @@ const Dashboard = ({history}) => {
                                     </Card>
                                 </Link>
                             </Col>
+
                             <Col>
                                 <Link to='/orders'>
                                     <Card style={{ height: '6rem', width: '10rem' }}>
@@ -174,6 +174,7 @@ const Dashboard = ({history}) => {
                                     </Card>
                                 </Link>
                             </Col>
+
                             <Col>
                                 <Link to={{ pathname: `/admin/eatery/${user.eatery}/edit`}}>
                                     <Card style={{ height: '6rem', width: '10rem' }}>
@@ -185,7 +186,10 @@ const Dashboard = ({history}) => {
                             </Col>
                         </Row>
                         <Container>
-                            <CurrentOrders className='py-3'/>
+                            {loadingOrders? <Loader /> : errorOrders? <Message variant='danger'>{errorOrders}</Message>:(
+                                <CurrentOrders className='py-3' orders={orders}/>
+                            )}
+                            
                         </Container>
                     </Container>
                 </Col>

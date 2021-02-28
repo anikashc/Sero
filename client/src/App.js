@@ -14,8 +14,6 @@ import Register from './Screens/Register'
 import Checkout from './Screens/Checkout';
 import Payment from './Screens/Payment';
 import Dashboard from './Screens/Dashboard';
-import AddItem from './Screens/AddItem';
-import UpdateDetails from './Screens/UpdateDetails';
 import Feedback from './Screens/Feedback';
 import DashboardMenu from './Screens/DashboardMenu';
 import UserList from './Screens/UserList';
@@ -23,27 +21,29 @@ import UserEdit from './Screens/UserEdit';
 import EateryList from './Screens/EateryList';
 import EateryEdit from './Screens/EateryEdit';
 import OrderSummary from './Screens/OrderSummary';
+import OrderList from './Screens/OrderList';
 function App() {
 
     return (
       <Router>
 
         <Header />
+
         <main>
+
           <Route path='/' component={Home} exact />
+
           <Container>
-            
             <Route path = '/login' component={Login} />
             <Route path = '/register' component={Register} />
             <Route path = '/dashboard' component={Dashboard} />
             <Route path = '/dashboardMenu' component={DashboardMenu} />
-            <Route path = '/addItem' component={AddItem} />
-            <Route path = '/updateDetails' component={UpdateDetails} />
             <Route path = '/menu/:id' component={Menu} exact />
             <Route path = '/cart' component={Cart} />
             <Route path = '/checkout' component={Checkout} />
             <Route path = '/payment' component={Payment} />
-            <Route path = '/orderSummary' component={OrderSummary} />
+            <Route path = '/orderSummary/:id' component={OrderSummary} />
+            <Route path = '/orders' component={OrderList} />
             <Route path = '/feedback' component={Feedback} />
             <Route path = '/admin/userlist' component={UserList} />
             <Route path = '/admin/user/:id/edit' component={UserEdit} />

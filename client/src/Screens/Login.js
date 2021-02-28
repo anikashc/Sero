@@ -11,7 +11,9 @@ const Login= ({location, history})=>{
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
     const redirect = location.search?location.search.split("=")[1]:'/'
+
     const dispatch = useDispatch()
 
     const userLogin = useSelector(state => state.userLogin)
@@ -22,6 +24,7 @@ const Login= ({location, history})=>{
             history.push(redirect)
         }
     },[history,userInfo, redirect])
+    
     const submitHandler = (e) => {
 
         e.preventDefault()

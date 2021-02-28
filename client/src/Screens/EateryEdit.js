@@ -32,6 +32,8 @@ function EateryEdit({ match, history }) {
     const eateryDetails = useSelector((state) => state.eateryDetails)
     const { loading, error, eatery } = eateryDetails
 
+    console.log(eatery)
+
     const eateryUpdate = useSelector((state) => state.eateryUpdate)
     const { loading: loadingUpdate, error: errorUpdate, success: successUpdate} = eateryUpdate
 
@@ -51,7 +53,7 @@ function EateryEdit({ match, history }) {
                 }
             }
             else{
-                if(!eatery.name || eatery._id!==eateryId){
+                if (!eatery.name || eatery._id!==eateryId){
                     dispatch(listEateryDetails(eateryId))
                 }
                 else{
@@ -74,10 +76,8 @@ function EateryEdit({ match, history }) {
         else{
             history.push('/login')
         }
-       
         
-        
-    }, [dispatch, history, eateryId, eatery,userInfo,successUpdate])
+    }, [dispatch, history, eateryId, eatery, userInfo, successUpdate])
 
     const submitHandler = (e) => {
 
@@ -199,14 +199,12 @@ function EateryEdit({ match, history }) {
                                 setCategory(e.target.value)
                             }}
                         >
-                       
                             <option value = 'Cafe'>Cafe</option>
                             <option value = 'Buffet'>Buffet</option>
                             <option value = 'Bar'>Bar</option>
                             <option value = 'Dining'>Dining</option>
                             <option value = 'Bakery'>Bakery</option>
                             <option value = 'Fast Food'>Fast Food</option>
-
                         </Form.Control>
                     </Form.Group>
 

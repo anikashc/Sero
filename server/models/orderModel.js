@@ -17,15 +17,15 @@ const orderSchema = mongoose.Schema(
       {
         name: { type: String, required: true },
         qty: { type: Number, required: true }, 
-        price: { type: Number, required: true },
-        
+        cost: { type: Number, required: true },
+        category: { type: String, required: true },
       },
     ],
     paymentMethod: {
       type: String,
       required: true,
     },
-    itemPrice: {
+    itemsPrice: {
       type: Number,
       required: true,
       default: 0.0,
@@ -43,11 +43,13 @@ const orderSchema = mongoose.Schema(
     },
 
     paymentType:{
-      type: Number,
+      type: String,
       required: true,
-      default: 1
     },
-    
+    isPaid:{
+      type: Boolean,
+      default: false,
+    },
     paidAt: {
       type: Date,
     },
@@ -58,6 +60,10 @@ const orderSchema = mongoose.Schema(
     },
     completedAt: {
       type: Date
+    },
+    cancelled: {
+      type: Boolean,
+      default: false
     }
   },
   {

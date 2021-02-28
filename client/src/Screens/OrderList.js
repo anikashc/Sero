@@ -5,10 +5,9 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
-import {listEateries, deleteEatery, createEatery} from '../actions/eateryActions'
-import {EATERY_CREATE_RESET} from '../constants/eateryConstants'
+import {} from '../actions/orderActions'
 
-const EateryList = ({ history, match }) => {
+const OrderList = ({ history, match }) => {
     const dispatch = useDispatch()
 
     const eateryList = useSelector((state) => state.eateryList)
@@ -17,49 +16,20 @@ const EateryList = ({ history, match }) => {
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
 
-    const eateryDelete = useSelector((state) => state.eateryDelete)
-    const { loading: loadingDelete, error: errorDelete, success: successDelete } = eateryDelete
-
-    const eateryCreate = useSelector((state) => state.eateryCreate)
-    const { loading: loadingCreate, error: errorCreate, success: successCreate, eatery: createdEatery } = eateryCreate
-    
 
     useEffect(() => {
-        dispatch({type: EATERY_CREATE_RESET})
-        if (userInfo.userType!==1) {
-            history.push('/login')
-        }
-        if(successCreate){
-            history.push(`/admin/eatery/${createdEatery._id}/edit`)
-        } else{
-            dispatch(listEateries())
-        }
-    }, [dispatch, history, userInfo, successCreate, successDelete, createdEatery])
+        
+    }, [])
 
-    const deleteHandler = (id) => {
-        if (window.confirm('Are you sure')) {
-            dispatch(deleteEatery(id))
-        }
-    }
-    const createEateryHandler = () => {
-        dispatch(createEatery())
-    }
+
     return (
         <>
             <Row className='align-items-center'>
                 <Col>
-                    <h2>Eateries</h2>
-                </Col>
-                <Col className='text-right'>
-                    <Button className='my-3' onClick={createEateryHandler}>
-                        <i className='fas fa-plus'></i> Create Eatery
-                    </Button>
+                    <h2>Past Orders</h2>
                 </Col>
             </Row>
-            {loadingDelete && <Loader />}
-            {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
-            {loadingCreate && <Loader />}
-            {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
+
             {loading ? (
                 <Loader /> )
             : error ? (
@@ -100,13 +70,7 @@ const EateryList = ({ history, match }) => {
                                     <i className='fas fa-edit'></i>
                                 </Button>
                             </LinkContainer>
-                            <Button
-                                variant='danger'
-                                className='btn-sm'
-                                onClick={() => deleteHandler(eatery._id)}
-                            >
-                                <i className='fas fa-trash'></i>
-                            </Button>
+                            
                             </td>
                         </tr>
                         ))}
@@ -117,4 +81,4 @@ const EateryList = ({ history, match }) => {
     )
 }
 
-export default EateryList
+export default OrderList

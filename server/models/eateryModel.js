@@ -30,7 +30,7 @@ const eaterySchema = mongoose.Schema(
     address: {
         type: String,
         required: true,
-      },
+    },
     image: {
       type: String,
       required: true,
@@ -46,27 +46,22 @@ const eaterySchema = mongoose.Schema(
     menu: [menuSchema],
     rating: {
       type: Number,
-   
       default: 0,
     },
     payNowEnable: {
       type: Boolean,
-
       default: true,
     },
     payLaterEnable: {
       type: Boolean,
-     
       default: false,
     },
     numReviews: {
       type: Number,
-     
       default: 0,
     },
     isOpen: {
       type: Boolean,
-     
       default: true,
     },
     active: {

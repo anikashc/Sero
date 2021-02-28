@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Col,Button, Form, ListGroup, Tab, Row} from 'react-bootstrap'
-import {saveCustomerMeta} from '../actions/cartActions'
+import { Col,Button, ListGroup, Tab, Row} from 'react-bootstrap'
+// import {saveCustomerMeta} from '../actions/cartActions'
 import FormContainer from '../Components/FormContainer'
 import CheckoutSteps from '../Components/CheckoutSteps'
 import Message from '../Components/Message'
+import {createOrder} from '../actions/orderActions'
 import { Link } from 'react-router-dom'
+import {ORDER_CREATE_RESET} from '../constants/orderConstants'
 
 
 
 const Payment = ({history}) => {
+    const [paymentMethod, setPaymentMethod] = useState('UPI')
+  
     const cart = useSelector(state=>state.cart)
     const {cartItems, eateryDetails, customerMeta}=cart
 
     const dispatch = useDispatch()
     
-    //console.log(customerMeta)
 
-    // const orderCreate = useSelector((state) => state.orderCreate)
-    // const { order, success, error } = orderCreate
+
+    const orderCreate = useSelector((state) => state.orderCreate)
+    const { order, success, error } = orderCreate
     
     useEffect(() => {
 
@@ -26,14 +30,15 @@ const Payment = ({history}) => {
             history.push('/checkout');
         }
         else{
-            // if (success) {
-            //     history.push(`/order/${order._id}`)
-            //     dispatch({ type: USER_DETAILS_RESET })
-            //     dispatch({ type: ORDER_CREATE_RESET })
-            // }
+            if (success) {
+              
+                //console.log("Order is created but wait for confirmation")
+                history.push(`/orderSummary/${order._id}`)
+                dispatch({ type: ORDER_CREATE_RESET })
+            }
         }
 
-    }, [history, customerMeta, eateryDetails])
+    }, [history, customerMeta, success, eateryDetails])
 
     //   Calculate prices
     const addDecimals = (num) => {
@@ -50,21 +55,28 @@ const Payment = ({history}) => {
         Number(cart.taxPrice)
     ).toFixed(2)
 
+
     
     const placeOrderHandler = () => {
-        // dispatch(
-        //   createOrder({
-        //     orderItems: cart.cartItems,
-        //     shippingAddress: cart.shippingAddress,
-        //     paymentMethod: cart.paymentMethod,
-        //     itemsPrice: cart.itemsPrice,
-        //     shippingPrice: cart.shippingPrice,
-        //     taxPrice: cart.taxPrice,
-        //     totalPrice: cart.totalPrice,
-        //   })
-        // )
-        history.push('/orderSummary');
+        dispatch(
+          createOrder({
+            eateryId: eateryDetails._id,
+            customerMeta: {
+                name: customerMeta.name,
+                phone: customerMeta.phone,
+                email: customerMeta.email
+            },
+            orderItems: cart.cartItems,
+            paymentMethod: paymentMethod,
+            itemsPrice: cart.itemsPrice,
+            paymentType: cart.customerMeta.paymentType,
+            taxPrice: cart.taxPrice,
+            totalPrice: cart.totalPrice,
+          })
+        )
     }
+
+
     
     
     return (
@@ -110,10 +122,10 @@ const Payment = ({history}) => {
                             <Row>
                                 <Col sm={6}>
                                 <ListGroup>
-                                    <ListGroup.Item action href="#link1">
+                                    <ListGroup.Item action href="#link1" onClick={(e)=>setPaymentMethod('UPI')}>
                                     UPI
                                     </ListGroup.Item>
-                                    <ListGroup.Item action href="#link2">
+                                    <ListGroup.Item action href="#link2" onClick={(e)=>setPaymentMethod('PayTM')}>
                                     PayTM
                                     </ListGroup.Item>
                                 </ListGroup>
@@ -135,7 +147,7 @@ const Payment = ({history}) => {
 
                 </ListGroup>
                 <ListGroup.Item>
-                {/* {error && <Message variant='danger'>{error}</Message>} */}
+                {error && <Message variant='danger'>{error}</Message>}
                 </ListGroup.Item>
                 
                 <Button
@@ -144,8 +156,8 @@ const Payment = ({history}) => {
                     disabled={cartItems.length === 0 || !eateryDetails}
                     onClick={placeOrderHandler}
                 >
-                    Check Payment Status
-                </Button>            
+                    Place Order
+                </Button>         
             </FormContainer>
 
             

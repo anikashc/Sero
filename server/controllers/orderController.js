@@ -10,10 +10,10 @@ const addOrderItems = asyncHandler(async (req, res) => {
     orderItems,
     customerMeta,
     paymentMethod,
+    paymentType,
     itemsPrice,
     taxPrice,
     totalPrice,
-    completed
   } = req.body
 
   if (orderItems && orderItems.length === 0) {
@@ -22,14 +22,14 @@ const addOrderItems = asyncHandler(async (req, res) => {
     return
   } else {
     const order = new Order({
-        eateryId,
+        eatery: eateryId,
         orderItems,
         customerMeta,
         paymentMethod,
+        paymentType,
         itemsPrice,
         taxPrice,
         totalPrice,
-        completed
     })
 
     const createdOrder = await order.save()
@@ -40,12 +40,9 @@ const addOrderItems = asyncHandler(async (req, res) => {
 
 // @desc    Get order by ID
 // @route   GET /api/orders/:id
-// @access  Private
+// @access  Public
 const getOrderById = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id).populate(
-    'user',
-    'name email'
-  )
+  const order = await Order.findById(req.params.id)
 
   if (order) {
     res.json(order)
@@ -57,19 +54,14 @@ const getOrderById = asyncHandler(async (req, res) => {
 
 // @desc    Update order to paid
 // @route   GET /api/orders/:id/pay
-// @access  Private
+// @access  Private Admin and Eatery
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
 
   if (order) {
     order.isPaid = true
     order.paidAt = Date.now()
-    order.paymentResult = {
-      id: req.body.id,
-      status: req.body.status,
-      update_time: req.body.update_time,
-      email_address: req.body.payer.email_address,
-    }
+
 
     const updatedOrder = await order.save()
 
@@ -99,11 +91,33 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Get logged in user orders
+// @desc    Update order to cancelled
+// @route   GET /api/orders/:id/cancel
+// @access  Private/Admin/Eatery
+const cancelOrder = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+
+  if (order) {
+    order.cancelled = true
+
+    const updatedOrder = await order.save()
+
+    res.json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
+
+
+
+// @desc    Get eatery orders
 // @route   GET /api/orders/myorders
-// @access  Private
+// @access  Private Eateries
 const getMyOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: req.user._id })
+  
+  const orders = await Order.find({ eatery: req.user.eatery })
+  
   res.json(orders)
 })
 
@@ -122,4 +136,5 @@ export {
   updateOrderToDelivered,
   getMyOrders,
   getOrders,
+  cancelOrder
 }

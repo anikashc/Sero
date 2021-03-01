@@ -21,7 +21,7 @@ import UserEdit from './Screens/UserEdit';
 import EateryList from './Screens/EateryList';
 import EateryEdit from './Screens/EateryEdit';
 import OrderSummary from './Screens/OrderSummary';
-import OrderList from './Screens/OrderList';
+import MyOrderList from './Screens/MyOrderList';
 function App() {
 
     return (
@@ -43,7 +43,7 @@ function App() {
             <Route path = '/checkout' component={Checkout} />
             <Route path = '/payment' component={Payment} />
             <Route path = '/orderSummary/:id' component={OrderSummary} />
-            <Route path = '/orders' component={OrderList} />
+            <Route path = '/myorders' component={MyOrderList} />
             <Route path = '/feedback' component={Feedback} />
             <Route path = '/admin/userlist' component={UserList} />
             <Route path = '/admin/user/:id/edit' component={UserEdit} />

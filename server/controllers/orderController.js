@@ -62,7 +62,6 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     order.isPaid = true
     order.paidAt = Date.now()
 
-
     const updatedOrder = await order.save()
 
     res.json(updatedOrder)
@@ -72,15 +71,15 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Update order to delivered
-// @route   GET /api/orders/:id/deliver
-// @access  Private/Admin
-const updateOrderToDelivered = asyncHandler(async (req, res) => {
+// @desc    Update order to completed
+// @route   GET /api/orders/:id/complete
+// @access  Private/Admin/Eatery
+const updateOrderToCompleted = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
 
   if (order) {
-    order.isDelivered = true
-    order.deliveredAt = Date.now()
+    order.completed = true
+    order.completedAt = Date.now()
 
     const updatedOrder = await order.save()
 
@@ -125,7 +124,7 @@ const getMyOrders = asyncHandler(async (req, res) => {
 // @route   GET /api/orders
 // @access  Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({}).populate('user', 'id name')
+  const orders = await Order.find({})
   res.json(orders)
 })
 
@@ -133,7 +132,7 @@ export {
   addOrderItems,
   getOrderById,
   updateOrderToPaid,
-  updateOrderToDelivered,
+  updateOrderToCompleted,
   getMyOrders,
   getOrders,
   cancelOrder

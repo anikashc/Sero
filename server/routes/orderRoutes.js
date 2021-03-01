@@ -4,10 +4,10 @@ import {
   addOrderItems,
   getOrderById,
   updateOrderToPaid,
-  updateOrderToDelivered,
   getMyOrders,
   getOrders,
   cancelOrder,
+  updateOrderToCompleted,
 } from '../controllers/orderController.js'
 import { protect, common } from '../middleware/authMiddleware.js'
 
@@ -16,6 +16,6 @@ router.route('/myorders').get(protect, getMyOrders)
 router.route('/:id').get(getOrderById)
 router.route('/:id/pay').put(protect, common, updateOrderToPaid)
 router.route('/:id/cancel').put(protect, common, cancelOrder)
-router.route('/:id/completed').put(protect, common, updateOrderToDelivered)
+router.route('/:id/complete').put(protect, common, updateOrderToCompleted)
 
 export default router

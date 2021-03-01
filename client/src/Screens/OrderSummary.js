@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,8 +10,8 @@ import {
   getOrderDetails,
 } from '../actions/orderActions'
 
-
-const OrderSummary = ({ match, history }) => {
+let socket
+const OrderSummary = ({ match}) => {
   const orderId = match.params.id
 
 
@@ -36,15 +37,45 @@ const OrderSummary = ({ match, history }) => {
       order.orderItems.reduce((acc, item) => acc + item.cost * item.qty, 0)
     )
   }
-
+  const ENDPOINT ='localhost:5000'
   useEffect(() => {
-
+    socket =io.connect(ENDPOINT, {reconnect: true})
+    
     if (!order  || order._id !== orderId) {
  
       dispatch(getOrderDetails(orderId))
-    } 
+    }   
+    console.log(socket)
+
+    socket.on('paidOrder', ({orderPaidId})=>{
+      // console.log(orderPaidId)
+      if(orderPaidId===orderId){
+        // console.log('Paid for your Order')
+        dispatch(getOrderDetails(orderId))
+      }
+    }) 
+    socket.on('cancelledOrder', ({orderCancelledId})=>{
+      // console.log(orderCancelledId)
+      if(orderCancelledId===orderId){
+        // console.log('Cancelled for your Order')
+        dispatch(getOrderDetails(orderId))
+      }
+    })
+    socket.on('completedOrder', ({orderCompletedId})=>{
+      // console.log(orderCompletedId)
+      if(orderCompletedId===orderId){
+        // console.log('Completed for your Order')
+        dispatch(getOrderDetails(orderId))
+      }
+    })
+
+    return () => {
+      //socket.emit('disconnect')
+      socket.off()
+    }
     
-  }, [dispatch, orderId, order])
+  }, [dispatch, orderId, order, ENDPOINT])
+
 
 //   const successPaymentHandler = (paymentResult) => {
 //     console.log(paymentResult)
@@ -96,7 +127,7 @@ const OrderSummary = ({ match, history }) => {
               
               {order.completed ? (
                 <Message variant='success'>
-                  Completed on {order.completedAt}
+                  Completed on {order.completedAt.substring(0,10)}
                 </Message>
               ) : (
                 <Message variant='primary'>In Progress</Message>
@@ -126,7 +157,7 @@ const OrderSummary = ({ match, history }) => {
               </Row>
               
               {order.isPaid ? (
-                <Message variant='success'>Paid on {order.paidAt}</Message>
+                <Message variant='success'>Paid on {order.paidAt.substring(0,10)}</Message>
               ) : (
                 <Message variant='danger'>Not Paid</Message>
               )}
@@ -169,7 +200,6 @@ const OrderSummary = ({ match, history }) => {
                 <Row>
                   <Col>Items</Col>
                   <Col>₹{order.itemsPrice}</Col>
-                  {console.log(order.itemsPrice)}
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>

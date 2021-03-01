@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import io from 'socket.io-client'
 import { useDispatch, useSelector } from 'react-redux'
 import { Col,Button, ListGroup, Tab, Row} from 'react-bootstrap'
 // import {saveCustomerMeta} from '../actions/cartActions'
@@ -9,7 +10,7 @@ import {createOrder} from '../actions/orderActions'
 import { Link } from 'react-router-dom'
 import {ORDER_CREATE_RESET} from '../constants/orderConstants'
 
-
+let socket
 
 const Payment = ({history}) => {
     const [paymentMethod, setPaymentMethod] = useState('UPI')
@@ -19,26 +20,31 @@ const Payment = ({history}) => {
 
     const dispatch = useDispatch()
     
-
+    const ENDPOINT ='localhost:5000'
 
     const orderCreate = useSelector((state) => state.orderCreate)
     const { order, success, error } = orderCreate
     
     useEffect(() => {
-
+        socket =io.connect(ENDPOINT, {reconnect: true})
         if(!customerMeta){
             history.push('/checkout');
         }
         else{
             if (success) {
-              
+                
+                socket.emit('orderPlaced')
                 //console.log("Order is created but wait for confirmation")
                 history.push(`/orderSummary/${order._id}`)
                 dispatch({ type: ORDER_CREATE_RESET })
             }
         }
+        return () => {
+            //socket.emit('disconnect')
+            socket.off()
+        }
 
-    }, [history, customerMeta, success, eateryDetails])
+    }, [history, customerMeta, success, eateryDetails, ENDPOINT])
 
     //   Calculate prices
     const addDecimals = (num) => {

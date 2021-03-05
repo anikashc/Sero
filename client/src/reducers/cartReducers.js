@@ -56,7 +56,7 @@ export const cartReducer = (state ={cartItems:[], eateryDetails:{}, customerMeta
             
             return{
                 ...state,
-                customerMeta: action.payload,
+                customerMeta: action.payload.data,
 
             }
             

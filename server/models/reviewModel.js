@@ -15,13 +15,20 @@ const reviewSchema = mongoose.Schema(
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
+        },
+        order: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Order'
         }
-
     },
     {
         timestamps: true,
     }
 )
+
+// Duplicate review with the same payload (phone number and orderId) shall return 409.
+reviewSchema.index( { phoneNumber: 1, order: 1 }, {unique:true} )
+
 const Review = mongoose.model('Review', reviewSchema)
 
 export default Review

@@ -45,7 +45,9 @@ const OrderSummary = ({ match}) => {
  
       dispatch(getOrderDetails(orderId))
     }   
-    console.log(socket)
+    //console.log(socket)
+
+    
 
     socket.on('paidOrder', ({orderPaidId})=>{
       // console.log(orderPaidId)

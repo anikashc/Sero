@@ -68,17 +68,17 @@ io.on("connection", (socket) => {
     
 
     socket.on('paid',({orderPaidId})=>{
-        console.log(orderPaidId)
         socket.broadcast.emit('paidOrder', {orderPaidId});
     })
+    
     socket.on('completed',({orderCompletedId})=>{
-        console.log(orderCompletedId)
         socket.broadcast.emit('completedOrder', {orderCompletedId});
     })
+
     socket.on('cancelled',({orderCancelledId})=>{
-        console.log(orderCancelledId)
         socket.broadcast.emit('cancelledOrder', {orderCancelledId});
     })
+
     socket.on('orderPlaced',()=>{
         socket.broadcast.emit('refreshOrders');
     })

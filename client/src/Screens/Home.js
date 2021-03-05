@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Container, InputGroup, FormControl } from 'react-bootstrap';
+import { Row, Col, Container, InputGroup, FormControl, ListGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Eatery from '../Components/Eatery';
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
 import { listEateries } from '../actions/eateryActions'
+import { Link } from 'react-router-dom';
 
 const Home = () => {
 
     const dispatch = useDispatch();
 
     const [input, setInput] = useState("");
+    const [openList, setOpenList] = useState(false);
 
     const eateryList = useSelector(state => state.eateryList);
-    let {loading, error, eateries} = eateryList;
+    const {loading, error, eateries} = eateryList;
+
+    let openListEateries = eateries
 
     useEffect(() => {
 
@@ -21,18 +25,24 @@ const Home = () => {
     }, [dispatch]);
 
     const handleChange = (e) => {
-
+        setOpenList(true)
         e.preventDefault();
         setInput(e.target.value);
     }
-
+    
     if(input.length > 0) {
-
-        eateries = eateries.filter((i) => {
-
-            return i.name.toLowerCase().match(input);
+        
+        let typed=input.toLowerCase()
+        openListEateries = openListEateries.filter((i) => {
+            return i.name.toLowerCase().match(typed);
         });
     }
+    else if(input.length === 0 && openList){
+        setOpenList(false)
+    }
+    
+    
+    
 
     return (
         <>
@@ -63,6 +73,24 @@ const Home = () => {
                                             value={input}
                                             />
                                         </InputGroup>
+                                        {openList?(
+
+                                        <ListGroup>
+                                            {openListEateries.length===0?(
+                                                <ListGroup.Item fluid>
+                                                    Sorry not with us right now ':('
+                                                </ListGroup.Item>   
+                                            ):(
+                                                openListEateries.map(openListEatery => (
+                                                    <Link to={`/menu/${openListEatery._id}`}>
+                                                        <ListGroup.Item key={openListEatery._id}>
+                                                            {openListEatery.active?openListEatery.name:null}
+                                                        </ListGroup.Item>
+                                                    </Link>
+                                                ))
+                                            )}
+                                        </ListGroup>
+                                        ):null}
 
                                         </div>
                                     </form>
@@ -73,9 +101,7 @@ const Home = () => {
                     
                     <Container className="features-icons">
                         <center>
-                            {input.length > 0 ? (
-                                <h2 className='mt-10 pt-10'>Search Results...</h2>) : (
-                                <h2 className='mt-10 pt-10'>Trending Eateries...</h2>)}
+                                <h2 className='mt-10 pt-10'>Trending Eateries...</h2>
                         </center>
                         
                         <Row className='px-10'>

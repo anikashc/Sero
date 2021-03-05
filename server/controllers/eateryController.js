@@ -39,10 +39,10 @@ const getEateryById = asyncHandler(async(req, res) => {
 
 // @desc... Create Eatery Review
 // @route... POST /api/eateries/:id/reviews
-// @access... Private/Common(Admin and Eatery)
+// @access... Public
 const createEateryReview = asyncHandler(async(req, res) => {
 
-    const {rating, comment, name, email} = req.body
+    const {rating, comment, name, email, orderId} = req.body
     const eatery = await Eatery.findById(req.params.id)
 
     if(eatery){
@@ -52,7 +52,8 @@ const createEateryReview = asyncHandler(async(req, res) => {
             rating: Number(rating),
             comment: comment,
             email: email,
-            eatery: eatery._id
+            eatery: eatery._id,
+            order: orderId
         })
 
         const createdReview = await review.save()

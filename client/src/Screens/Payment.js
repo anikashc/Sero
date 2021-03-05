@@ -13,7 +13,7 @@ import {ORDER_CREATE_RESET} from '../constants/orderConstants'
 let socket
 
 const Payment = ({history}) => {
-    const [paymentMethod, setPaymentMethod] = useState('UPI')
+    const [paymentMethod, setPaymentMethod] = useState('null')
   
     const cart = useSelector(state=>state.cart)
     const {cartItems, eateryDetails, customerMeta}=cart
@@ -64,22 +64,26 @@ const Payment = ({history}) => {
 
     
     const placeOrderHandler = () => {
-        dispatch(
-          createOrder({
-            eateryId: eateryDetails._id,
-            customerMeta: {
-                name: customerMeta.name,
-                phone: customerMeta.phone,
-                email: customerMeta.email
-            },
-            orderItems: cart.cartItems,
-            paymentMethod: paymentMethod,
-            itemsPrice: cart.itemsPrice,
-            paymentType: cart.customerMeta.paymentType,
-            taxPrice: cart.taxPrice,
-            totalPrice: cart.totalPrice,
-          })
-        )
+
+        
+
+            dispatch(
+              createOrder({
+                eateryId: eateryDetails._id,
+                customerMeta: {
+                    name: customerMeta.name,
+                    phone: customerMeta.phone,
+                    email: customerMeta.email
+                },
+                orderItems: cart.cartItems,
+                paymentMethod: paymentMethod,
+                itemsPrice: cart.itemsPrice,
+                paymentType: cart.customerMeta.paymentType,
+                taxPrice: cart.taxPrice,
+                totalPrice: cart.totalPrice,
+              })
+            )
+        
     }
 
 
@@ -122,44 +126,47 @@ const Payment = ({history}) => {
                         <Col>₹{cart.totalPrice}</Col>
                         </Row>
                     </ListGroup.Item>
-
-                    <ListGroup.Item>
-                        <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
-                            <Row>
-                                <Col sm={6}>
-                                <ListGroup>
-                                    <ListGroup.Item action href="#link1" onClick={(e)=>setPaymentMethod('UPI')}>
-                                    UPI
-                                    </ListGroup.Item>
-                                    <ListGroup.Item action href="#link2" onClick={(e)=>setPaymentMethod('PayTM')}>
-                                    PayTM
-                                    </ListGroup.Item>
-                                </ListGroup>
-                                </Col>
-                                <Col sm={6}>
-                                <Tab.Content>
-                                    <Tab.Pane eventKey="#link1">
-                                    <h6>{eateryDetails.upi}</h6>
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="#link2">
-                                    <h6>{eateryDetails.paytm}</h6>
-                                    </Tab.Pane>
-                                </Tab.Content>
-                                </Col>
-                                
-                            </Row>
-                        </Tab.Container>
-                    </ListGroup.Item>
+                    {customerMeta.paymentType==='payNow'?(
+                        <ListGroup.Item>
+                            <Tab.Container id="list-group-tabs-example">
+                                <Row>
+                                    <Col sm={6}>
+                                    <ListGroup>
+                                        <ListGroup.Item action href="#link1" onClick={(e)=>setPaymentMethod('UPI')}>
+                                        UPI
+                                        </ListGroup.Item>
+                                        <ListGroup.Item action href="#link2" onClick={(e)=>setPaymentMethod('PayTM')}>
+                                        PayTM
+                                        </ListGroup.Item>
+                                    </ListGroup>
+                                    </Col>
+                                    <Col sm={6}>
+                                    <Tab.Content>
+                                        <Tab.Pane eventKey="#link1">
+                                        <h6>{eateryDetails.upi}</h6>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="#link2">
+                                        <h6>{eateryDetails.paytm}</h6>
+                                        </Tab.Pane>
+                                    </Tab.Content>
+                                    </Col>
+                                    
+                                </Row>
+                            </Tab.Container>
+                        </ListGroup.Item>
+                    ):(
+                        null
+                    )}
+                    
 
                 </ListGroup>
                 <ListGroup.Item>
                 {error && <Message variant='danger'>{error}</Message>}
                 </ListGroup.Item>
-                
                 <Button
                     type='button'
                     className='btn-block'
-                    disabled={cartItems.length === 0 || !eateryDetails}
+                    disabled={cartItems.length === 0 || !eateryDetails || (paymentMethod==='null' && cart.customerMeta.paymentType==='payNow')}
                     onClick={placeOrderHandler}
                 >
                     Place Order

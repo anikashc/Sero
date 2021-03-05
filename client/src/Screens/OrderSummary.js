@@ -2,13 +2,21 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card, Button,Tab } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
 import {
   getOrderDetails,
+  paymentDone
 } from '../actions/orderActions'
+import {
+  listEateryDetails,
+} from '../actions/eateryActions'
+import { ORDER_PAYMENT_DONE_RESET } from '../constants/orderConstants'
+import { CART_RESET } from '../constants/cartConstants'
+
+
 
 let socket
 const OrderSummary = ({ match}) => {
@@ -20,11 +28,13 @@ const OrderSummary = ({ match}) => {
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error } = orderDetails
 
-//   const orderPay = useSelector((state) => state.orderPay)
-//   const { loading: loadingPay, success: successPay } = orderPay
+  const eateryDetails = useSelector((state) => state.eateryDetails)
+  const {loading:eateryLoading, error: eateryError, eatery} = eateryDetails
 
-//   const orderDeliver = useSelector((state) => state.orderDeliver)
-//   const { loading: loadingDeliver, success: successDeliver } = orderDeliver
+  const [paymentMethod, setPaymentMethod] = useState('null')
+
+  const orderCustomerPaid = useSelector((state) => state.orderCustomerPaid)
+  const { loading: loadingPay, success: successPay, error: errorPay } = orderCustomerPaid
 
 
   if (!loading) {
@@ -44,8 +54,20 @@ const OrderSummary = ({ match}) => {
     if (!order  || order._id !== orderId) {
  
       dispatch(getOrderDetails(orderId))
-    }   
+      
+    }  
+    else if(!eatery){
+      dispatch(listEateryDetails(order.eatery))
+    } 
     //console.log(socket)
+    console.log(successPay)
+    if(successPay){
+      const eateryIdforSocket=order.eatery
+      dispatch(getOrderDetails(orderId))
+      socket.emit('customerPaid',{eateryIdforSocket})
+      dispatch({ type: ORDER_PAYMENT_DONE_RESET }) 
+    }
+
 
     
 
@@ -68,6 +90,7 @@ const OrderSummary = ({ match}) => {
       if(orderCompletedId===orderId){
         // console.log('Completed for your Order')
         dispatch(getOrderDetails(orderId))
+        dispatch({type: CART_RESET})
       }
     })
 
@@ -76,17 +99,16 @@ const OrderSummary = ({ match}) => {
       socket.off()
     }
     
-  }, [dispatch, orderId, order, ENDPOINT])
+  }, [dispatch, orderId, order, ENDPOINT,eatery,successPay])
 
 
-//   const successPaymentHandler = (paymentResult) => {
-//     console.log(paymentResult)
-//     dispatch(payOrder(orderId, paymentResult))
-//   }
-
-//   const deliverHandler = () => {
-//     dispatch(deliverOrder(order))
-//   }
+  const paymentHandler = () =>{
+    dispatch(paymentDone({
+        _id: orderId,
+        paymentMethod: paymentMethod
+    }
+    ))
+  }
 
   return loading ? (
     <Loader />
@@ -121,7 +143,7 @@ const OrderSummary = ({ match}) => {
                   <Col>
                     <p>
                         <strong>Eatery: </strong> <Link to={`/menu/${order.eatery}`}>
-                            {order.eatery}</Link>
+                            {eatery.name}</Link>
                     </p>
                   </Col>
               </Row>
@@ -150,12 +172,14 @@ const OrderSummary = ({ match}) => {
                         {order.paymentType}
                     </p>  
                 </Col>
-                <Col>
-                    <p>
-                        <strong>Mode: </strong>
-                        {order.paymentMethod}
-                    </p>  
-                </Col>
+                {order.paymentMethod!=='null'?(
+                  <Col>
+                      <p>
+                          <strong>Mode: </strong>
+                          {order.paymentMethod}
+                      </p>  
+                  </Col>
+                ):null}
               </Row>
               
               {order.isPaid ? (
@@ -216,6 +240,52 @@ const OrderSummary = ({ match}) => {
                   <Col>₹{order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+              
+              {(order.paymentType==='payLater' && order.paymentMethod==='null')?(
+                <>
+                  <ListGroup.Item>
+                    <Tab.Container id="list-group-tabs-example">
+                        <Row>
+                            <Col sm={6}>
+                            <ListGroup>
+                                <ListGroup.Item action href="#link1" onClick={(e)=>setPaymentMethod('UPI')}>
+                                UPI
+                                </ListGroup.Item>
+                                <ListGroup.Item action href="#link2" onClick={(e)=>setPaymentMethod('PayTM')}>
+                                PayTM
+                                </ListGroup.Item>
+                            </ListGroup>
+                            </Col>
+                            <Col sm={6}>
+                            <Tab.Content>
+                                <Tab.Pane eventKey="#link1">
+                                <h6>{eatery.upi}</h6>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="#link2">
+                                <h6>{eatery.paytm}</h6>
+                                </Tab.Pane>
+                            </Tab.Content>
+                          </Col>
+                        </Row>
+                      </Tab.Container>
+                  </ListGroup.Item>
+                  
+                  <ListGroup.Item>
+                    <Button
+                      type='button'
+                      className='btn btn-block'
+                      onClick={()=>paymentHandler(order)}
+                      disabled={paymentMethod==='null' || order.cancelled}
+                    >
+                      Payment Done
+                    </Button>
+                  </ListGroup.Item>
+                  {loadingPay && <Loader />}
+                  {errorPay && <Message variant='danger'>{errorPay}</Message>}
+                </>
+
+                
+              ):(null)}
               {/* {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}

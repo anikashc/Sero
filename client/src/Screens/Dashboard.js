@@ -69,9 +69,7 @@ const Dashboard = ({history}) => {
                 setName(user.name)
                 setEmail(user.email)
                 setPhoneNumber(user.phoneNumber)
-                dispatch(listEateryDetails(user.eatery)) 
-
-                
+                dispatch(listEateryDetails(user.eatery))  
             }
         }
         if(successPay){
@@ -92,6 +90,11 @@ const Dashboard = ({history}) => {
             dispatch(listMyOrders())
             dispatch({ type: ORDER_COMPLETED_RESET })
         }
+        socket.on('customerPaidOrder', ({eateryIdforSocket})=>{
+            if(eateryIdforSocket===userInfo.eatery){
+              dispatch(listMyOrders())
+            }
+        }) 
         socket.on('refreshOrders', ()=>{
               dispatch(listMyOrders())
         }) 
@@ -268,7 +271,12 @@ const Dashboard = ({history}) => {
                                                         order.isPaid?<i class="fas fa-check-circle"></i>
                                                         :<Button className='btn-sm' onClick={()=>payHandler(order)}>Paid</Button>
                                                     ):
-                                                        ('Paid')}</td>
+                                                        (order.paymentMethod!=='null'?(
+                                                            order.isPaid?<i class="fas fa-check-circle"></i>
+                                                            :<Button className='btn-sm' onClick={()=>payHandler(order)}>Paid</Button> 
+                                                        ):(
+                                                            'Progress'
+                                                        ))}</td>
                                                     {/* <td><Button className='btn-sm' onClick={()=>payHandler(order)}>Paid</Button></td> */}
                                                     <td>{order.customerMeta.name}</td>
                                                     <td>{order.customerMeta.phone}</td>
@@ -276,12 +284,12 @@ const Dashboard = ({history}) => {
                                                     <td>₹{order.totalPrice}</td>
                                                     
                                                     <td>{order.paymentMethod}</td>
-                                                    <td>{order.completed?'Completed':(<Button className='btn-sm' variant='success' onClick={()=>completeHandler(order)}>Complete</Button>)}</td> 
+                                                    <td>{order.completed?'Completed':(<Button className='btn-sm' variant='success' disabled={!order.isPaid} onClick={()=>completeHandler(order)}>Complete</Button>)}</td> 
                                                     <td><LinkContainer to={`/orderSummary/${order._id}`}>
                                                     <Button className='btn-sm' variant='light'><i class="fas fa-info-circle"></i></Button>
                                                         </LinkContainer>
                                                     </td> 
-                                                    <td>{order.cancelled?'Cancelled':(<Button className='btn-sm' variant='danger' onClick={()=>cancelHandler(order)}>Cancel</Button>)}</td> 
+                                                    <td>{order.cancelled?'Cancelled':(<Button className='btn-sm' variant='danger' disabled={order.isPaid} onClick={()=>cancelHandler(order)}>Cancel</Button>)}</td> 
                                                 </tr>
                                                 ):(null)
                                             

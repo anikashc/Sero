@@ -70,7 +70,11 @@ io.on("connection", (socket) => {
     socket.on('paid',({orderPaidId})=>{
         socket.broadcast.emit('paidOrder', {orderPaidId});
     })
-    
+
+    socket.on('customerPaid',({eateryIdforSocket})=>{
+        socket.broadcast.emit('customerPaidOrder', {eateryIdforSocket});
+    })
+
     socket.on('completed',({orderCompletedId})=>{
         socket.broadcast.emit('completedOrder', {orderCompletedId});
     })

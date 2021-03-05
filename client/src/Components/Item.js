@@ -52,7 +52,7 @@ const Item = ({item,eateryDetailProp}) => {
         if(existItem){
             existingQty=existItem.qty
         }
-        console.log(existItem)
+        
 
     }
     const [qty,setQty]=useState(existingQty)

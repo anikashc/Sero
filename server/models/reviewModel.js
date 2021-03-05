@@ -18,7 +18,8 @@ const reviewSchema = mongoose.Schema(
         },
         order: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Order'
+            ref: 'Order',
+            required: true,
         }
     },
     {

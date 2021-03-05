@@ -19,12 +19,12 @@ const Checkout = ({history}) => {
 
         console.log(paymentType)
 
-        if(paymentType=='payLater'){
-            history.push('/orderSummary')
-        }
-        else{
+        // if(paymentType=='payLater'){
+        //     history.push('/orderSummary')
+        // }
+        // else{
             history.push('/payment')
-        }
+        //}
         
     }
     return (

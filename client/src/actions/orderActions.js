@@ -16,12 +16,15 @@ import {
   ORDER_LIST_MY_REQUEST, 
   ORDER_LIST_MY_SUCCESS,
   ORDER_LIST_REQUEST,
+  ORDER_PAYMENT_DONE_FAIL,
+  ORDER_PAYMENT_DONE_REQUEST,
+  ORDER_PAYMENT_DONE_SUCCESS,
   ORDER_PAY_FAIL,
   ORDER_PAY_REQUEST,
   ORDER_PAY_SUCCESS
 } from '../constants/orderConstants'
 import { logout } from './userActions'
-export const createOrder = (order) => async (dispatch, getState) => {
+export const createOrder = (order) => async (dispatch) => {
     try {
       dispatch({
         type: ORDER_CREATE_REQUEST,
@@ -225,6 +228,31 @@ export const cancelOrder = (order) => async (dispatch, getState) => {
     }
     dispatch({
       type: ORDER_CANCEL_FAIL,
+      payload: message,
+    })
+  }
+}
+
+export const paymentDone = (order) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_PAYMENT_DONE_REQUEST,
+    })
+
+    const { data } = await axios.put(`/api/orders/${order._id}/customerPayment`, order)
+
+    dispatch({
+      type: ORDER_PAYMENT_DONE_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    
+    dispatch({
+      type: ORDER_PAYMENT_DONE_FAIL,
       payload: message,
     })
   }

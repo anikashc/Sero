@@ -5,6 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails } from '../actions/userActions';
 import { listEateryDetails, updateEatery } from '../actions/eateryActions';
 
+const groupBy = (objectArray, property) => {
+    return objectArray.reduce((acc, obj) => {
+       const key = obj[property];
+       if (!acc[key]) {
+          acc[key] = [];
+       }
+       // Add object to list for given key's value
+       acc[key].push(obj);
+       return acc;
+    }, {});
+ }
+
 const DashboardMenu = ({history}) => {
 
     const [addItemButton, setAddItemButton] = useState(0);
@@ -81,6 +93,8 @@ const DashboardMenu = ({history}) => {
 
         setAddItemButton((addItemButton + 1) % 2);
     }
+
+    const menu = groupBy(eateryMenu, 'category')
 
     return (
         <>
@@ -168,7 +182,39 @@ const DashboardMenu = ({history}) => {
 
             <Container className='py-3'>
                 <Row>
-                    {eateryMenu.map((item =>
+                    {Object.keys(menu).map((key, i) => 
+                        (
+                            <Col className='py-3' key={key}>
+                            <h3>{key}</h3>
+                            {menu[key].map((item) => 
+                                <Row key={item.name}>
+                                <Card style={{ height: '15rem', width: '50rem' }}>
+                                    <Card.Img variant="top" src={item.image}
+                                        style={{width: '5rem', height: '5rem' }}
+                                    />
+                                    <Card.Body>
+                                        <Card.Title> {item.name} </Card.Title>
+                                        <Card.Text>
+                                            {item.description}
+                                        </Card.Text>
+                                        <h6>{item.isAvailable ? 'Available' : 'Not available'}</h6>
+                                        <ButtonGroup>
+                                            <Col>
+                                                <Button variant='warning'>Edit</Button>
+                                            </Col>
+                                            <Col>
+                                                <Button onClick={deleteMenu(item._id)} variant='warning'>Delete</Button>
+                                            </Col>
+                                        </ButtonGroup>
+                                    </Card.Body>
+                                </Card>
+                            </Row>
+                            )}
+                        </Col>
+
+                        )
+                    )}
+                    {/* {eateryMenu.map((item =>
                         <Col className='py-3'>
                             <Row>
                                 <Card style={{ height: '15rem', width: '50rem' }}>
@@ -193,7 +239,7 @@ const DashboardMenu = ({history}) => {
                                 </Card>
                             </Row>
                         </Col>
-                    ))}
+                    ))} */}
                 </Row>
             </Container>
         </>

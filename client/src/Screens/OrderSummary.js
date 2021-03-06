@@ -2,40 +2,49 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
-import { Row, Col, ListGroup, Image, Card, Button,Tab } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card, Button,Tab, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
 import {
   getOrderDetails,
-  paymentDone
+  paymentDone,
 } from '../actions/orderActions'
 import {
   listEateryDetails,
+  createEateryReview
 } from '../actions/eateryActions'
 import { ORDER_PAYMENT_DONE_RESET } from '../constants/orderConstants'
 import { CART_RESET } from '../constants/cartConstants'
+import {EATERY_CREATE_REVIEW_RESET} from '../constants/eateryConstants'
 
 
 
 let socket
 const OrderSummary = ({ match}) => {
   const orderId = match.params.id
-
-
+  //const [eateryID, setEateryID] = useState('')
+  //const [name, setName] = useState('')
+  //const [email, setEmail] = useState('')
+  const [reviewDone, setReviewDone] = useState(false)
+  const [rating, setRating] = useState(0)
+  const [comment, setComment] = useState('')
   const dispatch = useDispatch()
 
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error } = orderDetails
+
+  const eateryCreateReview = useSelector(state => state.eateryCreateReview)
+  const {success: successEateryReview, error: errorEateryReview} = eateryCreateReview
 
   const eateryDetails = useSelector((state) => state.eateryDetails)
   const {loading:eateryLoading, error: eateryError, eatery} = eateryDetails
 
   const [paymentMethod, setPaymentMethod] = useState('null')
 
+
   const orderCustomerPaid = useSelector((state) => state.orderCustomerPaid)
   const { loading: loadingPay, success: successPay, error: errorPay } = orderCustomerPaid
-
 
   if (!loading) {
     //   Calculate prices
@@ -46,8 +55,15 @@ const OrderSummary = ({ match}) => {
     order.itemsPrice = addDecimals(
       order.orderItems.reduce((acc, item) => acc + item.cost * item.qty, 0)
     )
+    //setEateryID(order.eatery)
+    // setName(order.customerMeta.name)
+    // setEmail(order.customerMeta.email)
   }
+
+  // const email = order.customerMeta.email;
+  // const name = order.customerMeta.name;
   const ENDPOINT ='localhost:5000'
+
   useEffect(() => {
     socket =io.connect(ENDPOINT, {reconnect: true})
     
@@ -69,7 +85,6 @@ const OrderSummary = ({ match}) => {
     }
 
 
-    
 
     socket.on('paidOrder', ({orderPaidId})=>{
       // console.log(orderPaidId)
@@ -90,17 +105,35 @@ const OrderSummary = ({ match}) => {
       if(orderCompletedId===orderId){
         // console.log('Completed for your Order')
         dispatch(getOrderDetails(orderId))
-        dispatch({type: CART_RESET})
+        // dispatch({type: CART_RESET})
       }
     })
+
+    if(successEateryReview){
+      alert("Review Submitted")
+      setRating(0)
+      setComment('')
+      setReviewDone(true)
+      dispatch({type: EATERY_CREATE_REVIEW_RESET})
+  }
 
     return () => {
       //socket.emit('disconnect')
       socket.off()
     }
     
-  }, [dispatch, orderId, order, ENDPOINT,eatery,successPay])
+  }, [dispatch, orderId, order, ENDPOINT,eatery,successPay, successEateryReview])
 
+const submitHandler = (e) => {
+  e.preventDefault()
+  dispatch(createEateryReview(order.eatery, {
+      name: order.customerMeta.name,
+      email: order.customerMeta.email,
+      rating,
+      comment,
+      orderId
+  }))
+}
 
   const paymentHandler = () =>{
     dispatch(paymentDone({
@@ -286,6 +319,36 @@ const OrderSummary = ({ match}) => {
 
                 
               ):(null)}
+              {order.completed && (
+                <ListGroup.Item>
+                  {errorEateryReview && (
+                    <Message variant='danger'>{errorEateryReview}</Message>
+                  )}
+                  {reviewDone ? null : (
+                    <Form onSubmit={submitHandler}>
+                    <Form.Group controlId='rating'>
+                      <Form.Label>Rating</Form.Label>
+                      <Form.Control as='select' value={rating} 
+                       onChange={(e) => setRating(e.target.value)}>
+                        <option value=''>Select....</option>
+                        <option value='1'>1 - Poor</option>
+                        <option value='2'>2 - Fair</option>
+                        <option value='3'>3 - Good</option>
+                        <option value='4'>4 - Very Good</option>
+                        <option value='5'>5 - Excellent</option>
+                      </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId='comment'>
+                      <Form.Label>Comment</Form.Label>
+                      <Form.Control as='textarea' rows='3' value={comment} 
+                       onChange={(e) => setComment(e.target.value)}></Form.Control>
+                    </Form.Group>
+                    <Button type='submit' variant='primary'>Submit</Button>
+                  </Form>
+                  )}
+                  
+                </ListGroup.Item>
+              )}
               {/* {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}

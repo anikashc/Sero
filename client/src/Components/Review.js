@@ -57,7 +57,6 @@ export default function Review(props) {
             </Grid>
             <Grid item xs>
                 <Typography className={classes.namestamp}>{props.name}</Typography>
-                <Typography>{props.email}</Typography>
                 <Typography>{props.comment}</Typography>
             </Grid>
             </Grid>

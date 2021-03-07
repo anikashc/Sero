@@ -53,7 +53,7 @@ const MyOrderList = ({ history, match }) => {
                         <th>MODE</th>
                         <th>COMPLETE</th>
                         <th>INFO</th>
-                        <th></th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -67,7 +67,7 @@ const MyOrderList = ({ history, match }) => {
                                 <td>₹{order.totalPrice}</td>
                                 
                                 <td>{order.paymentMethod}</td>
-                                {/* <td><Button className='btn-sm' variant='success' onClick={completeHandler(order)}>Complete</Button></td>  */}
+                                <td>{order.cancelled?('Cancelled'):('Completed')}</td> 
                                 <td><LinkContainer to={`/orderSummary/${order._id}`}>
                                 <Button className='btn-sm' variant='light'><i class="fas fa-info-circle"></i></Button>
                                     </LinkContainer>

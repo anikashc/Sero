@@ -78,7 +78,11 @@ const DashboardMenu = ({history}) => {
 
         dispatch(updateEatery({ _id: eatery._id, menu }));
 
-        setAddItemButton((addItemButton + 1) % 2);
+        setAddItemButton(0);
+
+        setName('');
+        setCost(0);
+        setCategory('');
     }
 
     return (

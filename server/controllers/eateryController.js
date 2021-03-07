@@ -133,6 +133,13 @@ const updateEatery = asyncHandler(async (req, res) => {
         menu,
         active
     } = req.body
+
+    const singleImageUpload = imageUpload.single('image');
+
+    singleImageUpload(req, res, function(error) {
+        
+        image = req.file.location;
+    })
     
     const eatery = await Eatery.findById(req.params.id)
     
@@ -158,7 +165,8 @@ const updateEatery = asyncHandler(async (req, res) => {
     }
     
 
-}) 
+})
+
 export {
     
     getEateries, 

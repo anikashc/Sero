@@ -10,6 +10,7 @@ import { listEateryDetails, updateEatery } from '../actions/eateryActions';
 import {EATERY_UPDATE_RESET} from '../constants/eateryConstants'
 
 function EateryEdit({ match, history }) {
+    
     const eateryId = match.params.id
     
     const [name, setName] = useState('')
@@ -73,7 +74,29 @@ function EateryEdit({ match, history }) {
             history.push('/login')
         }
         
-    }, [dispatch, history, eateryId, eatery, userInfo, successUpdate])
+    }, [dispatch, history, eateryId, eatery, userInfo, successUpdate, image])
+
+    const uploadFileHandler = async () => {
+
+        const file = document.getElementById('image');
+        const formData = new FormData()
+        formData.append('image', file)
+
+        setUploading(true)
+
+        try {
+
+            const { data } = await axios.post('/api/upload', formData)
+            
+            setImage(data)
+            setUploading(true)
+
+        } catch (error) {
+
+            console.error(error)
+            setUploading(false)
+        }
+    }
 
     const submitHandler = (e) => {
 
@@ -94,29 +117,6 @@ function EateryEdit({ match, history }) {
             isOpen
         }))
 
-    }
-
-    const uploadFileHandler = async (e) => {
-        // multiple images can be uploaded
-        const file=e.target.files[0]
-        const formData = new FormData()
-        formData.append('image', file)
-        setUploading(true)
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            }
-      
-            const { data } = await axios.post('/api/upload', formData, config)
-      
-            setImage(data)
-            setUploading(false)
-        } catch (error) {
-            console.error(error)
-            setUploading(false)
-        }
     }
 
     return (
@@ -179,7 +179,10 @@ function EateryEdit({ match, history }) {
                             value={image}
                             onChange={(e) => setImage(e.target.value)}
                         ></Form.Control>
-                        <Form.File id='image-file' label='Choose File' custom onChange={uploadFileHandler}></Form.File>
+                        
+                        <input type="file" id="image"></input>
+                        <Button onClick={uploadFileHandler}>Upload</Button>
+                        
                         {uploading && <Loader />}
                     </Form.Group>
                     

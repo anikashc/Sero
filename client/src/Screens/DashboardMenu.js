@@ -129,7 +129,15 @@ const DashboardMenu = ({history}) => {
         setIsAvailable(menu[0].isAvailable);
     }
 
-    const menu = groupBy(eateryMenu, 'category')
+    let menu = groupBy(eateryMenu, 'category');
+
+    menu = Object.keys(menu)
+        .sort()
+        .reduce((acc, key) => ({
+            ...acc, [key]: menu[key]
+        }), {})
+
+    console.log(menu);
 
     return (
         <>

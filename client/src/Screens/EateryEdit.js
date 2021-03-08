@@ -24,20 +24,20 @@ function EateryEdit({ match, history }) {
     const [numReviews, setNumReviews] = useState(0)
     const [active, setActive] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
+    const [paytm, setPaytm] = useState(false)
+    const [upi, setUpi] = useState(false)
     const [uploading, setUploading] = useState(false)
-
-    const dispatch = useDispatch()
 
     const eateryDetails = useSelector((state) => state.eateryDetails)
     const { loading, error, eatery } = eateryDetails
-
-    console.log(eatery)
 
     const eateryUpdate = useSelector((state) => state.eateryUpdate)
     const { loading: loadingUpdate, error: errorUpdate, success: successUpdate} = eateryUpdate
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
+
+    const dispatch = useDispatch()
 
 
     useEffect(() => {
@@ -59,7 +59,7 @@ function EateryEdit({ match, history }) {
                     setName(eatery.name)
                     setAddress(eatery.address)
                     setCategory(eatery.category)
-                    setImage(eatery.image)
+                    setImage(image || eatery.image)
                     setDescription(eatery.description)
                     setRating(eatery.rating)
                     setPayLaterEnable(eatery.payLaterEnable)
@@ -67,6 +67,8 @@ function EateryEdit({ match, history }) {
                     setIsOpen(eatery.isOpen)
                     setActive(eatery.active)
                     setNumReviews(eatery.numReviews)
+                    setPaytm(eatery.paytm)
+                    setUpi(eatery.upi)
                 }
             }
         }
@@ -76,9 +78,10 @@ function EateryEdit({ match, history }) {
         
     }, [dispatch, history, eateryId, eatery, userInfo, successUpdate, image])
 
-    const uploadFileHandler = async () => {
 
-        const file = document.getElementById('image');
+    const uploadFileHandler = async (e) => {
+        
+        const file = e.target.files[0];
         const formData = new FormData()
         formData.append('image', file)
 
@@ -87,9 +90,9 @@ function EateryEdit({ match, history }) {
         try {
 
             const { data } = await axios.post('/api/upload', formData)
-            
+
             setImage(data)
-            setUploading(true)
+            setUploading(false)
 
         } catch (error) {
 
@@ -101,7 +104,9 @@ function EateryEdit({ match, history }) {
     const submitHandler = (e) => {
 
         e.preventDefault()
+
         console.log('happening')
+        
         dispatch(updateEatery({
             _id: eateryId,
             name,
@@ -114,10 +119,11 @@ function EateryEdit({ match, history }) {
             payLaterEnable, 
             numReviews,
             active,
-            isOpen
+            isOpen,
+            paytm,
+            upi
         }))
-
-    }
+    };
 
     return (
         <Container className='py-3'>
@@ -133,7 +139,9 @@ function EateryEdit({ match, history }) {
             )}
 
             <FormContainer>
+                
                 <h2>Edit Eatery</h2>
+                
                 { errorUpdate && <Message variant='danger'>{ errorUpdate }</Message>}
                 { loadingUpdate && <Loader />}
                 { error && <Message variant='danger'>{ error }</Message>}
@@ -179,34 +187,30 @@ function EateryEdit({ match, history }) {
                             value={image}
                             onChange={(e) => setImage(e.target.value)}
                         ></Form.Control>
-                        
-                        <input type="file" id="image"></input>
-                        <Button onClick={uploadFileHandler}>Upload</Button>
-                        
+                        <input
+                        type="file"
+                        onChange={uploadFileHandler}
+                        ></input>
                         {uploading && <Loader />}
                     </Form.Group>
-                    
 
                     <Form.Group controlId='category'>
                         <Form.Label>Category</Form.Label>
                         <Form.Control
                             as="select"
                             value={category}
-                            onChange={(e) => {
-                                setCategory(e.target.value)
-                            }}
+                            onChange={(e) => setCategory(e.target.value)}
                         >
-                            <option value = 'Cafe'>Cafe</option>
-                            <option value = 'Buffet'>Buffet</option>
-                            <option value = 'Bar'>Bar</option>
-                            <option value = 'Dining'>Dining</option>
-                            <option value = 'Bakery'>Bakery</option>
-                            <option value = 'Fast Food'>Fast Food</option>
+                        <option value = 'Cafe'>Starter</option>
+                        <option value = 'Buffet'>Chinese</option>
+                        <option value = 'Bar'>Drink</option>
+                        <option value = 'Dining'>Dessert</option>
+                        <option value = 'Bakery'>North Indian</option>
+                        <option value = 'Fast Food'>South Indian</option>
                         </Form.Control>
                     </Form.Group>
 
                     {/* only admin can change the rating by hardcoding */}
-    
                     <Form.Group controlId='rating'>
                         <Form.Label>Rating</Form.Label>
                         <Form.Control
@@ -216,7 +220,8 @@ function EateryEdit({ match, history }) {
                             disabled={userInfo.userType!==1}
                             onChange={(e) => setRating(e.target.value)}
                         ></Form.Control>
-                    </Form.Group>   
+                    </Form.Group>  
+
                     <Form.Group controlId='numReviews'>
                         <Form.Label>Number of Reviews</Form.Label>
                         <Form.Control
@@ -233,14 +238,10 @@ function EateryEdit({ match, history }) {
                         <Form.Control
                             as="select"
                             value={isOpen}
-                            onChange={(e) => {
-                                setIsOpen(e.target.value)
-                            }}
+                            onChange={(e) => setIsOpen(e.target.value)}
                         >
-                       
-                            <option value = 'true'>Open</option>
-                            <option value = 'false'>Closed</option>
-
+                        <option value = 'true'>Open</option>
+                        <option value = 'false'>Closed</option>
                         </Form.Control>
                     </Form.Group>
 
@@ -249,14 +250,10 @@ function EateryEdit({ match, history }) {
                         <Form.Control
                             as="select"
                             value={payNowEnable}
-                            onChange={(e) => {
-                                setPayNowEnable(e.target.value)
-                            }}
+                            onChange={(e) => setPayNowEnable(e.target.value)}
                         >
-                       
-                            <option value = 'true'>Enable</option>
-                            <option value = 'false'>Disable</option>
-
+                        <option value = 'true'>Enable</option>
+                        <option value = 'false'>Disable</option>
                         </Form.Control>
                     </Form.Group>
 
@@ -265,14 +262,10 @@ function EateryEdit({ match, history }) {
                         <Form.Control
                             as="select"
                             value={payLaterEnable}
-                            onChange={(e) => {
-                                setPayLaterEnable(e.target.value)
-                            }}
+                            onChange={(e) => setPayLaterEnable(e.target.value)}
                         >
-                       
-                            <option value = 'true'>Enable</option>
-                            <option value = 'false'>Disable</option>
-
+                        <option value = 'true'>Enable</option>
+                        <option value = 'false'>Disable</option>
                         </Form.Control>
                     </Form.Group>
 
@@ -282,17 +275,33 @@ function EateryEdit({ match, history }) {
                             as="select"
                             value={active}
                             disabled={userInfo.userType!==1}
-                            onChange={(e) => {
-                                setActive(e.target.value)
-                            }}
+                            onChange={(e) => setActive(e.target.value)}
                         >
-                       
-                            <option value = 'true'>Active</option>
-                            <option value = 'false'>Inactive</option>
-
+                        <option value = 'true'>Active</option>
+                        <option value = 'false'>Inactive</option>
                         </Form.Control>
                     </Form.Group>
-                    
+
+                    <Form.Group controlId='paytm'>
+                        <Form.Label>Paytm Number</Form.Label>
+                        <Form.Control
+                            type='number'
+                            placeholder='Paytm'
+                            value={paytm}
+                            onChange={(e) => setPaytm(e.target.value)}
+                        ></Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId='upi'>
+                        <Form.Label>UPI</Form.Label>
+                        <Form.Control
+                            type='text'
+                            placeholder='UPI'
+                            value={upi}
+                            onChange={(e) => setUpi(e.target.value)}
+                        ></Form.Control>
+                    </Form.Group>
+
                     <Button type='submit' variant='primary'>Update</Button>
                 </Form>
             </FormContainer>

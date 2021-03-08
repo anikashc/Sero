@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import { Row, Col, Image, ListGroup} from 'react-bootstrap'
+import { Row, Col, Image, ListGroup, Form, Button} from 'react-bootstrap'
 
 import { listEateryDetails} from '../actions/eateryActions'
 import Loader from '../Components/Loader';
@@ -43,9 +43,12 @@ const Menu = ({match}) => {
     // match.params.id or match.params. anything that is in the url
     //const eatery = eateries.find(p=>p._id===match.params.id)
     //const [eatery,setEatery] = useState({})
+
     const dispatch = useDispatch()
+
     const  eateryDetails = useSelector(state => state.eateryDetails) // call whatever you call in the store
     const {loading, error, eatery} = eateryDetails
+
     useEffect(()=>{
           dispatch(listEateryDetails(match.params.id))
     },[dispatch, match])
@@ -111,20 +114,6 @@ const Menu = ({match}) => {
                                 )
                             })
                         }
-                        {/* <Categroy category="Starter"/>
-                        <ListItem button onClick={handleClickChinese}>
-                            
-                            <ListItemText primary="Chinese" />
-                            {openChinese ? <i class="fas fa-chevron-up"></i> : <i class="fas fa-chevron-down"></i>}
-                        </ListItem>
-                        <Collapse in={openChinese} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-                            <ListItem button className={classes.nested}>
-                                
-                                <ListItemText primary="Starred" />
-                            </ListItem>
-                            </List>
-                        </Collapse> */}
                     </List>
 
                 </>

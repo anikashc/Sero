@@ -1,13 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Container, Card, Form, Button } from 'react-bootstrap';
+import { Row, Col, Container, Card, Form, Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
-import CurrentOrders from '../Components/CurrentOrders';
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
-import { listEateryDetails, updateEatery } from '../actions/eateryActions'
+import { listEateryDetails} from '../actions/eateryActions'
+import io from 'socket.io-client'
+import { payOrder, completeOrder, cancelOrder, listMyOrders} from '../actions/orderActions'
+import { ORDER_PAY_RESET, ORDER_COMPLETED_RESET, ORDER_CANCEL_RESET } from '../constants/orderConstants';
+import { LinkContainer } from 'react-router-bootstrap';
 
+
+let socket
 
 const Dashboard = ({history}) => {
 
@@ -18,7 +23,7 @@ const Dashboard = ({history}) => {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState(null)
-    //const [ownedEatery, setOwnedEatery] = useState({})
+    
 
 
     const userDetails = useSelector((state) => state.userDetails)
@@ -36,23 +41,68 @@ const Dashboard = ({history}) => {
     const  userUpdateProfile = useSelector(state => state.userUpdateProfile) 
     const { success, loading: updateLoading } = userUpdateProfile
 
-    useEffect(() => {
+    const  orderListMy = useSelector(state => state.orderListMy) 
+    const { loading: loadingOrders, error: errorOrders, orders  } = orderListMy
+    
+    const ENDPOINT ='localhost:5000'
 
+    const orderPay = useSelector((state) => state.orderPay)
+    const { order: orderPaid, loading: loadingPay, success: successPay, error: errorPay } = orderPay
+
+    const orderComplete = useSelector((state) => state.orderComplete)
+    const { order: orderCompleted, loading: loadingComplete, success: successComplete, error: errorComplete } = orderComplete
+
+    const orderCancel = useSelector((state) => state.orderCancel)
+    const { order: orderCancelled, loading: loadingCancel, success: successCancel, error: errorCancel } = orderCancel
+
+    useEffect(() => {
+        socket = io.connect(ENDPOINT, {reconnect: true})
         if (!userInfo) {
             history.push('/login')
         }
         else{
             if(!user.name || user.name!==userInfo.name){
                 dispatch(getUserDetails('profile'))
+                dispatch(listMyOrders())
             }
             else{
                 setName(user.name)
                 setEmail(user.email)
                 setPhoneNumber(user.phoneNumber)
-                dispatch(listEateryDetails(user.eatery)) 
+                dispatch(listEateryDetails(user.eatery))  
             }
         }
-    }, [dispatch, history, userInfo, user, success])
+        if(successPay){
+            const orderPaidId=orderPaid._id
+            socket.emit('paid', {orderPaidId})
+            dispatch(listMyOrders())
+            dispatch({ type: ORDER_PAY_RESET })  
+        }
+        else if(successCancel){
+            const orderCancelledId=orderCancelled._id
+            socket.emit('cancelled', {orderCancelledId})
+            dispatch(listMyOrders())
+            dispatch({ type: ORDER_CANCEL_RESET })
+        }
+        else if(successComplete){
+            const orderCompletedId=orderCompleted._id
+            socket.emit('completed', {orderCompletedId})
+            dispatch(listMyOrders())
+            dispatch({ type: ORDER_COMPLETED_RESET })
+        }
+        socket.on('customerPaidOrder', ({eateryIdforSocket})=>{
+            if(eateryIdforSocket===userInfo.eatery){
+              dispatch(listMyOrders())
+            }
+        }) 
+        socket.on('refreshOrders', ()=>{
+              dispatch(listMyOrders())
+        }) 
+        return () => {
+            //socket.emit('disconnect')
+            socket.off()
+        }
+    }, [dispatch, history, userInfo, user, success, ENDPOINT, successPay, successComplete, successCancel])
 
     const submitHandler = (e) => {
 
@@ -66,6 +116,18 @@ const Dashboard = ({history}) => {
             dispatch(updateUserProfile({id:user._id, name, email, phoneNumber, password}))
         }
 
+    }
+
+    const payHandler = (order) =>{
+        dispatch(payOrder(order))
+    }
+
+    const cancelHandler = (order) =>{
+        dispatch(cancelOrder(order))
+    }
+
+    const completeHandler = (order) =>{
+        dispatch(completeOrder(order))
     }
 
     return (
@@ -161,7 +223,7 @@ const Dashboard = ({history}) => {
                             </Col>
 
                             <Col>
-                                <Link to='/orders'>
+                                <Link to='/myorders'>
                                     <Card style={{ height: '6rem', width: '10rem' }}>
                                         <Card.Body>
                                             <Card.Title> Past Orders </Card.Title>
@@ -174,14 +236,69 @@ const Dashboard = ({history}) => {
                                 <Link to={{ pathname: `/admin/eatery/${user.eatery}/edit`}}>
                                     <Card style={{ height: '6rem', width: '10rem' }}>
                                         <Card.Body>
-                                            <Card.Title> Edit Eatery </Card.Title>
+                                            <Card.Title> Manage Eatery </Card.Title>
                                         </Card.Body>
                                     </Card>
                                 </Link>
                             </Col>
                         </Row>
                         <Container>
-                            <CurrentOrders className='py-3'/>
+                            {loadingOrders? <Loader /> : errorOrders? <Message variant='danger'>{errorOrders}</Message>:(
+                                <div>
+                                    <h2>Current Orders</h2>
+                                    { (loadingPay || loadingCancel || loadingComplete) && <Loader />}
+                                    { errorPay && <Message variant='danger'>{ errorPay }</Message>}
+                                    <Table striped bordered hover responsive className='table-sm'>
+                                        <thead>
+                                            <tr>
+                                            <th>STATUS</th>
+                                            <th>NAME</th>
+                                            <th>PHONE</th>
+                                            <th>DATE</th>
+                                            <th>TOTAL</th>
+                                    
+                                            <th>MODE</th>
+                                            <th>COMPLETE</th>
+                                            <th>INFO</th>
+                                            <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {orders.map((order) => (
+                                                !order.completed?(
+                                                    <tr key={order._id}>
+                                                    <td>{order.paymentType==="payNow"?(
+                                                        order.isPaid?<i class="fas fa-check-circle"></i>
+                                                        :<Button className='btn-sm' onClick={()=>payHandler(order)}>Paid</Button>
+                                                    ):
+                                                        (order.paymentMethod!=='null'?(
+                                                            order.isPaid?<i class="fas fa-check-circle"></i>
+                                                            :<Button className='btn-sm' onClick={()=>payHandler(order)}>Paid</Button> 
+                                                        ):(
+                                                            'Progress'
+                                                        ))}</td>
+                                                    {/* <td><Button className='btn-sm' onClick={()=>payHandler(order)}>Paid</Button></td> */}
+                                                    <td>{order.customerMeta.name}</td>
+                                                    <td>{order.customerMeta.phone}</td>
+                                                    <td>{order.createdAt.substring(0,10)}</td>
+                                                    <td>₹{order.totalPrice}</td>
+                                                    
+                                                    <td>{order.paymentMethod}</td>
+                                                    <td>{order.completed?'Completed':(<Button className='btn-sm' variant='success' disabled={!order.isPaid} onClick={()=>completeHandler(order)}>Complete</Button>)}</td> 
+                                                    <td><LinkContainer to={`/orderSummary/${order._id}`}>
+                                                    <Button className='btn-sm' variant='light'><i class="fas fa-info-circle"></i></Button>
+                                                        </LinkContainer>
+                                                    </td> 
+                                                    <td>{order.cancelled?'Cancelled':(<Button className='btn-sm' variant='danger' disabled={order.isPaid} onClick={()=>cancelHandler(order)}>Cancel</Button>)}</td> 
+                                                </tr>
+                                                ):(null)
+                                            
+                                            ))}
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            )}
+                            
                         </Container>
                     </Container>
                 </Col>

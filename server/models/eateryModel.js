@@ -67,7 +67,15 @@ const eaterySchema = mongoose.Schema(
     active: {
       type: Boolean,
       default: false,
-    }
+    },
+    paytm: {
+      type: Number,
+      default: 0
+    },
+    upi: {
+      type: String,
+      default: 0
+    } 
   },
   {
     timestamps: true,

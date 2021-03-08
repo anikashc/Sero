@@ -6,9 +6,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 aws.config.update({
-    secretAccessKey: process.env.AWSSecretKey,
-    accessKeyId: process.env.AWSAccessKeyId,
-    region: process.env.region,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    region: process.env.REGION,
 })
 
 var s3 = new aws.S3()
@@ -16,7 +16,7 @@ var s3 = new aws.S3()
 const upload = multer({
     storage: multerS3({
         s3: s3,
-        bucket: process.env.AWSBucketName,
+        bucket: process.env.AWS_BUCKET_NAME,
         acl: 'public-read',
         metadata: function (req, file, cb) {
             cb(null, { fieldName: 'TESTING'});

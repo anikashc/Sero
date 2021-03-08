@@ -1,10 +1,8 @@
 
 import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_CUSTOMER_META} from '../constants/cartConstants'
 
-export const addToCart = (product,eateryDetails,qty) => async (dispatch, getState)=>{
+export const addToCart = (product,eateryDetails,qty) => (dispatch, getState)=>{
     const item= product
-
-
     dispatch({
         type: CART_ADD_ITEM,
         payload: {
@@ -35,14 +33,14 @@ export const removeFromCart = (productId,eateryDetails) => (dispatch, getState)=
     localStorage.setItem('eateryDetails', JSON.stringify(getState().cart.eateryDetails))
 }
 
-export const saveCustomerMeta = (data) => (dispatch)=>{
+export const saveCustomerMeta = (data) => (dispatch, getState)=>{
 
     dispatch({
         type: CART_SAVE_CUSTOMER_META,
         payload:{
-            data
+            data    
         }
     })
-    localStorage.setItem('customerMeta', JSON.stringify(data))
+    localStorage.setItem('customerMeta', JSON.stringify(getState().cart.customerMeta))
     
 }

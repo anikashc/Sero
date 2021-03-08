@@ -20,8 +20,9 @@ import UserList from './Screens/UserList';
 import UserEdit from './Screens/UserEdit';
 import EateryList from './Screens/EateryList';
 import EateryEdit from './Screens/EateryEdit';
-
-const App = () => {
+import OrderSummary from './Screens/OrderSummary';
+import MyOrderList from './Screens/MyOrderList';
+function App() {
 
     return (
       <Router>
@@ -41,6 +42,8 @@ const App = () => {
             <Route path = '/cart' component={Cart} />
             <Route path = '/checkout' component={Checkout} />
             <Route path = '/payment' component={Payment} />
+            <Route path = '/orderSummary/:id' component={OrderSummary} />
+            <Route path = '/myorders' component={MyOrderList} />
             <Route path = '/feedback' component={Feedback} />
             <Route path = '/admin/userlist' component={UserList} />
             <Route path = '/admin/user/:id/edit' component={UserEdit} />

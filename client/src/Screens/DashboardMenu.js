@@ -5,6 +5,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails } from '../actions/userActions';
 import { listEateryDetails, updateEatery } from '../actions/eateryActions';
 
+const groupBy = (objectArray, property) => {
+
+    return objectArray.reduce((acc, obj) => {
+        
+        const key = obj[property];
+
+        if (!acc[key]) {
+
+            acc[key] = [];
+        }
+        // Add object to list for given key's value
+        acc[key].push(obj);
+
+        return acc;
+    }, {});
+ }
+
 const DashboardMenu = ({history}) => {
 
     const [addItemButton, setAddItemButton] = useState(0);
@@ -13,7 +30,8 @@ const DashboardMenu = ({history}) => {
 
         setAddItemButton((addItemButton + 1) % 2);
     }
-    
+
+    const [id, setId] = useState(null);
     const [name, setName] = useState('');
     const [cost, setCost] = useState(0);
     const [category, setCategory] = useState('');
@@ -27,19 +45,13 @@ const DashboardMenu = ({history}) => {
     const userDetails = useSelector((state) => state.userDetails);
     const { user } = userDetails;
 
+
     const userLogin = useSelector(state => state.userLogin);
     const { userInfo } = userLogin;
 
     const eateryMenu = eatery.menu;
 
     const dispatch = useDispatch();
-
-    const deleteMenu = ID => () => {
-
-        let menu = eateryMenu.filter(menu => menu._id !== ID);
-        
-        dispatch(updateEatery({ _id: eatery._id, menu }));
-    }
 
     useEffect(() => {
 
@@ -64,26 +76,60 @@ const DashboardMenu = ({history}) => {
 
         e.preventDefault();
 
-        let menu = [...eateryMenu, {
+        let menu = eateryMenu;
+
+        if(id)
+        {
+            menu = eateryMenu.filter(menu => menu._id !== id);
+        }
+
+        menu.push({
 
             name,
             cost,
             category,
-            description,
             image,
+            description,
             isAvailable
-        }];
-
-        console.log(menu);
+        });
 
         dispatch(updateEatery({ _id: eatery._id, menu }));
 
         setAddItemButton(0);
-
+        setId(null);
         setName('');
         setCost(0);
         setCategory('');
+        setImage('');
+        setDescription('');
+        setIsAvailable(0);
     }
+
+    const deleteMenu = ID => () => {
+
+        let menu = eateryMenu.filter(menu => menu._id !== ID);
+
+        dispatch(updateEatery({ _id: eatery._id, menu }));
+    }
+
+    const editMenu = ID => () => {
+
+        window.scrollTo(0, 0);
+
+        setAddItemButton(1);
+
+        let menu = eateryMenu.filter(menu => menu._id === ID);
+        
+        setId(ID);
+        setName(menu[0].name);
+        setCost(menu[0].cost);
+        setCategory(menu[0].category);
+        setImage(menu[0].image);
+        setDescription(menu[0].description);
+        setIsAvailable(menu[0].isAvailable);
+    }
+
+    const menu = groupBy(eateryMenu, 'category')
 
     return (
         <>
@@ -129,11 +175,20 @@ const DashboardMenu = ({history}) => {
                     <Form.Group controlId='category'>
                         <Form.Label>Category</Form.Label>
                         <Form.Control
-                            type='text'
-                            placeholder='Enter category'
+                            as="select"
                             value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                        ></Form.Control>
+                            placeholder='Select category'
+                            onChange={(e) => {
+                                setCategory(e.target.value)
+                            }}
+                        >
+                            <option value='Starter'>Starter</option>
+                            <option value='Buffet'>Buffet</option>
+                            <option value='Bar'>Bar</option>
+                            <option value='Dining'>Dining</option>
+                            <option value='Bakery'>Bakery</option>
+                            <option value='Fast Food'>Fast Food</option>
+                        </Form.Control>
                     </Form.Group>
 
                     <Form.Group controlId='image'>
@@ -171,7 +226,38 @@ const DashboardMenu = ({history}) => {
 
             <Container className='py-3'>
                 <Row>
-                    {eateryMenu.map((item =>
+                    {Object.keys(menu).map((key, i) => 
+                        (
+                            <Col className='py-3' key={key}>
+                            <h3>{key}</h3>
+                            {menu[key].map((item) => 
+                                <Row key={item.name}>
+                                    <Card style={{ height: '15rem', width: '50rem' }}>
+                                        <Card.Img variant="top" src={item.image}
+                                            style={{width: '5rem', height: '5rem' }}
+                                        />
+                                        <Card.Body>
+                                            <Card.Title> {item.name} </Card.Title>
+                                            <Card.Text>
+                                                {item.description}
+                                            </Card.Text>
+                                            <h6>{item.isAvailable ? 'Available' : 'Not available'}</h6>
+                                            <ButtonGroup>
+                                                <Col>
+                                                    <Button onClick={editMenu(item._id)} variant='warning'>Edit</Button>
+                                                </Col>
+                                                <Col>
+                                                    <Button onClick={deleteMenu(item._id)} variant='warning'>Delete</Button>
+                                                </Col>
+                                            </ButtonGroup>
+                                        </Card.Body>
+                                    </Card>
+                                </Row>
+                            )}
+                            </Col>
+                        )
+                    )}
+                    {/* {eateryMenu.map((item =>
                         <Col className='py-3'>
                             <Row>
                                 <Card style={{ height: '15rem', width: '50rem' }}>
@@ -196,7 +282,7 @@ const DashboardMenu = ({history}) => {
                                 </Card>
                             </Row>
                         </Col>
-                    ))}
+                    ))} */}
                 </Row>
             </Container>
         </>

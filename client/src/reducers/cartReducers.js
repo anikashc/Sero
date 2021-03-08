@@ -1,7 +1,9 @@
 import {
     CART_ADD_ITEM,
     CART_REMOVE_ITEM,
-    CART_SAVE_CUSTOMER_META
+    CART_RESET,
+    CART_SAVE_CUSTOMER_META,
+    
 } from '../constants/cartConstants'
 
 export const cartReducer = (state ={cartItems:[], eateryDetails:{}, customerMeta:{}},action)=>{
@@ -56,8 +58,17 @@ export const cartReducer = (state ={cartItems:[], eateryDetails:{}, customerMeta
             
             return{
                 ...state,
-                customerMeta: action.payload,
+                customerMeta: action.payload.data,
+            }
 
+        case CART_RESET:
+            localStorage.removeItem('cartItems')
+            localStorage.removeItem('eateryDetails')
+            localStorage.removeItem('customerMeta')
+            return {
+                cartItems: [],
+                eateryDetails: {},
+                customerMeta: {}
             }
             
         default : return state

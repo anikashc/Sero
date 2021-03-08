@@ -2,37 +2,33 @@ import mongoose from 'mongoose'
 
 const orderSchema = mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: 'User',
-    },
-    orderItems: [
-      {
-        name: { type: String, required: true },
-        qty: { type: Number, required: true }, 
-        price: { type: Number, required: true },
-        
-      },
-    ],
+    
     eatery: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Eatery',
     }, 
+    customerMeta: {
+      name: { type: String, required: true },
+      phone: { type: String, required: true },
+      email: { type: String },
+    },
+    orderItems: [
+      {
+        name: { type: String, required: true },
+        qty: { type: Number, required: true }, 
+        cost: { type: Number, required: true },
+        category: { type: String, required: true },
+      },
+    ],
     paymentMethod: {
       type: String,
       required: true,
     },
-    typeOfPayment: {
-        type: Boolean,
-        required: true,
-    },
-    paymentResult: {
-      id: { type: String },
-      status: { type: String },
-      update_time: { type: String },
-      email_address: { type: String },
+    itemsPrice: {
+      type: Number,
+      required: true,
+      default: 0.0,
     },
     taxPrice: {
       type: Number,
@@ -47,13 +43,11 @@ const orderSchema = mongoose.Schema(
     },
 
     paymentType:{
-      type: Number,
+      type: String,
       required: true,
-      default: 1
     },
-    isPaid: {
+    isPaid:{
       type: Boolean,
-      required: true,
       default: false,
     },
     paidAt: {
@@ -62,6 +56,13 @@ const orderSchema = mongoose.Schema(
     completed: {
       type: Boolean,
       required: true,
+      default: false
+    },
+    completedAt: {
+      type: Date
+    },
+    cancelled: {
+      type: Boolean,
       default: false
     }
   },

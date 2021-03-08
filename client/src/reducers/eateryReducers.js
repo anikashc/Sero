@@ -18,7 +18,11 @@ import  {
     EATERY_UPDATE_FAIL,
     EATERY_UPDATE_SUCCESS,
     EATERY_UPDATE_REQUEST,
-    EATERY_UPDATE_RESET
+    EATERY_UPDATE_RESET,
+    EATERY_CREATE_REVIEW_FAIL,
+    EATERY_CREATE_REVIEW_REQUEST,
+    EATERY_CREATE_REVIEW_SUCCESS,
+    EATERY_CREATE_REVIEW_RESET
 } from '../constants/eateryConstants'
 
 export const eateryListReducer = (state={eateries: []},action)=>{
@@ -44,6 +48,21 @@ export const eateryDetailsReducer = (state={eatery: {menu:[]}},action)=>{
         default: return state
 
     }
+}
+
+export const eateryCreateReviewReducer = (state={},action)=>{
+  switch(action.type){
+      case EATERY_CREATE_REVIEW_REQUEST: return { loading: true }
+
+      case EATERY_CREATE_REVIEW_SUCCESS: return {loading: false, success: true}
+
+      case EATERY_CREATE_REVIEW_FAIL: return {loading: false, error: action.payload}
+
+      case EATERY_CREATE_REVIEW_RESET: return {}
+
+      default: return state
+
+  }
 }
 
 export const eateryReviewsReducer = (state={reviews: []},action)=>{

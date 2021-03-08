@@ -212,7 +212,8 @@ const updateEatery = asyncHandler(async (req, res) => {
     }
     
 
-}) 
+})
+
 export {
     
     getEateries, 

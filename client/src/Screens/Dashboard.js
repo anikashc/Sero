@@ -56,7 +56,7 @@ const Dashboard = ({history}) => {
     const { order: orderCancelled, loading: loadingCancel, success: successCancel, error: errorCancel } = orderCancel
 
     useEffect(() => {
-        socket =io.connect(ENDPOINT, {reconnect: true})
+        socket = io.connect(ENDPOINT, {reconnect: true})
         if (!userInfo) {
             history.push('/login')
         }

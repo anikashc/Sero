@@ -20,6 +20,7 @@ connectDB();
 const app = express();
 
 if(process.env.NODE_ENV === 'development') {
+    
     app.use(morgan('dev'))
 }
 
@@ -44,11 +45,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/upload', uploadRoutes);
 
-const __dirname = path.resolve()
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
-
 app.use(notFound);
-
 app.use(errorHandler);
 
 const PORT = process.env.PORT|| 5000;

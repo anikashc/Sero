@@ -67,7 +67,7 @@ const Menu = ({match}) => {
                 <>
                     <Row>
                         <Col md={6}>
-                            <Image src={eatery.image} alt={eatery.name } fluid />
+                            <Image src={`https://sero2021.s3.ap-south-1.amazonaws.com/${eatery.image}`} alt={eatery.name } fluid />
                         </Col>
                         <Col md={6}>
                             <ListGroup variant='flush'>

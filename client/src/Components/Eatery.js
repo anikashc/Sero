@@ -9,7 +9,7 @@ const Eatery = ({eatery}) => {
             
             <Link to={`/menu/${eatery._id}`}>
                 <div class="box">
-                    <Card.Img src={eatery.image} variant='top' className='card-image'/>
+                    <Card.Img src={`https://sero2021.s3.ap-south-1.amazonaws.com/${eatery.image}`} variant='top' className='card-image' />
                     <div class="text">
                         <strong>{eatery.name}</strong>
                     </div>

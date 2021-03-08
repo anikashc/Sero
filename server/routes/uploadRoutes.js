@@ -1,41 +1,45 @@
-import path from 'path'
 import express from 'express'
-import multer from 'multer'
+import upload from '../services/upload.js'
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const router = express.Router()
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename(req, file, cb) {
-    cb(
-      null,
-      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
-    )
-  },
+const singleUpload = upload.single('image')
+
+router.get('', function(req, res) {
+    
+    res.send("ok");
 })
 
-function checkFileType(file, cb) {
-  const filetypes = /jpg|jpeg|png/
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
-  const mimetype = filetypes.test(file.mimetype)
+router.post('', function(req, res) {
+    
+    singleUpload(req, res, function(error) {
 
-  if (extname && mimetype) {
-    return cb(null, true)
-  } else {
-    cb('Images only!')
-  }
-}
+        console.log(req.file);
 
-const upload = multer({
-  storage,
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb)
-  },
+        return res.json(req.file.key);
+    })
 })
 
-router.post('/', upload.single('image'), (req, res) => {
-  res.send(`/${req.file.path}`)
+router.delete('', function(req, res) {
+
+    const { key } = req.body;
+    
+    var bucketInstance = new AWS.S3();
+    var params = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: key,
+    };
+    bucketInstance.deleteObject(params, function (err, data) {
+        if (data) {
+            res.send("File deleted successfully");
+        }
+        else {
+            res.send("Check if you have sufficient permissions : " + err);
+        }
+    });
 })
 
 export default router

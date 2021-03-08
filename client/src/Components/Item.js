@@ -1,8 +1,8 @@
 import { disable } from 'colors';
 import '../index.css';
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux' 
-import { Card, Col, Row, ListGroup, Button, Image} from 'react-bootstrap'
+import {Row,Button} from 'react-bootstrap'
 import {addToCart} from '../actions/cartActions'
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';

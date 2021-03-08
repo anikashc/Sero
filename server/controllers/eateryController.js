@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler'
 import Eatery from '../models/eateryModel.js'
 import Review from '../models/reviewModel.js'
 import User from '../models/userModel.js'
+import Order from '../models/orderModel.js'
 
 // @desc... Fetch all eateries
 // @route... GET /api/eateries
@@ -42,7 +43,7 @@ const getEateryById = asyncHandler(async(req, res) => {
 // @access... Public
 const createEateryReview = asyncHandler(async(req, res) => {
 
-    const {rating, comment, name, email, orderId} = req.body
+    const {rating, comment, name, email, orderId, phoneNumber} = req.body
     const eatery = await Eatery.findById(req.params.id)
 
     if(eatery){
@@ -52,11 +53,23 @@ const createEateryReview = asyncHandler(async(req, res) => {
             rating: Number(rating),
             comment: comment,
             email: email,
+            phoneNumber: phoneNumber,
             eatery: eatery._id,
             order: orderId
         })
 
         const createdReview = await review.save()
+
+        const order = await Order.findById(orderId)
+        if (order) {
+            order.isReviewed = true
+            order.reviewedAt = Date.now()
+        
+            await order.save()
+          } else {
+            res.status(404)
+            throw new Error('Order not found')
+        }
 
         eatery.rating = Number((Number(eatery.rating) * Number(eatery.numReviews) + Number(rating)) / (eatery.numReviews + 1))
         eatery.rating = Number((Math.round(eatery.rating * 10)/10).toFixed(1))

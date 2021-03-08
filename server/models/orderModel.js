@@ -50,6 +50,7 @@ const orderSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    
     paidAt: {
       type: Date,
     },
@@ -61,10 +62,18 @@ const orderSchema = mongoose.Schema(
     completedAt: {
       type: Date
     },
+
     cancelled: {
       type: Boolean,
       default: false
-    }
+    },
+    isReviewed:{
+      type: Boolean,
+      default: false,
+    },
+    reviewedAt: {
+      type: Date
+    },
   },
   {
     timestamps: true,

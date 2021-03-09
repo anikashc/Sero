@@ -28,7 +28,8 @@ import {
     orderPayReducer,
     orderCancelReducer,
     orderCompleteReducer,
-    orderCustomerPaidReducer
+    orderCustomerPaidReducer,
+    orderEditReducer
 } from './reducers/orderReducer'
 const reducer = combineReducers({
 
@@ -53,8 +54,8 @@ const reducer = combineReducers({
     orderPay: orderPayReducer,
     orderCancel: orderCancelReducer,
     orderComplete: orderCompleteReducer,
-    orderCustomerPaid: orderCustomerPaidReducer
-
+    orderCustomerPaid: orderCustomerPaidReducer,
+    orderEdit: orderEditReducer
 });
 
 const cartItemsFromStorage= localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [];

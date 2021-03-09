@@ -1,5 +1,6 @@
 import {
     CART_ADD_ITEM,
+    CART_EDIT_ORDER_RESET,
     CART_REMOVE_ITEM,
     CART_RESET,
     CART_SAVE_CUSTOMER_META,
@@ -70,7 +71,14 @@ export const cartReducer = (state ={cartItems:[], eateryDetails:{}, customerMeta
                 eateryDetails: {},
                 customerMeta: {}
             }
-            
+         
+        case CART_EDIT_ORDER_RESET:
+            localStorage.removeItem('cartItems')
+            return {
+                ...state,
+                cartItems: [],
+            }
+             
         default : return state
     }
 }

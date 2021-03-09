@@ -38,6 +38,45 @@ const addOrderItems = asyncHandler(async (req, res) => {
   }
 })
 
+const editOrderItems = asyncHandler(async (req, res) => {
+  const {
+    eateryId,
+    orderId,
+    orderItems,
+    itemsPrice,
+    taxPrice,
+    totalPrice,
+  } = req.body
+
+  const order = await Order.findById(req.params.id)
+
+  if (orderItems && orderItems.length === 0) {
+    res.status(400)
+    throw new Error('No order items')
+    return
+  } else if(order) {
+      if(order.eatery!=eateryId){
+        res.status(403)
+        throw new Error('Eatery is different')
+      }
+      else{
+
+        order.totalPrice = Number(totalPrice)+Number(order.totalPrice)
+        order.itemsPrice = Number(itemsPrice)+Number(order.itemsPrice)
+        order.taxPrice = Number(taxPrice)+Number(order.taxPrice)
+        order.orderItems = order.orderItems.concat(orderItems)
+    
+        const updatedOrder = await order.save()
+    
+        res.json(updatedOrder)
+      }
+  }
+  else{
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
+
 // @desc    Get order by ID
 // @route   GET /api/orders/:id
 // @access  Public
@@ -154,5 +193,6 @@ export {
   getMyOrders,
   getOrders,
   cancelOrder,
-  updateOrderToCustomerPaid
+  updateOrderToCustomerPaid,
+  editOrderItems
 }

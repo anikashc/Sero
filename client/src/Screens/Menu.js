@@ -39,11 +39,9 @@ function groupBy(objectArray, property) {
     }, {});
  }
 
-const Menu = ({match}) => {
+const Menu = ({match, location}) => {
     // match.params.id or match.params. anything that is in the url
-    //const eatery = eateries.find(p=>p._id===match.params.id)
-    //const [eatery,setEatery] = useState({})
-
+    const redirect = location.search? location.search.split('=')[1]:null
     const dispatch = useDispatch()
 
     const  eateryDetails = useSelector(state => state.eateryDetails) // call whatever you call in the store
@@ -51,7 +49,7 @@ const Menu = ({match}) => {
 
     useEffect(()=>{
           dispatch(listEateryDetails(match.params.id))
-    },[dispatch, match])
+    },[dispatch, match,redirect])
 
     const classes = useStyles();
     return (
@@ -66,9 +64,11 @@ const Menu = ({match}) => {
             :   (
                 <>
                     <Row>
-                        <Col md={6}>
-                            <Image src={`https://sero2021.s3.ap-south-1.amazonaws.com/${eatery.image}`} alt={eatery.name } fluid />
-                        </Col>
+                        {redirect?null:(    
+                            <Col md={6}>
+                                <Image src={`https://sero2021.s3.ap-south-1.amazonaws.com/${eatery.image}`} alt={eatery.name } fluid />
+                            </Col>
+                        )}
                         <Col md={6}>
                             <ListGroup variant='flush'>
                                 <ListGroup.Item>

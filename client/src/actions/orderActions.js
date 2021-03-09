@@ -12,6 +12,9 @@ import {
   ORDER_DETAILS_FAIL, 
   ORDER_DETAILS_REQUEST, 
   ORDER_DETAILS_SUCCESS, 
+  ORDER_EDIT_FAIL, 
+  ORDER_EDIT_REQUEST, 
+  ORDER_EDIT_SUCCESS, 
   ORDER_LIST_MY_FAIL, 
   ORDER_LIST_MY_REQUEST, 
   ORDER_LIST_MY_SUCCESS,
@@ -254,6 +257,30 @@ export const paymentDone = (order) => async (dispatch, getState) => {
     dispatch({
       type: ORDER_PAYMENT_DONE_FAIL,
       payload: message,
+    })
+  }
+}
+
+export const editOrder = (order) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ORDER_EDIT_REQUEST,
+    })
+
+    const { data } = await axios.put(`/api/orders/${order.orderId}`, order)
+
+    dispatch({
+      type: ORDER_EDIT_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+      
+    dispatch({
+      type: ORDER_EDIT_FAIL,
+      payload:
+          error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
     })
   }
 }

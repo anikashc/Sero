@@ -5,11 +5,14 @@ import { Row, Col, ListGroup, Button, Card, Container} from 'react-bootstrap'
 import Message from '../Components/Message'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 
-const Cart = ({history}) => {
+const Cart = ({history,location}) => {
     const cart = useSelector(state=>state.cart)
     const dispatch = useDispatch()
     const {cartItems,eateryDetails}=cart
     let browserHistory = useHistory();
+
+    //fetch the redirect if the flow of adding products is going on.
+    const redirect = location.search? location.search.split('=')[1]:null
     const removeFromCartHandler = (id) =>{
         dispatch(removeFromCart(id,eateryDetails))
     }
@@ -26,7 +29,13 @@ const Cart = ({history}) => {
         dispatch(addToCart(item1,eateryDetails,qty))
     }
     const checkoutHandler =() =>{
-        history.push('/checkout')
+        if(redirect){
+            history.push(`/payment?redirect=${redirect}`)
+        }
+        else{
+
+            history.push('/checkout')
+        }
     }
     return (
         <React.Fragment>

@@ -6,15 +6,19 @@ import { Col,Button, ListGroup, Tab, Row} from 'react-bootstrap'
 import FormContainer from '../Components/FormContainer'
 import CheckoutSteps from '../Components/CheckoutSteps'
 import Message from '../Components/Message'
-import {createOrder} from '../actions/orderActions'
+import {createOrder, editOrder} from '../actions/orderActions'
 import { Link } from 'react-router-dom'
-import {ORDER_CREATE_RESET} from '../constants/orderConstants'
+import {ORDER_CREATE_RESET, ORDER_EDIT_RESET} from '../constants/orderConstants'
 
 let socket
 
-const Payment = ({history}) => {
+const Payment = ({history,location}) => {
     const [paymentMethod, setPaymentMethod] = useState('null')
   
+
+    const redirect = location.search? location.search.split('=')[1]:null
+
+
     const cart = useSelector(state=>state.cart)
     const {cartItems, eateryDetails, customerMeta}=cart
 
@@ -24,6 +28,10 @@ const Payment = ({history}) => {
 
     const orderCreate = useSelector((state) => state.orderCreate)
     const { order, success, error } = orderCreate
+
+    // if the order is edited
+    const orderEdit = useSelector((state) => state.orderEdit)
+    const { order: orderEditDetails, success: successEdit, error: errorEdit } = orderEdit
     
     useEffect(() => {
         socket =io.connect(ENDPOINT, {reconnect: true})
@@ -38,13 +46,19 @@ const Payment = ({history}) => {
                 history.push(`/orderSummary/${order._id}`)
                 dispatch({ type: ORDER_CREATE_RESET })
             }
+            if (successEdit) {
+                socket.emit('orderPlaced')
+                //console.log("Order is created but wait for confirmation")
+                history.push(`/orderSummary/${orderEditDetails._id}?redirect=confirmAddItems`)
+                dispatch({ type: ORDER_EDIT_RESET })
+            }
         }
         return () => {
             //socket.emit('disconnect')
             socket.off()
         }
 
-    }, [history, customerMeta, success, eateryDetails, ENDPOINT])
+    }, [history, customerMeta, success, eateryDetails, ENDPOINT, successEdit])
 
     //   Calculate prices
     const addDecimals = (num) => {
@@ -66,23 +80,37 @@ const Payment = ({history}) => {
     const placeOrderHandler = () => {
 
         
+            if(redirect){
+                dispatch(
+                    editOrder({
+                        eateryId: eateryDetails._id,
+                        orderId: redirect,
+                        orderItems: cart.cartItems,
+                        itemsPrice: cart.itemsPrice,
+                        taxPrice: cart.taxPrice,
+                        totalPrice: cart.totalPrice,
+                    })
+                )
+            }
+            else{
 
-            dispatch(
-              createOrder({
-                eateryId: eateryDetails._id,
-                customerMeta: {
-                    name: customerMeta.name,
-                    phone: customerMeta.phone,
-                    email: customerMeta.email
-                },
-                orderItems: cart.cartItems,
-                paymentMethod: paymentMethod,
-                itemsPrice: cart.itemsPrice,
-                paymentType: cart.customerMeta.paymentType,
-                taxPrice: cart.taxPrice,
-                totalPrice: cart.totalPrice,
-              })
-            )
+                dispatch(
+                  createOrder({
+                    eateryId: eateryDetails._id,
+                    customerMeta: {
+                        name: customerMeta.name,
+                        phone: customerMeta.phone,
+                        email: customerMeta.email
+                    },
+                    orderItems: cart.cartItems,
+                    paymentMethod: paymentMethod,
+                    itemsPrice: cart.itemsPrice,
+                    paymentType: cart.customerMeta.paymentType,
+                    taxPrice: cart.taxPrice,
+                    totalPrice: cart.totalPrice,
+                  })
+                )
+            }
         
     }
 
@@ -161,7 +189,7 @@ const Payment = ({history}) => {
 
                 </ListGroup>
                 <ListGroup.Item>
-                {error && <Message variant='danger'>{error}</Message>}
+                {(error || errorEdit) && <Message variant='danger'>{error || errorEdit}</Message>}
                 </ListGroup.Item>
                 <Button
                     type='button'

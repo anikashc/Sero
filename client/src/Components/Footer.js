@@ -4,6 +4,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import {useSelector} from 'react-redux' 
 import { LinkContainer} from 'react-router-bootstrap'
 import Fab from '@material-ui/core/Fab'
+import {
+    useLocation
+  } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     fab: {
@@ -17,6 +20,9 @@ const Footer = () => {
     const cart = useSelector(state=>state.cart)
     const {cartItems, eateryDetails}=cart
     const classes = useStyles();
+    let location = useLocation();
+    const redirect = location.search? location.search.split('=')[1]:null
+
     return (
         <footer>
             <Container>
@@ -26,11 +32,20 @@ const Footer = () => {
                     {(cartItems.length && eateryDetails)?
                         (
                             <Navbar className='navbarFixedBottom'  fixed="bottom" variant='light'>
-                                <LinkContainer to='/cart'>
-                                    <Fab variant='extended' size='large' color='default' className={classes.fab}>
-                                        <h6 className="linkText"> <i class="fas fa-shopping-cart fa-2x"></i> ({cartItems.reduce((acc, item) => acc + item.qty, 0)})</h6>  
-                                    </Fab>
-                                </LinkContainer>
+                                {redirect?(
+                                    <LinkContainer to={`/cart?redirect=${redirect}`}>
+                                        <Fab variant='extended' size='large' color='default' className={classes.fab}>
+                                            <h6 className="linkText"> <i class="fas fa-shopping-cart fa-2x"></i> ({cartItems.reduce((acc, item) => acc + item.qty, 0)})</h6>  
+                                        </Fab>
+                                    </LinkContainer>
+                                ):(
+
+                                    <LinkContainer to='/cart'>
+                                        <Fab variant='extended' size='large' color='default' className={classes.fab}>
+                                            <h6 className="linkText"> <i class="fas fa-shopping-cart fa-2x"></i> ({cartItems.reduce((acc, item) => acc + item.qty, 0)})</h6>  
+                                        </Fab>
+                                    </LinkContainer>
+                                )}
                             </Navbar>
                          
                         )

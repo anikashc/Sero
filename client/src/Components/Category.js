@@ -1,13 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {useSelector} from 'react-redux'
-import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
+import { Row} from 'react-bootstrap'
 import Item from '../Components/Item';
 import Collapse from '@material-ui/core/Collapse';
-import { makeStyles } from '@material-ui/core/styles';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 const Category = ({name, menu}) => {

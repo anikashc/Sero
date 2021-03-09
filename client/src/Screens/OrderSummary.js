@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import io from 'socket.io-client'
 import { Link } from 'react-router-dom'
-import { Row, Col, ListGroup, Image, Card, Button,Tab, Form } from 'react-bootstrap'
+import { Row, Col, ListGroup,Card, Button,Tab, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../Components/Loader';
 import Message from '../Components/Message';
@@ -14,13 +14,13 @@ import {
   createEateryReview
 } from '../actions/eateryActions'
 import { ORDER_PAYMENT_DONE_RESET } from '../constants/orderConstants'
-import { CART_RESET } from '../constants/cartConstants'
+import { CART_RESET, CART_EDIT_ORDER_RESET } from '../constants/cartConstants'
 import {EATERY_CREATE_REVIEW_RESET} from '../constants/eateryConstants'
 
 
 
 let socket
-const OrderSummary = ({ match}) => {
+const OrderSummary = ({ match, history, location}) => {
   const orderId = match.params.id
   //const [eateryID, setEateryID] = useState('')
   //const [name, setName] = useState('')
@@ -41,6 +41,7 @@ const OrderSummary = ({ match}) => {
 
   const [paymentMethod, setPaymentMethod] = useState('null')
 
+  let redirect = location.search? location.search.split('=')[1]:null
 
   const orderCustomerPaid = useSelector((state) => state.orderCustomerPaid)
   const { loading: loadingPay, success: successPay, error: errorPay } = orderCustomerPaid
@@ -67,12 +68,14 @@ const OrderSummary = ({ match}) => {
     socket =io.connect(ENDPOINT, {reconnect: true})
     
     if (!order  || order._id !== orderId) {
- 
       dispatch(getOrderDetails(orderId))
-      
     }  
     else if(!eatery){
       dispatch(listEateryDetails(order.eatery))
+    }
+    else if(redirect){
+      dispatch(getOrderDetails(orderId))
+      history.push(`/orderSummary/${orderId}`)
     } 
     //console.log(socket)
     console.log(successPay)
@@ -112,7 +115,8 @@ const OrderSummary = ({ match}) => {
       alert("Review Submitted")
       setRating(0)
       setComment('')
-      //dispatch({type: EATERY_CREATE_REVIEW_RESET})
+      dispatch({type: EATERY_CREATE_REVIEW_RESET})
+      dispatch(getOrderDetails(orderId))
   }
 
     return () => {
@@ -120,7 +124,7 @@ const OrderSummary = ({ match}) => {
       socket.off()
     }
     
-  }, [dispatch, orderId, order, ENDPOINT,eatery,successPay, successEateryReview])
+  }, [dispatch, orderId, order, ENDPOINT,eatery,successPay, successEateryReview,redirect])
 
 const reviewSubmitHandler = (e) => {
   e.preventDefault()
@@ -142,6 +146,10 @@ const reviewSubmitHandler = (e) => {
     ))
   }
 
+  const addItemsHandler = () =>{
+    dispatch({type: CART_EDIT_ORDER_RESET})
+    history.push(`/menu/${order.eatery}?redirect=${orderId}`)
+  }
   return loading ? (
     <Loader />
   ) : error ? (
@@ -243,6 +251,16 @@ const reviewSubmitHandler = (e) => {
                       </Row>
                     </ListGroup.Item>
                   ))}
+                  {order.paymentType==='payLater' && order.paymentMethod==='null'?(
+                    <Button
+                      type='button'
+                      className='btn btn-block'
+                      onClick={addItemsHandler}
+                    >
+                      Add Items
+                    </Button>
+                  ):
+                  null}
                 </ListGroup>
               )}
             </ListGroup.Item>
@@ -276,6 +294,7 @@ const reviewSubmitHandler = (e) => {
               {(order.paymentType==='payLater' && order.paymentMethod==='null')?(
                 <>
                   <ListGroup.Item>
+                    Select Payment Method
                     <Tab.Container id="list-group-tabs-example">
                         <Row>
                             <Col sm={6}>

@@ -1,41 +1,105 @@
 import express from 'express';
-import dotenv from 'dotenv'
-import colors from 'colors'
-import menus from './data/products.js'
-// import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+import path from 'path'
+import colors from 'colors' ;
+import morgan from 'morgan';
+import { Server } from "socket.io";
+import { createServer } from "http";
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
-// import cors from 'cors';
+import eateryRoutes from './routes/eateryRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
+import cors from 'cors';
 
-//import postRoutes from './routes/posts.js';
-dotenv.config()
+dotenv.config();
+
+connectDB();
 
 connectDB()
 const app = express();
 
-// app.use(bodyParser.json({ limit: '30mb', extended: true }))
-// app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
+if(process.env.NODE_ENV === 'development') {
+    
+    app.use(morgan('dev'))
+}
+
+app.use(express.json());
+app.use(cors());
+
+
+
+// app.use(bodyParser.json({ limit: '30mb', extended: true }));
+// app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 // app.use(cors());
+// app.use('/posts', postRoutes);
 
-//app.use('/posts', postRoutes); 
 
 
-//const CONNECTION_URL = 'mongodb+srv://sero1CreateMakeBelieve:U1rbBc68vrymTEMI@sero1.qzsba.mongodb.net/<dbname>?retryWrites=true&w=majority'
+app.use('/api/eateries', eateryRoutes);
+app.use('/api/orders', orderRoutes);
+
+app.use('/api/users', userRoutes);
+app.use('/api/upload', uploadRoutes);
+
+
+const __dirname = path.resolve()
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static(path.join(__dirname,'/client/build')))
+    app.get('*',(res,req)=>res.sendFile(path.resolve(__dirname,'client','build','index.html')))
+}
+else{
+    app.get('/', function(req, res) {
+
+        res.send("Hello");
+    });
+}
+
+
+app.use(notFound);
+app.use(errorHandler);
+
 const PORT = process.env.PORT|| 5000;
 
-// mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-//   .then(() => app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT}`)))
-//   .catch((error) => console.log(`${error} did not connect`));
 
-// mongoose.set('useFindAndModify', false);
 
-app.get('/', function(req, res) {
-    res.send("Hello");
+const server = createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+    }
 });
-app.get('/api/menu', function(req, res) {
-  res.json(menus);
+
+io.on("connection", (socket) => {
+    //console.log("We have a new connection")
+    
+
+    socket.on('paid',({orderPaidId})=>{
+        socket.broadcast.emit('paidOrder', {orderPaidId});
+    })
+
+    socket.on('customerPaid',({eateryIdforSocket})=>{
+        socket.broadcast.emit('customerPaidOrder', {eateryIdforSocket});
+    })
+
+    socket.on('completed',({orderCompletedId})=>{
+        socket.broadcast.emit('completedOrder', {orderCompletedId});
+    })
+
+    socket.on('cancelled',({orderCancelledId})=>{
+        socket.broadcast.emit('cancelledOrder', {orderCancelledId});
+    })
+
+    socket.on('orderPlaced',()=>{
+        socket.broadcast.emit('refreshOrders');
+    })
+
+    socket.on('disconnect',()=>{
+        //console.log("User has left")        
+    })
 });
-app.get('/api/menu/:id', function(req, res) {
-  const menu = menus.find((p) => p._id===req.params.id)
-  res.json(menu);
-});
-app.listen(PORT, () => console.log(`Server Running in ${process.env.NODE_ENV} on Port: http://localhost:${PORT}`.yellow.bold))
+
+
+server.listen(PORT, () => console.log(`Server Running in ${process.env.NODE_ENV} on Port: http://localhost:${PORT}`.yellow.bold));

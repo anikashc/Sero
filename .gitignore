@@ -5,12 +5,14 @@
 node_modules/
 /.pnp
 .pnp.js
-
+.vscode
 # testing
 /coverage
 
+.eslintcache
+
 # production
-/build
+/client/build
 
 # misc
 .DS_Store

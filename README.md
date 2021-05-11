@@ -16,58 +16,25 @@ Restaurant Panel
 The restaurant manager allows the restaurant to manage all their bookings, coupons, status tracking etc. 
 
 
-Screens.
-User:
-Use React Router Dom for all this.
-Home Screen : %/ 
-Will include a search field in the middle
-Scroll to see restaurants and their menus. (Here we can add pagination from the video)
-
-Restaurant Search: %/menu?search=SmokeDeli
-
-Clicking on the item will take to: %/menu?placeId=2143243
-
-After QR scan page %/qr?search=SmokeDeli
-
-After entering table number: %/menu?placeId=2143243&tableNumber=14
-
-After clicking on Cart: %/cart?tableNumber=14
-    
-As soon as you click on Pay Now and Place Order it places order first and then payment is to be done or we’ll see.
-
-Needs to be checked from the database whether this is set to true or not
-
-After clicking “Pay Now and Place Order”: %/payment?orderId=3234234 (Payments can be the same as the video etc)
-    
-After Clicking “Pay Later and Place Order” : %/temporarySuccess?orderId=3234235&tableNumber=14
-
-Make a URL shortner (one more functionality yay!)
-
-This URL will be sent to the users phone/mail whatever we can get our hands on.
-
-It will redirect to the payments page and the user will complete the payment. (From the video again)
-
-Enough for users.
-Will add login functionality later for users. Login for restaurants is important first.
-
-
-
-Will have to see the structure of db
-
-Restaurant Login:
-Login: login functionality 
 ********************************************************************************************************
-Git commands to keep in mind-----
+**Git commands to keep in mind-----**
 Git commands for pushing changes to your branch
-1. git add app.js app1.js (only add files which have changed)
-2. git status (to check what all have been changed)
-3. git commit -m "Made changes in app structure"
-Add a good comment
-4. git remote -v
-check if remote is connected (else add)
-5. git checkout amrit
-6. git push -u origin amrit
 
-To update your local git repository with the master (if required)
-1. git pull --no-commit https://github.com/anikashc/Sero.git
-2. git push -u origin amrit
+So next time when you start working just do this everytime before you start to work.
+
+- git checkout -b dev             (Remove -b after the first time)
+- git pull origin dev
+
+And then after you commit to your local branch dev do this
+
+***Pulling from remote won't affect your local committed or uncommitted changes.***
+
+- git push -u origin dev
+
+*****************************************************************************************
+
+For any freak ups
+1. [For your Help with pull push](https://happygitwithr.com/pull-tricky.html#git-pull-with-local-commits)
+2. [Serious freak ups](https://ohshitgit.com/)
+
+

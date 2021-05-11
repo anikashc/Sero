@@ -12,7 +12,7 @@ node_modules/
 .eslintcache
 
 # production
-/build
+/client/build
 
 # misc
 .DS_Store

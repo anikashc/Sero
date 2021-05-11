@@ -34,16 +34,27 @@ app.use(cors());
 // app.use(cors());
 // app.use('/posts', postRoutes);
 
-app.get('/', function(req, res) {
 
-    res.send("Hello");
-});
 
 app.use('/api/eateries', eateryRoutes);
 app.use('/api/orders', orderRoutes);
 
 app.use('/api/users', userRoutes);
 app.use('/api/upload', uploadRoutes);
+
+
+const __dirname = path.resolve()
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static(path.join(__dirname,'/client/build')))
+    app.get('*',(res,req)=>res.sendFile(path.resolve(__dirname,'client','build','index.html')))
+}
+else{
+    app.get('/', function(req, res) {
+
+        res.send("Hello");
+    });
+}
+
 
 app.use(notFound);
 app.use(errorHandler);
